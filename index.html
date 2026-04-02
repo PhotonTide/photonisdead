@@ -369,13 +369,12 @@ footer span{font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.
 .marquee-track span{font-family:'Inconsolata',monospace;font-size:.46rem;letter-spacing:.42em;color:rgba(196,135,58,.22);padding-right:3.5rem;text-transform:lowercase}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ═══ VIEWER GLOW ═══ */
-#viewer-glow{position:fixed;inset:-60px;z-index:7999;opacity:0;pointer-events:none;transition:opacity 1.2s ease;background-size:cover;background-position:center;filter:blur(90px) saturate(2) brightness(.18)}
-#viewer.open #viewer-glow{opacity:1}
 
 /* ═══ HERO PARALLAX ═══ */
 #hc{will-change:transform;transition:transform .08s linear}
 .hero-text{will-change:transform;transition:transform .12s linear}
+
+
 
 </style>
 </head>
@@ -1473,7 +1472,6 @@ footer span{font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.
 
 <!-- FULLSCREEN VIEWER -->
 <div id="viewer">
-  <div id="viewer-glow"></div>
   <button id="viewer-close">✕ close</button>
   <button id="viewer-prev">← prev</button>
   <div id="viewer-img-wrap">
@@ -1796,6 +1794,8 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 })();
 
 
+;
+
 /* ═══════════════════════════════════════════
    5. FULLSCREEN ARTWORK VIEWER
 ═══════════════════════════════════════════ */
@@ -1836,11 +1836,6 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     currentIdx = idx;
     const card = cards[idx];
     const img  = card.querySelector('img');
-    // Update ambient glow
-    const glow = document.getElementById('viewer-glow');
-    if (glow && img) {
-      setTimeout(() => { glow.style.backgroundImage = `url(${img.src})`; }, 80);
-    }
     const link = card.querySelector('a');
     const title = card.querySelector('.wtitle');
     const sub   = card.querySelector('.wsub');
@@ -1856,20 +1851,32 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
       vSub.textContent   = sub ? sub.textContent : '';
       const platName = plat ? plat.textContent : 'platform';
       vLink.textContent  = `view on ${platName.toLowerCase()} →`;
-      vLink.href = link ? link.href : '#';
+      vLink.href = link ? (link.dataset.url || link.href || '#') : '#';
       vCounter.textContent = `${idx + 1} / ${cards.length}`;
       vImg.style.opacity = '1';
       vImg.style.transform = 'scale(1)';
     }, 180);
   }
 
-  // Intercept card clicks — open viewer instead of navigating
+  // Neutralise all wcard <a> hrefs so they have zero navigation behaviour.
+  // Store the real URL as data-url so the viewer link can use it.
+  document.querySelectorAll('.wcard a').forEach(a => {
+    a.dataset.url = a.href;
+    a.removeAttribute('href');
+    a.removeAttribute('target');
+    a.style.cursor = 'none';
+  });
+
+  // Open viewer on any wcard click
   document.getElementById('wgrid').addEventListener('click', e => {
     const card = e.target.closest('.wcard');
     if (!card) return;
-    const link = e.target.closest('a');
-    // If clicking the platform link pill directly, let it open
-    if (e.target.classList.contains('wplat') || e.target.closest('.wplat')) return;
+    // Platform pill click → open external URL directly
+    if (e.target.closest('.wplat')) {
+      const a = card.querySelector('a');
+      if (a && a.dataset.url) window.open(a.dataset.url, '_blank');
+      return;
+    }
     e.preventDefault();
     e.stopPropagation();
     const visibleCards = getVisibleCards();
@@ -1877,8 +1884,7 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     openViewer(idx >= 0 ? idx : 0, visibleCards);
   });
 
-  vClose.addEventListener('click', closeViewer);
-  viewer.addEventListener('click', e => { if (e.target === viewer) closeViewer(); });
+  vClose.addEventListener('click', e => { e.stopPropagation(); closeViewer(); });
 
   vPrev.addEventListener('click', e => { e.stopPropagation(); showCard(currentIdx - 1); });
   vNext.addEventListener('click', e => { e.stopPropagation(); showCard(currentIdx + 1); });
@@ -1905,6 +1911,10 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
   });
 })();
 
+</script>
+
+</body>
+</html>
 </script>
 
 </body>
