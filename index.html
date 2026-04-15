@@ -21,13 +21,13 @@ body{background:var(--void);color:var(--ghost);font-family:'Cormorant Garamond',
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.8rem 5vw;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(0,0,0,.92),transparent)}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;font-size:.95rem;letter-spacing:.15em;color:var(--pale);text-decoration:none;transition:opacity .3s}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;font-size:1.05rem;letter-spacing:.15em;color:var(--pale);text-decoration:none;transition:opacity .3s}
 .nav-logo:hover{opacity:.65}
 .nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
 .nav-links a{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.28em;color:var(--pale);text-decoration:none;transition:color .3s}
 .nav-links a:hover{color:var(--ghost)}
 /* Tab nav items */
-.tab-nav-btn{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.28em;color:var(--pale);background:none;border:none;cursor:none;transition:color .3s;padding:0}
+.tab-nav-btn{font-family:'Inconsolata',monospace;font-size:.67rem;letter-spacing:.25em;color:var(--pale);background:none;border:none;cursor:none;transition:color .3s;padding:0}
 .tab-nav-btn:hover,.tab-nav-btn.active{color:var(--ember)}
 
 /* HERO */
@@ -57,7 +57,7 @@ hr.thin{border:none;border-top:1px solid var(--dim)}
 
 /* SHARED */
 .s{padding:7rem 6vw}
-.s-label{font-family:'Inconsolata',monospace;font-size:.55rem;letter-spacing:.55em;color:var(--ember);margin-bottom:.8rem}
+.s-label{font-family:'Inconsolata',monospace;font-size:.64rem;letter-spacing:.55em;color:var(--ember);margin-bottom:.8rem}
 .s-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.2rem,4.5vw,4.5rem);color:var(--ghost);line-height:1.05;letter-spacing:.03em;margin-bottom:3rem}
 .s-title em{font-style:italic;color:var(--pale)}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
@@ -68,7 +68,7 @@ hr.thin{border:none;border-top:1px solid var(--dim)}
 #page-works{background:var(--near)}
 
 .toggle-bar{display:flex;align-items:center;gap:0;margin-bottom:3rem;border:1px solid var(--dim);width:fit-content}
-.tgl-btn{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.3em;color:var(--pale);background:none;border:none;border-right:1px solid var(--dim);padding:.65rem 1.5rem;cursor:none;transition:all .25s;text-transform:lowercase}
+.tgl-btn{font-family:'Inconsolata',monospace;font-size:.67rem;letter-spacing:.3em;color:var(--pale);background:none;border:none;border-right:1px solid var(--dim);padding:.65rem 1.5rem;cursor:none;transition:all .25s;text-transform:lowercase}
 .tgl-btn:last-child{border-right:none}
 .tgl-btn.active[data-f="all"]{background:var(--ember);color:#000}
 .tgl-btn.active[data-f="available"]{background:var(--avail-c);color:#000}
@@ -93,8 +93,8 @@ hr.thin{border:none;border-top:1px solid var(--dim)}
 .wpill.available{border-color:rgba(122,159,176,.4);color:var(--avail-c);background:rgba(0,0,0,.65)}
 .wplat{position:absolute;top:.6rem;right:.6rem;font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.18em;color:var(--ember);background:rgba(0,0,0,.7);border:1px solid rgba(196,135,58,.22);padding:.18rem .5rem}
 .winfo{padding:.85rem 1rem .95rem;border-top:1px solid rgba(255,255,255,.04)}
-.wtitle{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:.95rem;color:var(--ghost);line-height:1.3}
-.wsub{font-family:'Inconsolata',monospace;font-size:.48rem;color:var(--pale);letter-spacing:.18em;margin-top:.28rem}
+.wtitle{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.05rem;color:var(--ghost);line-height:1.3}
+.wsub{font-family:'Inconsolata',monospace;font-size:.57rem;color:var(--pale);letter-spacing:.18em;margin-top:.28rem}
 .wprice{font-family:'Inconsolata',monospace;font-size:.65rem;color:var(--sold-c);letter-spacing:.12em;margin-top:.35rem}
 
 /* ═══ PRESS TAB ═══ */
@@ -108,12 +108,12 @@ hr.thin{border:none;border-top:1px solid var(--dim)}
 .press-card:hover .press-thumb img{filter:saturate(1.05) brightness(1.05);transform:scale(1.03)}
 .press-body{padding:1.6rem 1.8rem 2rem}
 .press-meta{display:flex;align-items:center;gap:1rem;margin-bottom:.9rem}
-.press-source{font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.3em;color:var(--ember)}
-.press-date{font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.2em;color:var(--pale)}
-.press-type{font-family:'Inconsolata',monospace;font-size:.46rem;letter-spacing:.2em;padding:.2rem .5rem;border:1px solid rgba(122,159,176,.25);color:var(--ice)}
-.press-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.25rem;color:var(--ghost);line-height:1.35;margin-bottom:.6rem;letter-spacing:.02em}
-.press-excerpt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--pale);line-height:1.8}
-.press-link{display:inline-block;margin-top:1.2rem;font-family:'Inconsolata',monospace;font-size:.55rem;letter-spacing:.28em;color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.3);padding-bottom:2px;transition:all .3s}
+.press-source{font-family:'Inconsolata',monospace;font-size:.6rem;letter-spacing:.3em;color:var(--ember)}
+.press-date{font-family:'Inconsolata',monospace;font-size:.57rem;letter-spacing:.2em;color:var(--pale)}
+.press-type{font-family:'Inconsolata',monospace;font-size:.55rem;letter-spacing:.2em;padding:.2rem .5rem;border:1px solid rgba(122,159,176,.25);color:var(--ice)}
+.press-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.4rem;color:var(--ghost);line-height:1.35;margin-bottom:.6rem;letter-spacing:.02em}
+.press-excerpt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--pale);line-height:1.8}
+.press-link{display:inline-block;margin-top:1.2rem;font-family:'Inconsolata',monospace;font-size:.64rem;letter-spacing:.28em;color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.3);padding-bottom:2px;transition:all .3s}
 .press-link:hover{color:var(--ghost);border-color:var(--pale)}
 
 /* ═══ EXHIBITIONS TAB ═══ */
@@ -127,16 +127,16 @@ hr.thin{border:none;border-top:1px solid var(--dim)}
 .exh-card:hover .exh-img img{filter:saturate(1.05) brightness(1.05);transform:scale(1.03)}
 .exh-body{padding:1.4rem 1.5rem 1.8rem}
 .exh-yr-row{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}
-.exh-yr{font-family:'Inconsolata',monospace;font-size:.58rem;color:var(--ember);letter-spacing:.35em}
-.exh-tag{font-family:'Inconsolata',monospace;font-size:.46rem;letter-spacing:.22em;padding:.2rem .5rem;border:1px solid}
+.exh-yr{font-family:'Inconsolata',monospace;font-size:.67rem;color:var(--ember);letter-spacing:.35em}
+.exh-tag{font-family:'Inconsolata',monospace;font-size:.55rem;letter-spacing:.22em;padding:.2rem .5rem;border:1px solid}
 .k-solo{border-color:rgba(196,135,58,.35);color:var(--ember)}
 .k-group{border-color:rgba(122,159,176,.25);color:var(--ice)}
 .k-auction{border-color:rgba(74,158,106,.3);color:var(--sold-c)}
 .k-res{border-color:rgba(212,207,200,.12);color:var(--pale)}
-.exh-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.2rem;color:var(--ghost);line-height:1.3;margin-bottom:.35rem}
-.exh-venue{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--pale);line-height:1.7}
+.exh-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.35rem;color:var(--ghost);line-height:1.3;margin-bottom:.35rem}
+.exh-venue{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--pale);line-height:1.7}
 .exh-venue strong{font-style:normal;color:rgba(212,207,200,.55);font-weight:400}
-.exh-piece{font-family:'Inconsolata',monospace;font-size:.5rem;color:rgba(196,135,58,.55);letter-spacing:.18em;margin-top:.5rem}
+.exh-piece{font-family:'Inconsolata',monospace;font-size:.6rem;color:rgba(196,135,58,.55);letter-spacing:.18em;margin-top:.5rem}
 
 /* ═══ SOTHEBYS TAB ═══ */
 #page-sothebys{background:var(--void)}
@@ -148,8 +148,8 @@ hr.thin{border:none;border-top:1px solid var(--dim)}
 .auction-meta{display:flex;flex-wrap:wrap;gap:2.5rem;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);padding:1.4rem 0;margin:1.8rem 0}
 .am-item p:first-child{font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.38em;color:var(--ember);margin-bottom:.25rem}
 .am-item p:last-child{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--ghost)}
-.auction-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:var(--pale);line-height:1.9}
-.auction-a{display:inline-block;margin-top:1.4rem;font-family:'Inconsolata',monospace;font-size:.55rem;letter-spacing:.28em;color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.3);padding-bottom:2px;transition:all .3s}
+.auction-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--pale);line-height:1.9}
+.auction-a{display:inline-block;margin-top:1.4rem;font-family:'Inconsolata',monospace;font-size:.64rem;letter-spacing:.28em;color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.3);padding-bottom:2px;transition:all .3s}
 .auction-a:hover{color:var(--ghost);border-color:var(--pale)}
 
 /* ═══ COLLECTOR TAB ═══ */
@@ -176,23 +176,23 @@ hr.thin{border:none;border-top:1px solid var(--dim)}
 .stmt-inner{max-width:760px;position:relative;z-index:2}
 .stmt-q{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(1.5rem,3vw,2.5rem);line-height:1.7;color:rgba(212,207,200,.5);letter-spacing:.02em}
 .stmt-q strong{font-weight:600;font-style:normal;color:var(--ghost)}
-.stmt-attr{font-family:'Inconsolata',monospace;font-size:.52rem;letter-spacing:.5em;color:var(--ember);margin-top:2.5rem}
+.stmt-attr{font-family:'Inconsolata',monospace;font-size:.61rem;letter-spacing:.5em;color:var(--ember);margin-top:2.5rem}
 
 /* ═══ CONTACT ═══ */
 
 .bio-with-photo{display:flex;gap:1.8rem;align-items:flex-start;max-width:580px;margin-bottom:2rem}
 .bio-artist-photo{width:110px;height:140px;object-fit:cover;object-position:center top;flex-shrink:0;filter:brightness(.9) contrast(1.05)}
-.bio-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.95;color:var(--pale)}
+.bio-text{font-family:'Cormorant Garamond',serif;font-size:1.18rem;line-height:1.95;color:var(--pale)}
 @media(max-width:600px){.bio-with-photo{flex-direction:column}.bio-artist-photo{width:90px;height:115px}}
 .contact-wrap{background:var(--near);padding:8rem 6vw;border-top:1px solid var(--dim)}
 .ci{max-width:520px}
-.c-intro{font-style:italic;font-size:1rem;line-height:2;color:var(--pale);margin-bottom:2.5rem}
+.c-intro{font-style:italic;font-size:1.1rem;line-height:2;color:var(--pale);margin-bottom:2.5rem}
 .clink{display:flex;justify-content:space-between;align-items:center;padding:1.3rem 0;border-bottom:1px solid var(--dim);text-decoration:none;transition:padding-left .3s}
 .clink:first-child{border-top:1px solid var(--dim)}
 .clink:hover{padding-left:.5rem}
-.cln{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--ghost);transition:color .3s}
+.cln{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--ghost);transition:color .3s}
 .clink:hover .cln{color:var(--ember)}
-.cla{font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--pale);letter-spacing:.12em;transition:color .3s,transform .3s}
+.cla{font-family:'Inconsolata',monospace;font-size:.64rem;color:var(--pale);letter-spacing:.12em;transition:color .3s,transform .3s}
 .clink:hover .cla{color:var(--ember);transform:translateX(4px)}
 
 footer{padding:2rem 6vw;border-top:1px solid var(--dim);display:flex;justify-content:space-between;align-items:center}
@@ -234,7 +234,7 @@ footer span{font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.
   /* filter bar — scrollable */
   .toggle-bar{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;width:100%;border-right:none}
   .toggle-bar::-webkit-scrollbar{display:none}
-  .tgl-btn{white-space:nowrap;padding:.55rem 1.1rem;font-size:.5rem}
+  .tgl-btn{white-space:nowrap;padding:.55rem 1.1rem;font-size:.6rem}
 
   /* press grid */
   .press-grid{grid-template-columns:1fr}
@@ -321,7 +321,7 @@ footer span{font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.
   .year-divider span{font-size:.44rem;letter-spacing:.4em}
 
   /* toggle bar */
-  .tgl-btn{padding:.5rem .85rem;font-size:.44rem}
+  .tgl-btn{padding:.5rem .85rem;font-size:.54rem}
 
   /* auction page */
   .auction-h{font-size:1.8rem}
