@@ -22,7 +22,7 @@ return {n + 1}
 
 export default async function handler(req, res) {
   if (!onlyMethod(req, res, 'POST')) return;
-  if (await rateLimited(req, 15)) return send(res, 429, { error: 'too many requests — breathe, then try again' });
+  if (await rateLimited(req, 'line', 30)) return send(res, 429, { error: 'too many requests — breathe, then try again' });
 
   const me = readToken(req);
   if (!me) return send(res, 401, { error: 'connect your wallet first' });

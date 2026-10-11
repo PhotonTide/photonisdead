@@ -4,7 +4,7 @@ import { redis, K, normAddress, signInMessage, verifySignature, makeToken, send,
 
 export default async function handler(req, res) {
   if (!onlyMethod(req, res, 'POST')) return;
-  if (await rateLimited(req)) return send(res, 429, { error: 'too many requests — breathe, then try again' });
+  if (await rateLimited(req, 'verify', 60)) return send(res, 429, { error: 'too many requests — breathe, then try again' });
 
   const { address: raw, signature } = req.body || {};
   const address = normAddress(raw);

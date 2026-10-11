@@ -28,7 +28,7 @@ export const K = {
   idx: P + 'idx',         // hash: wallet -> its line number (1-based)
   banned: P + 'banned',   // set: wallets whose line was removed (can't write again)
   nonce: a => P + 'nonce:' + a,
-  rate: ip => P + 'rate:' + ip,
+  rate: (bucket, ip) => P + 'rate:' + bucket + ':' + ip,
 };
 
 // ── sign-in message (the browser builds exactly the same text) ──
@@ -82,9 +82,10 @@ export function cleanLine(raw) {
   return { text };
 }
 
-export async function rateLimited(req, limit = 30) {
+// Per-connection limit, per action, per minute. Generous enough for a room of people on one Wi-Fi.
+export async function rateLimited(req, bucket, limit) {
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
-  const key = K.rate(ip);
+  const key = K.rate(bucket, ip);
   const n = await redis.incr(key);
   if (n === 1) await redis.expire(key, 60);
   return n > limit;
