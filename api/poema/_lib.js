@@ -28,6 +28,7 @@ export const K = {
   addrs: P + 'addrs',     // list of wallet addresses, parallel to lines
   idx: P + 'idx',         // hash: wallet -> its line number (1-based)
   banned: P + 'banned',   // set: wallets whose line was removed (can't write again)
+  title: P + 'title',     // the poem's title, set by photontide.eth when the dream wakes
   nonce: a => P + 'nonce:' + a,
   rate: (bucket, ip) => P + 'rate:' + bucket + ':' + ip,
 };

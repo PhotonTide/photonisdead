@@ -49,7 +49,7 @@ main{position:relative;z-index:1}
 .paper::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.55),transparent 60%),repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.012) 3px 4px);pointer-events:none}
 .paper.complete{animation:wake 2.4s ease}
 @keyframes wake{0%{filter:blur(6px) brightness(1.2)}100%{filter:none}}
-.paper-title{font-style:italic;font-size:3cqw;color:rgba(29,27,24,.5);text-align:center;margin-bottom:3.5%;letter-spacing:.06em}
+.paper-title{font-style:italic;font-size:3cqw;color:rgba(29,27,24,.6);text-align:center;margin-bottom:3.5%;letter-spacing:.06em;min-height:1.2em}
 .lines{display:grid;grid-template-rows:repeat(47,1fr);height:90%}
 .line{position:relative;isolation:isolate;display:flex;align-items:center;border-bottom:1px solid var(--rule);font-style:italic;font-size:2.15cqw;color:var(--ink);white-space:nowrap;line-height:1}
 .line .t{display:block;overflow:hidden;text-overflow:ellipsis;max-width:100%;transition:filter 1.1s ease,opacity 1.1s ease}
@@ -81,6 +81,18 @@ main{position:relative;z-index:1}
 .wallets button:hover,.wallets button:focus-visible{border-color:var(--ember)}
 .wallets img{width:18px;height:18px;border-radius:4px}
 
+/* wallet window */
+.modal{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.72);backdrop-filter:blur(4px)}
+.modal[hidden]{display:none}
+.modal-box{width:min(440px,100%);background:#0b0b10;border:1px solid #2a2a33;padding:1.8rem 1.6rem 1.4rem;font-family:'Inconsolata',monospace;color:var(--ghost);text-align:left}
+.modal-title{font-size:.95rem;letter-spacing:.18em;color:var(--ember);margin-bottom:1.2rem}
+.modal .wallets{flex-direction:column}
+.modal .wallets button{width:100%;font-size:.9rem;padding:.8rem 1rem}
+.modal-status{min-height:1.4em;margin-top:1rem;font-size:.82rem;line-height:1.6;color:var(--pale)}
+.modal-status.err{color:#e07a5f}
+.modal-note{margin-top:.6rem;font-size:.72rem;letter-spacing:.04em;line-height:1.6;color:#7d7871}
+.modal .link{margin-top:1.2rem;font-size:.8rem}
+
 /* ── 3 · after sealing ── */
 .after{display:none;text-align:center;padding:2rem 6vw 1rem;max-width:42rem;margin:0 auto}
 .after.on{display:block;animation:rise 1.4s ease}
@@ -93,6 +105,13 @@ main{position:relative;z-index:1}
 .admin{width:min(880px,94vw);margin:3rem auto 0;border:1px solid rgba(196,135,58,.35);padding:1.4rem}
 .admin h2{font-family:'Inconsolata',monospace;font-weight:500;font-size:.85rem;letter-spacing:.2em;color:var(--ember);margin-bottom:1rem}
 .admin ol{list-style:none;display:grid;gap:.5rem}
+.title-tools{margin-bottom:1.6rem;padding-bottom:1.4rem;border-bottom:1px solid var(--dim)}
+.tt-label{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.14em;color:var(--pale);margin-bottom:.6rem}
+.tt-row{display:flex;gap:.6rem;flex-wrap:wrap}
+.tt-row input{flex:1 1 16rem;background:transparent;border:none;border-bottom:1px solid rgba(212,207,200,.3);color:var(--ghost);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;padding:.2rem 0;outline:none}
+.tt-row input:focus{border-bottom-color:var(--ember)}
+.tt-row button{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.12em;color:var(--ember);background:none;border:1px solid rgba(196,135,58,.5);padding:.5rem .9rem;cursor:pointer}
+.tt-words{margin-top:.8rem;font-family:'Inconsolata',monospace;font-size:.75rem;line-height:1.7;color:#8f8982}
 .admin li{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.2rem .7rem;align-items:center;font-size:1.1rem;color:var(--ghost)}
 .admin li small{font-family:'Inconsolata',monospace;font-size:.72rem;color:#8f8982}
 .admin li .w{grid-column:2/4;font-family:'Inconsolata',monospace;font-size:.7rem;color:#8f8982}
@@ -123,6 +142,16 @@ main{position:relative;z-index:1}
   <button class="top-btn" id="top-btn" type="button">connect wallet</button>
 </header>
 
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <p class="modal-title" id="modal-title">connect a wallet</p>
+    <div class="wallets" id="modal-wallets"></div>
+    <p class="modal-status" id="modal-status"></p>
+    <p class="modal-note">Signing in is free — no transaction, no approvals, nothing is spent.</p>
+    <button class="link" type="button" id="modal-close">close</button>
+  </div>
+</div>
+
 <main>
   <section class="arrival">
     <h1 class="title">collective<br>unconscious</h1>
@@ -132,7 +161,7 @@ main{position:relative;z-index:1}
   <section class="page-section" id="page">
     <p class="count"><b id="c-n">·</b> of 47 dreamers · <span id="c-state">the dream continues</span></p>
     <div class="paper" id="paper">
-      <p class="paper-title">collective unconscious</p>
+      <p class="paper-title" id="paper-title"></p>
       <div class="lines" id="lines"></div>
     </div>
     <div class="under" id="under"></div>
@@ -148,6 +177,11 @@ main{position:relative;z-index:1}
 
   <section class="admin" id="admin" hidden>
     <h2>moderation · photontide.eth</h2>
+    <div class="title-tools">
+      <p class="tt-label">title — revealed to everyone when the dream wakes</p>
+      <div class="tt-row"><input id="title-input" maxlength="80" placeholder="untitled" aria-label="poem title"><button type="button" id="title-save">save title</button></div>
+      <p class="tt-words" id="title-words"></p>
+    </div>
     <ol id="admin-list"></ol>
     <div class="tools">
       <button id="export" type="button">download poem + wallets</button>
@@ -199,6 +233,7 @@ main{position:relative;z-index:1}
     const count = s.count, mine = s.admin ? null : s.mine;
 
     updateTopButton(s);
+    $('paper-title').textContent = s.title && s.complete ? s.title : '';
     $('c-n').textContent = count;
     $('c-state').textContent = s.complete ? 'the dream has woken' : 'the dream continues';
     $('paper').classList.toggle('complete', s.complete && !!revealUpTo);
@@ -294,7 +329,6 @@ main{position:relative;z-index:1}
   }
   $('top-btn').onclick = () => {
     if (state && state.signedIn) return signOut();
-    $('page').scrollIntoView({ behavior: 'smooth', block: 'start' });
     connect();
   };
 
@@ -336,23 +370,43 @@ main{position:relative;z-index:1}
   });
   dispatchEvent(new Event('eip6963:requestProvider'));
 
+  /* wallet window */
+  let lastFocus = null;
+  function openModal() {
+    lastFocus = document.activeElement;
+    $('modal').hidden = false;
+    $('modal-close').focus();
+  }
+  function closeModal() {
+    $('modal').hidden = true;
+    connecting = false;
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  }
+  function modalStatus(text, isErr) { const el = $('modal-status'); el.textContent = text || ''; el.classList.toggle('err', !!isErr); }
+  $('modal-close').onclick = closeModal;
+  $('modal').addEventListener('click', e => { if (e.target === $('modal')) closeModal(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !$('modal').hidden) closeModal(); });
+
   function connect() {
     const list = providers.length ? providers
       : (window.ethereum ? [{ info: { name: 'browser wallet', uuid: 'injected' }, provider: window.ethereum }] : []);
+    const box = $('modal-wallets'); box.innerHTML = '';
+    modalStatus('');
+    openModal();
     if (!list.length) {
-      underMsg("No wallet found in this browser. On a phone, open this page inside your wallet app's browser (MetaMask, Rainbow, Coinbase Wallet…). On a computer, install a wallet extension and reload.");
+      $('modal-title').textContent = 'no wallet found';
+      modalStatus("On a phone, open this page inside your wallet app's browser (MetaMask, Rainbow, Coinbase Wallet…). On a computer, install a wallet extension and reload.");
       return;
     }
+    $('modal-title').textContent = list.length === 1 ? 'connecting' : 'choose your wallet';
     if (list.length === 1) return signIn(list[0].provider);
-    const box = document.createElement('div'); box.className = 'wallets';
     list.forEach(p => {
       const b = document.createElement('button'); b.type = 'button';
       if (p.info.icon) { const img = document.createElement('img'); img.src = p.info.icon; img.alt = ''; b.appendChild(img); }
       b.appendChild(document.createTextNode(p.info.name));
-      b.onclick = () => signIn(p.provider);
+      b.onclick = () => { box.innerHTML = ''; $('modal-title').textContent = 'connecting'; signIn(p.provider); };
       box.appendChild(b);
     });
-    underMsg('choose your wallet:', false, box);
   }
 
   const toHex = s => '0x' + [...new TextEncoder().encode(s)].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -360,23 +414,23 @@ main{position:relative;z-index:1}
   async function signIn(provider) {
     connecting = true;
     try {
-      underMsg('connecting…');
+      modalStatus('open your wallet to connect…');
       const [account] = await provider.request({ method: 'eth_requestAccounts' });
       if (!account) throw new Error('no account selected');
       const address = account.toLowerCase();
       const { message } = await api('nonce?address=' + address);
-      underMsg("check your wallet — it's a free sign-in, nothing is sent or spent");
+      modalStatus("now sign the message in your wallet — it's a free sign-in, nothing is sent or spent");
       const signature = await provider.request({ method: 'personal_sign', params: [toHex(message), account] });
       const { token } = await api('verify', { method: 'POST', body: JSON.stringify({ address, signature }) });
       session = { token, address };
       store.set(session);
-      connecting = false;
+      closeModal();
       await load();
+      $('page').scrollIntoView({ behavior: 'smooth', block: 'start' });
       const inp = $('write'); if (inp) inp.focus({ preventScroll: true });
     } catch (e) {
-      connecting = false;
       const rejected = e && (e.code === 4001 || /reject|denied|cancel/i.test(e.message || ''));
-      underMsg(rejected ? 'cancelled — nothing was signed or sent' : (e.message || 'could not connect'), !rejected);
+      modalStatus(rejected ? 'cancelled — nothing was signed or sent' : (e.message || 'could not connect'), !rejected);
     }
   }
 
@@ -401,8 +455,22 @@ main{position:relative;z-index:1}
   }
 
   /* ── moderation (photontide.eth) ── */
+  // the poem's most repeated words — a guide for choosing the title
+  const STOP = new Set('i me my mine you your yours he him his she her hers it its we us our they them their a an the and or but if then so of to in on at by for with from up down out into over under as is was were be been being am are do did does had has have not no nor too very just only all any some every each this that these those there here what when where who whom which why how can could would should will shall may might must one ones than like said say says get got go went gone come came back again still even ever never always more most much many such own same other another off away through around about before after while until because'.split(' '));
+  function themes(lines) {
+    const counts = {};
+    lines.forEach(l => (l.text.toLowerCase().match(/[a-z']+/g) || []).forEach(w => {
+      w = w.replace(/^'+|'+$/g, '');
+      if (w.length > 2 && !STOP.has(w)) counts[w] = (counts[w] || 0) + 1;
+    }));
+    return Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 12);
+  }
+
   function renderAdmin(s) {
     $('admin').hidden = false;
+    if (document.activeElement !== $('title-input')) $('title-input').value = s.title || '';
+    const top = themes(s.lines);
+    $('title-words').textContent = top.length > 1 ? 'most repeated words: ' + top.map(([w, c]) => w + (c > 1 ? ' ×' + c : '')).join(' · ') : 'the most repeated words will show here as the poem grows';
     const ol = $('admin-list'); ol.innerHTML = '';
     s.lines.forEach(l => {
       const li = document.createElement('li');
@@ -423,6 +491,13 @@ main{position:relative;z-index:1}
       ol.appendChild(li);
     });
   }
+  $('title-save').onclick = async () => {
+    try {
+      const r = await api('title', { method: 'POST', body: JSON.stringify({ title: $('title-input').value }) });
+      $('admin-status').textContent = r.title ? 'title saved — it appears for everyone when the dream wakes' : 'title cleared';
+    } catch (e) { $('admin-status').textContent = e.message; }
+  };
+
   $('export').onclick = async () => {
     try {
       const data = await api('export');

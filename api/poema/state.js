@@ -10,10 +10,11 @@ export default async function handler(req, res) {
   if (!onlyMethod(req, res, 'GET')) return;
 
   const me = readToken(req);
-  const [stored, addrs, myN] = await Promise.all([
+  const [stored, addrs, myN, title] = await Promise.all([
     redis.lrange(K.lines, 0, -1),
     redis.lrange(K.addrs, 0, -1),
     me ? redis.hget(K.idx, me) : null,
+    redis.get(K.title),
   ]);
 
   // Before anyone writes, the poem is just the opening line.
@@ -41,5 +42,6 @@ export default async function handler(req, res) {
     mine,
     admin: isAdmin,
     lines: visible,
+    title: (complete || isAdmin) && title ? String(title) : null,
   });
 }
