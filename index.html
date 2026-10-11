@@ -3045,9 +3045,9 @@ document.addEventListener('keydown',e=>{
   /* ── settings ── */
   const q = new URLSearchParams(location.search);
   const GATE_URL = '/poema';                                 // the hidden poem page
-  const SLEEP_ON = q.get('sleep') !== null || false;         // the fall-asleep screen: off until launch (?sleep=N previews it)
+  const SLEEP_ON = true;                                     // the fall-asleep screen is live
   const IS_PHONE = matchMedia('(pointer:coarse)').matches;
-  const IDLE_SECONDS = q.get('sleep') ? +q.get('sleep') : (IS_PHONE ? 25 : 60);
+  const IDLE_SECONDS = q.get('sleep') ? +q.get('sleep') : (IS_PHONE ? 30 : 60);  // seconds of stillness before the site falls asleep
   // newest line of the poem, fetched from the poem's server (the opening line until anyone writes)
   let LAST_LINE = 'I had a dream that';
   function fetchLastLine(){
