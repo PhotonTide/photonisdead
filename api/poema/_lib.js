@@ -11,7 +11,7 @@ export const VOTE_MS = 72 * 60 * 60 * 1000; // the title vote lasts 72 hours
 export const MAX_TITLE = 40;
 export const MAX_CHARS = 60;
 export const OPENING_LINE = 'I had a dream that';
-export const ADMIN = '0xa90dc6d356b622b9783f5020722e6f92b663438f'; // photontide.eth — the only wallet that can remove lines
+export const ADMIN = '0xa90dc6d356b622b9783f5020722e6f92b663438f'; // photontide.eth — the only wallet that can moderate
 
 // Links and wallet addresses are never part of the dream (scam protection).
 export const BLOCKED = /(https?:\/\/|www\.|0x[a-f0-9]{6,}|[a-z0-9-]+\.(com|xyz|io|net|org|eth|app|gg|art|co|me|ly|link)\b)/i;
@@ -95,17 +95,25 @@ export async function verifySignature(address, message, signature) {
   }
 }
 
+// With automaticDeserialization off, HGETALL comes back as a flat [field, value, …] list — turn it into an object.
+export function hashObject(r) {
+  if (!r) return {};
+  if (Array.isArray(r)) { const o = {}; for (let i = 0; i + 1 < r.length; i += 2) o[String(r[i])] = String(r[i + 1]); return o; }
+  return r;
+}
+
 // ── the title vote ──
 // phases: proposing (poem unfinished) · shortlisting (waiting for photontide.eth) · voting · closed
 export async function voteState({ complete, me, isAdmin }) {
-  const [titleOverride, shortlistRaw, startRaw, votes] = await Promise.all([
+  const [titleOverride, shortlistRaw, startRaw, votesRaw] = await Promise.all([
     redis.get(K.title), redis.get(K.shortlist), redis.get(K.voteStart), redis.hgetall(K.votes),
   ]);
+  const votes = hashObject(votesRaw);
   const options = shortlistRaw ? JSON.parse(String(shortlistRaw)) : [];
   const start = startRaw ? Number(startRaw) : null;
   const endsAt = start ? start + VOTE_MS : null;
   const tally = options.map(() => 0);
-  Object.values(votes || {}).forEach(i => { if (tally[Number(i)] !== undefined) tally[Number(i)]++; });
+  Object.values(votes).forEach(i => { if (tally[Number(i)] !== undefined) tally[Number(i)]++; });
   let phase = !complete ? 'proposing' : !start ? 'shortlisting' : Date.now() < endsAt ? 'voting' : 'closed';
   if (titleOverride) phase = 'closed';
 
@@ -115,11 +123,11 @@ export async function voteState({ complete, me, isAdmin }) {
     const winners = options.filter((_, i) => tally[i] === best);
     if (winners.length === 1) title = winners[0]; else tie = true;
   }
-  const myVote = me && votes && votes[me] !== undefined ? Number(votes[me]) : null;
+  const myVote = me && votes[me] !== undefined ? Number(votes[me]) : null;
   return {
     phase, options, endsAt, myVote, title, tie,
     results: (phase === 'closed' || isAdmin) ? tally : null,
-    voters: Object.keys(votes || {}).length,
+    voters: Object.keys(votes).length,
   };
 }
 

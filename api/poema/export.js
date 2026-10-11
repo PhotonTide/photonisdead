@@ -1,6 +1,6 @@
 // GET /api/poema/export   (photontide.eth only)
 // The full poem with each dreamer's wallet — for the artwork description and the edition airdrop.
-import { redis, K, ADMIN, OPENING_LINE, MAX_LINES, readToken, send, onlyMethod, voteState } from './_lib.js';
+import { redis, K, ADMIN, OPENING_LINE, MAX_LINES, readToken, send, onlyMethod, voteState, hashObject } from './_lib.js';
 
 export default async function handler(req, res) {
   if (!onlyMethod(req, res, 'GET')) return;
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   send(res, 200, {
     title: vote.title,
     vote: { options: vote.options, results: vote.results, voters: vote.voters, endsAt: vote.endsAt, phase: vote.phase },
-    proposals: proposals || {},
+    proposals: hashObject(proposals),
     series: 'collective unconscious',
     poem: rows.map(r => r.text).join('\n'),
     dreamers: rows,
