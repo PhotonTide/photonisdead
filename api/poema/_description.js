@@ -1,7 +1,7 @@
 // GET /api/poema/admin?action=description   (photontide.eth only)
 // Ready-to-paste description for the 1/1 and the edition: title, the poem, and the dreamers
 // (ENS names where a wallet has one, otherwise the full address). Names go in the description only.
-import { redis, K, ADMIN, OPENING_LINE, MAX_LINES, readToken, send, onlyMethod, voteState, ensName } from './_lib.js';
+import { redis, K, ADMIN, OPENING_LINE, MAX_LINES, readToken, send, onlyMethod, voteState, ensName, ensCached } from './_lib.js';
 
 export default async function handler(req, res) {
   if (!onlyMethod(req, res, 'GET')) return;
@@ -14,14 +14,18 @@ export default async function handler(req, res) {
     : [{ n: 1, text: OPENING_LINE, wallet: ADMIN }];
   const vote = await voteState({ complete: rows.length >= MAX_LINES, me: null, isAdmin: true });
 
-  // look up ENS names a few at a time
+  // ENS names: use what's remembered, look up the rest a few at a time within a time budget
   const names = {};
-  const todo = [...new Set(rows.map(r => r.wallet))].filter(w => !removed.has(w));
-  for (let i = 0; i < todo.length; i += 8) {
-    const batch = todo.slice(i, i + 8);
+  const wallets = [...new Set(rows.map(r => r.wallet))].filter(w => !removed.has(w));
+  const cached = await Promise.all(wallets.map(ensCached));
+  const todo = wallets.filter((w, i) => { if (cached[i] !== undefined) { names[w] = cached[i]; return false; } return true; });
+  const deadline = Date.now() + 18000;
+  for (let i = 0; i < todo.length && Date.now() < deadline; i += 6) {
+    const batch = todo.slice(i, i + 6);
     const found = await Promise.all(batch.map(ensName));
     batch.forEach((w, j) => { names[w] = found[j]; });
   }
+  const pending = wallets.filter(w => !(w in names)).length;
 
   const dreamers = rows.map(r => `${r.n} · ${removed.has(r.wallet) ? '—' : (names[r.wallet] || r.wallet)}`);
   const text = [
@@ -39,5 +43,5 @@ export default async function handler(req, res) {
     ...dreamers,
   ].join('\n');
 
-  send(res, 200, { title: vote.title, text, ensFound: Object.values(names).filter(Boolean).length });
+  send(res, 200, { title: vote.title, text, ensFound: Object.values(names).filter(Boolean).length, pending });
 }

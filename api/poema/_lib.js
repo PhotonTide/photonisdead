@@ -150,14 +150,21 @@ export function cleanTitle(raw) {
 }
 
 // ── ENS names for the description (cached for a day; null when a wallet has none) ──
+const ensClient = createPublicClient({ chain: mainnet, transport: http('https://ethereum-rpc.publicnode.com', { timeout: 4000, retryCount: 1 }) });
+export async function ensCached(address) {
+  const c = await redis.get(P + 'ens:' + address);
+  return c === null || c === undefined ? undefined : (String(c) || null); // undefined = not looked up yet
+}
 export async function ensName(address) {
-  const key = P + 'ens:' + address;
-  const cached = await redis.get(key);
-  if (cached !== null && cached !== undefined) return String(cached) || null;
-  let name = null;
-  try { name = await Promise.race([client.getEnsName({ address: getAddress(address) }), new Promise(r => setTimeout(() => r(null), 6000))]); }
-  catch { name = null; }
-  await redis.set(key, name || '', { ex: 86400 });
+  const cached = await ensCached(address);
+  if (cached !== undefined) return cached;
+  let name = null, ok = true;
+  try { name = await ensClient.getEnsName({ address: getAddress(address) }); }
+  catch (e) {
+    // a revert just means "no name"; a network problem means "try again later" (don't cache)
+    ok = /revert|returned no data|ContractFunction/i.test(String(e && (e.name + e.message)));
+  }
+  if (ok) await redis.set(P + 'ens:' + address, name || '', { ex: 86400 });
   return name || null;
 }
 

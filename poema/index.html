@@ -684,11 +684,13 @@ main{position:relative;z-index:1}
   };
 
   $('describe').onclick = async () => {
-    $('desc').hidden = false; $('desc-text').value = 'looking up the dreamers\' ENS names…';
+    $('desc').hidden = false; $('desc-text').value = 'looking up the dreamers\' ENS names — this can take up to 20 seconds…'; $('desc-note').textContent = '';
     try {
       const d = await api('admin?action=description');
       $('desc-text').value = d.text;
-      $('desc-note').textContent = d.ensFound + ' dreamer' + (d.ensFound === 1 ? '' : 's') + ' shown by ENS name' + (d.title ? '' : ' · the title fills in once the vote closes');
+      $('desc-note').textContent = d.ensFound + ' dreamer' + (d.ensFound === 1 ? '' : 's') + ' shown by ENS name'
+        + (d.pending ? ' · ' + d.pending + ' still being looked up — press “description for the 1/1” again to finish' : '')
+        + (d.title ? '' : ' · the title fills in once the vote closes');
     } catch (e) { $('desc-text').value = e.message; }
   };
   $('desc-copy').onclick = async () => {
