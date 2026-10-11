@@ -39,7 +39,13 @@ main{position:relative;z-index:1}
 .top-btn:focus-visible{outline:2px solid var(--ghost);outline-offset:3px}
 .top-btn.signed{background:rgba(14,14,20,.85);color:var(--pale);border:1px solid #2a2a33}
 .top-btn.signed:hover{color:var(--ghost)}
-@media(max-width:640px){.topbar{padding:.8rem 5vw 1.3rem}.top-btn{font-size:.78rem;padding:.6rem .9rem}}
+@media(max-width:640px){
+  .topbar{padding:.8rem 4vw 1.3rem}
+  .back{font-size:.72rem;letter-spacing:.12em;white-space:nowrap}
+  .top-btn{font-size:.75rem;letter-spacing:.08em;padding:.6rem .8rem;white-space:nowrap}
+  .count{letter-spacing:.12em;line-height:1.7}
+  .page-section{padding-top:4.5rem}
+}
 
 /* ── 2 · the page ── */
 .page-section{padding:5.5rem 4vw 3rem;scroll-margin-top:0;display:flex;flex-direction:column;align-items:center}
@@ -146,7 +152,9 @@ main{position:relative;z-index:1}
 @media(max-width:640px){
   .paper{aspect-ratio:auto;padding:9% 6% 10% 7%}
   .lines{height:auto;grid-template-rows:none;grid-auto-rows:minmax(1.9rem,auto)}
-  .line{font-size:max(2.15cqw,14px)}
+  .line{font-size:16px;white-space:normal;line-height:1.35;padding:.3rem 0}
+  .line .t{white-space:normal;overflow:visible}
+  .line input{font-size:16px} /* 16px stops iPhones zooming in when you tap to write */
   .line .meta{position:static;width:auto;font-size:11px;margin-left:.5rem}
   .paper-title{font-size:max(3cqw,14px)}
   .line.blur .t{filter:blur(3px)}
@@ -411,7 +419,7 @@ main{position:relative;z-index:1}
   function updateTopButton(s) {
     const b = $('top-btn');
     if (s.signedIn) {
-      b.textContent = short(s.address) + ' · disconnect';
+      b.textContent = (matchMedia('(max-width:640px)').matches ? short(s.address) + ' · out' : short(s.address) + ' · disconnect');
       b.classList.add('signed');
       b.setAttribute('aria-label', 'signed in as ' + s.address + ' — disconnect');
     } else {
