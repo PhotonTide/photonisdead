@@ -1,4 +1,4 @@
-// GET /api/poema/description   (photontide.eth only)
+// GET /api/poema/admin?action=description   (photontide.eth only)
 // Ready-to-paste description for the 1/1 and the edition: title, the poem, and the dreamers
 // (ENS names where a wallet has one, otherwise the full address). Names go in the description only.
 import { redis, K, ADMIN, OPENING_LINE, MAX_LINES, readToken, send, onlyMethod, voteState, ensName } from './_lib.js';

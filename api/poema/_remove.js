@@ -1,4 +1,4 @@
-// POST /api/poema/remove  { n }   (photontide.eth only)
+// POST /api/poema/admin?action=remove  { n }   (photontide.eth only)
 // Emergency removal. While the poem is being written: deletes line n, frees the spot, and stops
 // that wallet writing again. Once all 47 lines exist: blanks the line ("—") so the poem stays whole.
 // The opening line (n = 1) can't be removed.

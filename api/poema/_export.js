@@ -1,4 +1,4 @@
-// GET /api/poema/export   (photontide.eth only)
+// GET /api/poema/admin?action=export   (photontide.eth only)
 // The full poem with each dreamer's wallet — for the artwork description and the edition airdrop.
 import { redis, K, ADMIN, OPENING_LINE, MAX_LINES, readToken, send, onlyMethod, voteState, hashObject } from './_lib.js';
 

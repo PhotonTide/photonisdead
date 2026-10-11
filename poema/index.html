@@ -595,7 +595,7 @@ main{position:relative;z-index:1}
           const what = s.complete ? 'The poem is finished, so the line becomes “—” and the dreamer keeps their place.'
             : 'The spot opens up for someone new.';
           if (!confirm('Remove line #' + l.n + '?\n\n“' + l.text + '”\n\n' + what + '\nThis wallet can\'t write again.')) return;
-          try { const r = await api('remove', { method: 'POST', body: JSON.stringify({ n: l.n }) }); $('admin-status').textContent = 'line #' + l.n + (r.blanked ? ' blanked' : ' removed'); load(); }
+          try { const r = await api('admin?action=remove', { method: 'POST', body: JSON.stringify({ n: l.n }) }); $('admin-status').textContent = 'line #' + l.n + (r.blanked ? ' blanked' : ' removed'); load(); }
           catch (e) { $('admin-status').textContent = e.message; }
         };
         li.appendChild(b);
@@ -636,7 +636,7 @@ main{position:relative;z-index:1}
           if (add.value.trim()) titles.push(add.value.trim());
           if (titles.length < 2) { $('admin-status').textContent = 'choose at least 2 titles'; return; }
           if (!confirm('Open the 72-hour vote with these titles?\n\n' + titles.map(t => '“' + t + '”').join('\n'))) return;
-          try { await api('shortlist', { method: 'POST', body: JSON.stringify({ titles }) }); $('admin-status').textContent = 'the vote is open'; load(); }
+          try { await api('admin?action=shortlist', { method: 'POST', body: JSON.stringify({ titles }) }); $('admin-status').textContent = 'the vote is open'; load(); }
           catch (e) { $('admin-status').textContent = e.message; }
         };
         row.append(add, go); box.appendChild(row);
@@ -655,7 +655,7 @@ main{position:relative;z-index:1}
         if (v.phase === 'closed' && v.tie && v.results[i] === best) {
           const pick = document.createElement('button'); pick.type = 'button'; pick.className = 'rm'; pick.style.color = 'var(--ember)'; pick.style.borderColor = 'rgba(196,135,58,.5)';
           pick.textContent = 'choose this';
-          pick.onclick = async () => { try { await api('decide', { method: 'POST', body: JSON.stringify({ title: t }) }); load(); } catch (e) { $('admin-status').textContent = e.message; } };
+          pick.onclick = async () => { try { await api('admin?action=decide', { method: 'POST', body: JSON.stringify({ title: t }) }); load(); } catch (e) { $('admin-status').textContent = e.message; } };
           li.appendChild(pick);
         }
         ul.appendChild(li);
@@ -675,7 +675,7 @@ main{position:relative;z-index:1}
   // Manifold airdrop format: one row per wallet, 1 edition each
   $('airdrop').onclick = async () => {
     try {
-      const data = await api('export');
+      const data = await api('admin?action=export');
       let wallets = data.airdrop || [];
       if (!$('airdrop-me').checked) wallets = wallets.filter(w => w !== session.address);
       saveFile('collective-unconscious-airdrop.csv', 'text/csv', 'address,quantity\n' + wallets.map(w => w + ',1').join('\n') + '\n');
@@ -686,7 +686,7 @@ main{position:relative;z-index:1}
   $('describe').onclick = async () => {
     $('desc').hidden = false; $('desc-text').value = 'looking up the dreamers\' ENS names…';
     try {
-      const d = await api('description');
+      const d = await api('admin?action=description');
       $('desc-text').value = d.text;
       $('desc-note').textContent = d.ensFound + ' dreamer' + (d.ensFound === 1 ? '' : 's') + ' shown by ENS name' + (d.title ? '' : ' · the title fills in once the vote closes');
     } catch (e) { $('desc-text').value = e.message; }
@@ -698,7 +698,7 @@ main{position:relative;z-index:1}
 
   $('export').onclick = async () => {
     try {
-      const data = await api('export');
+      const data = await api('admin?action=export');
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob); a.download = 'collective-unconscious.json'; a.click();
