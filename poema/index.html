@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>collective unconscious</title>
+<link rel="icon" href="/media/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/media/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#000;--near:#06060a;--deep:#0e0e14;
+  --ember:#c4873a;--ghost:#d4cfc8;--pale:#a8a29b;--dim:#1e1d1b;
+  --paper:#f4f1ea;--ink:#1d1b18;--rule:rgba(29,27,24,.09);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--void);color:var(--ghost);font-family:'Cormorant Garamond',serif;min-height:100vh;overflow-x:hidden}
+
+#bg{position:fixed;inset:0;width:100%;height:100%;opacity:.35;pointer-events:none}
+
+.wrap{position:relative;max-width:1100px;margin:0 auto;padding:3.5rem 6vw 5rem;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,440px);grid-template-areas:"head paper" "act paper";column-gap:4rem;align-items:start}
+.head{grid-area:head}.act{grid-area:act}.paper-col{grid-area:paper}
+@media(max-width:860px){.wrap{grid-template-columns:1fr;grid-template-areas:"head" "paper" "act";row-gap:2.2rem;padding-top:2.5rem}.paper-col{width:100%;max-width:560px;justify-self:center}}
+
+.back{display:inline-block;margin-bottom:2.2rem;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.2em;color:var(--pale);text-decoration:none;border-bottom:1px solid rgba(212,207,200,.2);padding-bottom:3px;transition:color .25s,border-color .25s}
+.back:hover,.back:focus-visible{color:var(--ghost);border-color:rgba(212,207,200,.5)}
+h1{font-weight:300;font-style:italic;font-size:clamp(2.4rem,5vw,4rem);line-height:1.05;margin:0 0 1.2rem;color:var(--ghost)}
+.lede{font-size:1.15rem;line-height:1.75;color:var(--pale);max-width:30rem}
+.lede + .lede{margin-top:1rem}
+.lede.first{font-style:italic;color:var(--ghost);font-size:1.3rem}
+.lede em{color:var(--ghost)}
+
+/* ── the page (artwork) ── */
+.paper-col{position:sticky;top:2rem}
+@media(max-width:860px){.paper-col{position:static}}
+.paper{container-type:inline-size;position:relative;background:var(--paper);aspect-ratio:1/1.414;width:100%;padding:7% 10%;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);overflow:hidden}
+.paper::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.5),transparent 60%),repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.012) 3px 4px);pointer-events:none}
+.paper.complete{animation:wake 2.4s ease}
+@keyframes wake{0%{filter:blur(6px) brightness(1.2)}100%{filter:none}}
+.paper-title{font-style:italic;font-size:3.2cqw;color:rgba(29,27,24,.55);text-align:center;margin-bottom:3%;letter-spacing:.06em}
+.lines{display:grid;grid-template-rows:repeat(47,1fr);height:91%}
+.line{position:relative;isolation:isolate;display:flex;align-items:center;border-bottom:1px solid var(--rule);font-style:italic;font-size:2.15cqw;color:var(--ink);white-space:nowrap;line-height:1}
+.line .t{display:block;overflow:hidden;text-overflow:ellipsis;max-width:100%;transition:filter 1.1s ease,opacity 1.1s ease}
+.line.blur .t{filter:blur(4.5px);opacity:.75;user-select:none}
+.line.empty .t{opacity:0}
+.line.yours .t{color:#7a4a12}
+.line.yours::after{content:'';position:absolute;left:-2%;right:0;top:15%;bottom:15%;background:rgba(196,135,58,.13);z-index:-1}
+.line.arrive .t{animation:arrive 1.6s ease forwards}
+@keyframes arrive{from{filter:blur(10px);opacity:0;transform:translateY(3px)}to{filter:blur(0);opacity:1;transform:none}}
+
+.counter{display:flex;justify-content:space-between;align-items:baseline;margin-top:1rem;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.14em;color:var(--pale)}
+.counter b{color:var(--ember);font-weight:500;font-size:1rem}
+.bar{height:2px;background:var(--dim);margin-top:.6rem}
+.bar i{display:block;height:100%;width:0;background:var(--ember);transition:width 1s ease}
+
+/* ── interaction ── */
+.panel{margin-top:2.5rem;border-top:1px solid var(--dim);padding-top:2rem}
+.label{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.24em;color:var(--pale);margin-bottom:.9rem}
+.last-line{font-style:italic;font-size:clamp(1.35rem,2.6vw,1.75rem);line-height:1.45;color:var(--ghost);padding-left:1.1rem;border-left:2px solid var(--ember);margin-bottom:.6rem;overflow-wrap:anywhere}
+.last-by{font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.14em;color:#8f8982;margin-bottom:2.2rem;padding-left:1.1rem}
+.btn{display:inline-flex;align-items:center;gap:.6rem;font-family:'Inconsolata',monospace;font-size:.85rem;letter-spacing:.16em;color:#000;background:var(--ember);border:none;padding:.85rem 1.4rem;cursor:pointer;transition:filter .2s;text-decoration:none}
+.btn:hover{filter:brightness(1.1)}
+.btn[disabled]{opacity:.4;cursor:default;filter:none}
+.btn.ghost{background:none;color:var(--ember);border:1px solid rgba(196,135,58,.5)}
+.wallets{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.wallets button{display:inline-flex;align-items:center;gap:.5rem;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.08em;color:var(--ghost);background:var(--deep);border:1px solid #2a2a33;padding:.6rem .9rem;cursor:pointer}
+.wallets button:hover{border-color:var(--ember)}
+.wallets img{width:18px;height:18px;border-radius:4px}
+.note{font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.06em;line-height:1.7;color:#8f8982;margin-top:1rem;max-width:30rem}
+.note a,.link{color:var(--pale);background:none;border:none;font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:0}
+.status{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.06em;line-height:1.6;color:#e07a5f;min-height:1.2em;margin-top:1rem}
+.status.ok{color:var(--pale)}
+.wallet{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.1em;color:var(--pale);margin-bottom:1.2rem}
+.wallet span{color:var(--ghost)}
+textarea{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(212,207,200,.25);color:var(--ghost);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.45rem;line-height:1.5;padding:.4rem 0 .6rem;resize:none;outline:none}
+textarea:focus{border-bottom-color:var(--ember)}
+textarea::placeholder{color:rgba(212,207,200,.3)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:.7rem 0 1.4rem;font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.1em;color:#8f8982}
+.err{color:#e07a5f;min-height:1.2em}
+.dreamer{font-weight:300;font-style:italic;font-size:2.6rem;color:var(--ember);line-height:1.1;margin:.3rem 0 1rem}
+.prose{font-size:1.12rem;line-height:1.75;color:var(--pale);margin-bottom:.8rem;max-width:30rem}
+.step{display:none}.step.on{display:block;animation:fade 1s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.rules{margin-top:3rem;display:grid;gap:.5rem;font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.06em;color:#8f8982;line-height:1.6}
+.rules div::before{content:'·  ';color:var(--ember)}
+
+/* ── moderation (photontide.eth only) ── */
+.admin{margin-top:3rem;border:1px solid rgba(196,135,58,.35);padding:1.4rem}
+.admin h2{font-family:'Inconsolata',monospace;font-weight:500;font-size:.85rem;letter-spacing:.2em;color:var(--ember);margin-bottom:1rem}
+.admin ol{list-style:none;display:grid;gap:.35rem;max-height:420px;overflow:auto;padding-right:.4rem}
+.admin li{display:grid;grid-template-columns:2.2rem 1fr auto;gap:.6rem;align-items:center;font-size:1.05rem;color:var(--ghost)}
+.admin li small{font-family:'Inconsolata',monospace;font-size:.7rem;color:#8f8982}
+.admin li .w{grid-column:2;font-family:'Inconsolata',monospace;font-size:.7rem;color:#8f8982;margin-top:-.25rem}
+.admin button.rm{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.08em;color:#e07a5f;background:none;border:1px solid rgba(224,122,95,.4);padding:.25rem .55rem;cursor:pointer}
+.admin .tools{display:flex;gap:.8rem;margin-top:1rem;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<div class="wrap">
+  <div class="head">
+    <a class="back" href="/">← back to photon tide</a>
+    <h1>collective<br>unconscious</h1>
+    <p class="lede first">Beneath every dream we have alone, there is one we all share.</p>
+    <p class="lede">Forty-seven dreamers. One poem, written a line at a time.
+    You may only read the line before yours. <em>Write, and the dream so far will come into focus.</em></p>
+  </div>
+
+  <div class="act">
+    <div class="panel">
+      <p class="label" id="last-label">the dream so far ends with —</p>
+      <p class="last-line" id="last-line">…</p>
+      <p class="last-by" id="last-by"></p>
+
+      <!-- not signed in -->
+      <div class="step" id="step-connect">
+        <button class="btn" id="connect">connect wallet to continue the dream</button>
+        <div class="wallets" id="wallet-list"></div>
+        <p class="note">You'll be asked to sign a message to prove the wallet is yours. It's free — no gas, no transaction, no approvals. One line per wallet.</p>
+        <p class="status" id="connect-status"></p>
+      </div>
+
+      <!-- signed in, hasn't written -->
+      <div class="step" id="step-write">
+        <p class="wallet">dreaming as <span id="addr"></span> · <button class="link" data-signout>disconnect</button></p>
+        <textarea id="line" rows="2" maxlength="60" placeholder="continue the dream…" aria-label="your line"></textarea>
+        <div class="row"><span class="err" id="err"></span><span id="count">0 / 60</span></div>
+        <button class="btn" id="submit" disabled>seal my line</button>
+        <p class="note">Your line becomes part of the poem forever — in the finished artwork and its on-chain description, alongside your wallet. You can't edit it after sealing.</p>
+      </div>
+
+      <!-- has written -->
+      <div class="step" id="step-done">
+        <p class="label">you are</p>
+        <p class="dreamer" id="dreamer-no"></p>
+        <p class="prose">The dream up to your line is yours to read. Lines written after yours will stay hidden from you until the dream wakes.</p>
+        <p class="prose" id="wake-note"></p>
+        <p class="note">When all 47 lines are written, the full poem is revealed to everyone, Photon Tide completes the artwork, and every dreamer receives a free edition. · <button class="link" data-signout>disconnect</button></p>
+      </div>
+
+      <!-- poem complete, visitor didn't write -->
+      <div class="step" id="step-complete">
+        <p class="prose">The dream has woken. All forty-seven lines are written — read it in full on the page.</p>
+      </div>
+    </div>
+
+    <div class="rules">
+      <div>one line per wallet · up to 60 characters</div>
+      <div>write it as it came to you</div>
+      <div>come back any time and reconnect to read your part of the dream</div>
+    </div>
+
+    <div class="admin" id="admin" hidden>
+      <h2>moderation · photontide.eth</h2>
+      <ol id="admin-list"></ol>
+      <div class="tools">
+        <button class="btn ghost" id="export">download poem + wallets</button>
+      </div>
+      <p class="status ok" id="admin-status"></p>
+    </div>
+  </div>
+
+  <div class="paper-col">
+    <div class="paper" id="paper">
+      <p class="paper-title">collective unconscious</p>
+      <div class="lines" id="lines"></div>
+    </div>
+    <div class="counter"><span><b id="c-n">·</b> / 47 dreamers</span><span id="c-state">the dream continues</span></div>
+    <div class="bar"><i id="c-bar"></i></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const MAX = 47;
+  const $ = id => document.getElementById(id);
+  const BLOCK = /(https?:\/\/|www\.|0x[a-f0-9]{6,}|[a-z0-9-]+\.(com|xyz|io|net|org|eth|app|gg|art|co|me|ly|link)\b)/i;
+  const short = a => a ? a.slice(0, 6) + '…' + a.slice(-4) : '';
+  const store = {
+    get(){ try { return JSON.parse(localStorage.getItem('poema') || 'null'); } catch { return null; } },
+    set(v){ try { v ? localStorage.setItem('poema', JSON.stringify(v)) : localStorage.removeItem('poema'); } catch {} },
+  };
+
+  let session = store.get();     // { token, address }
+  let state = null;              // last response from /api/poema/state
+  let revealed = new Set();      // line numbers already sharp on screen
+
+  async function api(path, opts = {}) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (session && session.token) headers.Authorization = 'Bearer ' + session.token;
+    const r = await fetch('/api/poema/' + path, { ...opts, headers });
+    let body = {};
+    try { body = await r.json(); } catch {}
+    if (!r.ok) throw Object.assign(new Error(body.error || 'something went wrong — try again'), { status: r.status, body });
+    return body;
+  }
+
+  /* ── the page ── */
+  const WORDS = 'the moon water door glass river hands stairs sleep light shadow voice mirror house fire salt wings static name sky hallway garden dark bones ocean bell dust rain'.split(' ');
+  function ghostText(n){            // stand-in words under the blur — never the real line
+    let s = '', seed = n * 9301 + 49297;
+    const len = 26 + (n * 37) % 28;
+    while (s.length < len) { seed = (seed * 233 + 7) % 65536; s += WORDS[seed % WORDS.length] + ' '; }
+    return s.trim();
+  }
+
+  const linesEl = $('lines');
+  for (let i = 0; i < MAX; i++) {
+    const d = document.createElement('div');
+    d.className = 'line empty';
+    d.innerHTML = '<span class="t"></span>';
+    linesEl.appendChild(d);
+  }
+
+  function paint(s, { animateUpTo = 0 } = {}) {
+    const rows = [...linesEl.children];
+    const text = {};
+    s.lines.forEach(l => { text[l.n] = l.text; });
+    text[s.last.n] = s.last.text;               // the newest line is always readable
+    rows.forEach((row, i) => {
+      const n = i + 1, t = row.querySelector('.t');
+      row.className = 'line';
+      if (n > s.count) { row.classList.add('empty'); t.textContent = ''; return; }
+      if (text[n] !== undefined) {
+        t.textContent = text[n];
+        if (animateUpTo && n <= animateUpTo && !revealed.has(n)) {
+          row.classList.add('blur');
+          setTimeout(() => row.classList.remove('blur'), n === animateUpTo ? 200 : 900 + n * 90);
+          if (n === animateUpTo) row.classList.add('arrive');
+        }
+        revealed.add(n);
+      } else {
+        t.textContent = ghostText(n);
+        row.classList.add('blur');
+      }
+      if (s.mine && n === s.mine && !s.admin) row.classList.add('yours');
+    });
+    $('c-n').textContent = s.count;
+    $('c-bar').style.width = (s.count / MAX * 100) + '%';
+    $('c-state').textContent = s.complete ? 'the dream has woken' : 'the dream continues';
+    $('paper').classList.toggle('complete', s.complete);
+  }
+
+  function showStep(id) {
+    ['step-connect', 'step-write', 'step-done', 'step-complete'].forEach(s => $(s).classList.toggle('on', s === id));
+  }
+
+  function render(s, opts) {
+    state = s;
+    paint(s, opts);
+    const mineIsLast = s.mine && s.mine === s.last.n && !s.admin;
+    $('last-label').textContent = s.complete ? 'the dream ends with —' : 'the dream so far ends with —';
+    $('last-line').textContent = '“' + s.last.text + '”';
+    $('last-by').textContent = mineIsLast ? 'your line · dreamer #' + s.last.n
+      : (s.last.n === 1 ? 'the first line · photon tide' : 'dreamer #' + s.last.n);
+
+    if (s.admin) { showStep(null); renderAdmin(s); return; }
+    $('admin').hidden = true;
+    if (s.mine) {
+      showStep('step-done');
+      $('dreamer-no').textContent = 'dreamer #' + s.mine;
+      const left = MAX - s.count;
+      $('wake-note').textContent = s.complete ? 'The dream has woken — the whole poem is now on the page.'
+        : left + ' more dreamer' + (left === 1 ? '' : 's') + ' until the dream wakes.';
+    } else if (s.complete) {
+      showStep('step-complete');
+    } else if (s.signedIn) {
+      showStep('step-write');
+      $('addr').textContent = short(s.address);
+    } else {
+      showStep('step-connect');
+    }
+  }
+
+  async function load(opts) {
+    try { render(await api('state'), opts); }
+    catch (e) { $('last-line').textContent = 'the dream is out of reach right now — try again soon'; }
+  }
+
+  /* ── wallets: EIP-6963 discovery, with window.ethereum as fallback ── */
+  const providers = [];
+  addEventListener('eip6963:announceProvider', e => {
+    const d = e.detail;
+    if (d && d.provider && !providers.some(p => p.info.uuid === d.info.uuid)) providers.push(d);
+  });
+  dispatchEvent(new Event('eip6963:requestProvider'));
+
+  function setStatus(msg, ok) { const el = $('connect-status'); el.textContent = msg || ''; el.classList.toggle('ok', !!ok); }
+
+  $('connect').onclick = () => {
+    setStatus('');
+    const list = providers.length ? providers
+      : (window.ethereum ? [{ info: { name: 'browser wallet', uuid: 'injected' }, provider: window.ethereum }] : []);
+    if (!list.length) {
+      setStatus('No wallet found in this browser. On a phone, open this page inside your wallet app\'s browser (MetaMask, Rainbow, Coinbase Wallet…). On a computer, install a wallet extension and reload.', true);
+      return;
+    }
+    if (list.length === 1) return signIn(list[0].provider);
+    const box = $('wallet-list'); box.innerHTML = '';
+    list.forEach(p => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      if (p.info.icon) { const img = document.createElement('img'); img.src = p.info.icon; img.alt = ''; b.appendChild(img); }
+      b.appendChild(document.createTextNode(p.info.name));
+      b.onclick = () => { box.innerHTML = ''; signIn(p.provider); };
+      box.appendChild(b);
+    });
+  };
+
+  const toHex = s => '0x' + [...new TextEncoder().encode(s)].map(b => b.toString(16).padStart(2, '0')).join('');
+
+  async function signIn(provider) {
+    const btn = $('connect');
+    btn.disabled = true;
+    try {
+      setStatus('connecting…', true);
+      const [account] = await provider.request({ method: 'eth_requestAccounts' });
+      if (!account) throw new Error('no account selected');
+      const address = account.toLowerCase();
+      const { message } = await api('nonce?address=' + address);
+      setStatus('check your wallet to sign — it\'s free', true);
+      const signature = await provider.request({ method: 'personal_sign', params: [toHex(message), account] });
+      const { token } = await api('verify', { method: 'POST', body: JSON.stringify({ address, signature }) });
+      session = { token, address };
+      store.set(session);
+      setStatus('');
+      await load();
+      if (!state.mine && !state.complete && !state.admin) $('line').focus();
+    } catch (e) {
+      const rejected = e && (e.code === 4001 || /reject|denied|cancel/i.test(e.message || ''));
+      setStatus(rejected ? 'signature cancelled — nothing was sent' : (e.message || 'could not connect'));
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  document.querySelectorAll('[data-signout]').forEach(b => b.onclick = () => {
+    session = null; store.set(null); revealed = new Set(); load();
+  });
+
+  /* ── writing a line ── */
+  const ta = $('line');
+  ta.addEventListener('input', () => {
+    const v = ta.value.replace(/\n/g, ' ');
+    if (v !== ta.value) ta.value = v;
+    $('count').textContent = [...v].length + ' / 60';
+    const bad = BLOCK.test(v);
+    $('err').textContent = bad ? 'links and wallet addresses can\'t be part of the dream' : '';
+    $('submit').disabled = bad || v.trim().length < 1;
+  });
+  ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); if (!$('submit').disabled) $('submit').click(); } });
+
+  $('submit').onclick = async () => {
+    const btn = $('submit');
+    btn.disabled = true; $('err').textContent = '';
+    try {
+      const { n } = await api('line', { method: 'POST', body: JSON.stringify({ text: ta.value }) });
+      ta.value = '';
+      const s = await api('state');
+      render(s, { animateUpTo: n });
+    } catch (e) {
+      $('err').textContent = e.message;
+      if (e.status === 401) { session = null; store.set(null); load(); }
+      else if (e.status === 409) load();
+      btn.disabled = false;
+    }
+  };
+
+  /* ── moderation (photontide.eth) ── */
+  function renderAdmin(s) {
+    $('admin').hidden = false;
+    const ol = $('admin-list'); ol.innerHTML = '';
+    s.lines.forEach(l => {
+      const li = document.createElement('li');
+      li.innerHTML = '<small></small><span></span>';
+      li.children[0].textContent = '#' + l.n;
+      li.children[1].textContent = l.text;
+      if (l.n > 1) {
+        const b = document.createElement('button');
+        b.className = 'rm'; b.textContent = 'remove';
+        b.onclick = async () => {
+          if (!confirm('Remove line #' + l.n + '?\n\n“' + l.text + '”\n\nThe spot opens up for someone new and this wallet can\'t write again.')) return;
+          try { await api('remove', { method: 'POST', body: JSON.stringify({ n: l.n }) }); $('admin-status').textContent = 'line #' + l.n + ' removed'; load(); }
+          catch (e) { $('admin-status').textContent = e.message; }
+        };
+        li.appendChild(b);
+      } else li.appendChild(document.createElement('span'));
+      const w = document.createElement('span'); w.className = 'w'; w.textContent = l.wallet || '';
+      li.appendChild(w);
+      ol.appendChild(li);
+    });
+  }
+  $('export').onclick = async () => {
+    try {
+      const data = await api('export');
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'collective-unconscious.json'; a.click();
+      URL.revokeObjectURL(a.href);
+    } catch (e) { $('admin-status').textContent = e.message; }
+  };
+
+  /* ── slow background spiral ── */
+  (function(){
+    const c = $('bg'), x = c.getContext('2d'); let W, H, t = 0;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function r(){ W = c.width = innerWidth; H = c.height = innerHeight; } r(); addEventListener('resize', r);
+    (function d(){
+      x.clearRect(0,0,W,H); x.save(); x.translate(W*.72, H*.55); x.rotate(t*.0015);
+      x.beginPath(); const R = Math.hypot(W,H)*.55;
+      for (let i=0;i<=700;i++){ const f=i/700, a=f*7*Math.PI*2, rr=f*R; i ? x.lineTo(Math.cos(a)*rr, Math.sin(a)*rr) : x.moveTo(0,0); }
+      x.strokeStyle='rgba(196,135,58,.09)'; x.lineWidth=.8; x.stroke(); x.restore();
+      t++; if (!still) requestAnimationFrame(d);
+    })();
+  })();
+
+  load();
+})();
+</script>
+</body>
+</html>

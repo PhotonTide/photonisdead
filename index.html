@@ -2052,6 +2052,8 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   </div>
 </div>
 
+<div id="dream-3am">it's 3am and you're still awake. <a href="/poema">so is the dream →</a></div>
+
 <footer>
   <span>© 2026 photon tide — all rights reserved</span>
   <span>exploring the unknown</span>
@@ -2998,5 +3000,191 @@ document.addEventListener('keydown',e=>{
     <div id="stars-thumbs" style="display:flex;justify-content:center;gap:.6rem;margin-top:1.5rem;flex-wrap:wrap"></div>
   </div>
 </div>
+<!-- ═══════════════════════════════════════
+     DREAM GATE — "fall asleep" + 3am door + "be still" flicker
+     Self-contained block: styles, markup and script.
+═══════════════════════════════════════ -->
+<style>
+#dream-sleep{position:fixed;inset:0;z-index:9500;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;background:#000;opacity:0;visibility:hidden;transition:opacity 3s ease,visibility 0s linear 3s}
+#dream-sleep.on{opacity:.96;visibility:visible;transition:opacity 3s ease,visibility 0s}
+#dream-sleep.waking{transition:opacity .6s ease,visibility 0s linear .6s}
+#dream-sleep canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.ds-inner{position:relative;max-width:min(680px,92vw)}
+.ds-line{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.5rem,3.6vw,2.4rem);line-height:1.45;color:var(--ghost);min-height:1.45em}
+.ds-line span{opacity:0;filter:blur(6px);transition:opacity 1.2s ease,filter 1.2s ease;display:inline-block;white-space:pre}
+.ds-line span.in{opacity:1;filter:none}
+.ds-fell{margin-top:3rem;font-family:'Inconsolata',monospace;font-size:.85rem;letter-spacing:.3em;color:var(--pale);opacity:0;transition:opacity 2s ease}
+.ds-link{display:inline-block;margin-top:1.1rem;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.3rem,2.6vw,1.7rem);color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.35);padding-bottom:3px;opacity:0;transition:opacity 2s ease,color .3s;pointer-events:none}
+.ds-link:hover,.ds-link:focus-visible{color:var(--ghost);border-color:var(--pale)}
+#dream-sleep.show-fell .ds-fell{opacity:1}
+#dream-sleep.show-link .ds-link{opacity:1;pointer-events:auto}
+.ds-wake{position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.3em;color:var(--pale);background:none;border:1px solid rgba(212,207,200,.2);padding:.6rem 1.3rem;cursor:pointer;opacity:0;transition:opacity 2s ease,color .3s,border-color .3s;pointer-events:none}
+.ds-wake:hover,.ds-wake:focus-visible{color:var(--ghost);border-color:rgba(212,207,200,.5)}
+#dream-sleep.show-link .ds-wake{opacity:1;pointer-events:auto}
+
+/* 3am door, just above the footer */
+#dream-3am{display:none;padding:1.6rem 6vw;border-top:1px solid var(--dim);text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--pale)}
+#dream-3am.on{display:block;animation:d3am 4s ease}
+#dream-3am a{color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.35);padding-bottom:2px}
+#dream-3am a:hover{color:var(--ghost)}
+@keyframes d3am{from{opacity:0}to{opacity:1}}
+</style>
+
+<div id="dream-sleep" aria-hidden="true">
+  <canvas id="ds-cv"></canvas>
+  <div class="ds-inner">
+    <p class="ds-line" id="ds-line"></p>
+    <p class="ds-fell">you fell asleep.</p>
+    <a class="ds-link" id="ds-link" href="#">continue the dream?</a>
+  </div>
+  <button class="ds-wake" id="ds-wake" type="button">wake up</button>
+</div>
+
+<script>
+(function(){
+  /* ── settings ── */
+  const q = new URLSearchParams(location.search);
+  const GATE_URL = '/poema';                                 // the hidden poem page
+  const IS_PHONE = matchMedia('(pointer:coarse)').matches;
+  const IDLE_SECONDS = q.get('sleep') ? +q.get('sleep') : (IS_PHONE ? 25 : 60);
+  // newest line of the poem, fetched from the poem's server (the opening line until anyone writes)
+  let LAST_LINE = 'i had a dream that';
+  function fetchLastLine(){
+    return fetch('/api/poema/state', {cache:'no-store'}).then(r => r.ok ? r.json() : null)
+      .then(s => { if (s && s.last && s.last.text) LAST_LINE = s.last.text; }).catch(() => {});
+  }
+  const STILL = typeof REDUCED !== 'undefined' ? REDUCED : matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const el = document.getElementById('dream-sleep');
+  const lineEl = document.getElementById('ds-line');
+  const link = document.getElementById('ds-link');
+  link.href = GATE_URL;
+
+  /* ── stillness tracking ── */
+  let last = Date.now(), stage = 0, timers = [], lx = -1, ly = -1;
+  // 0 awake · 1 falling asleep · 2 asleep (link showing)
+
+  function busy(){
+    // don't fall asleep over the intro, the viewer or a gallery
+    const g = document.getElementById('gate');
+    if (g && getComputedStyle(g).display !== 'none') return true;
+    if (document.getElementById('viewer')?.classList.contains('open')) return true;
+    return ['cell-gallery','corridor-gallery','stars-gallery'].some(id => document.getElementById(id)?.style.display === 'block');
+  }
+
+  function sleep(instant){
+    stage = 1;
+    el.classList.remove('waking','show-fell','show-link');
+    el.classList.add('on');
+    el.setAttribute('aria-hidden','false');
+    document.documentElement.style.overflow = 'hidden';
+    lineEl.innerHTML = '';
+    const words = LAST_LINE.split(' ');
+    words.forEach((w,i) => {
+      const s = document.createElement('span');
+      s.textContent = w + (i < words.length-1 ? ' ' : '');
+      lineEl.appendChild(s);
+    });
+    const spans = [...lineEl.children];
+    const startAt = instant ? 0 : 2600, step = instant ? 0 : 380;
+    spans.forEach((s,i) => timers.push(setTimeout(() => s.classList.add('in'), startAt + i*step)));
+    const lineDone = startAt + spans.length*step;
+    timers.push(setTimeout(() => el.classList.add('show-fell'), lineDone + (instant ? 0 : 1600)));
+    timers.push(setTimeout(() => { el.classList.add('show-link'); stage = 2; }, lineDone + (instant ? 0 : 3400)));
+    spin();
+  }
+
+  function wake(){
+    timers.forEach(clearTimeout); timers = [];
+    if (stage === 0) return;
+    stage = 0;
+    el.classList.add('waking');
+    el.classList.remove('on','show-fell','show-link');
+    el.setAttribute('aria-hidden','true');
+    document.documentElement.style.overflow = '';
+  }
+
+  function activity(e){
+    // once asleep, you stay in the dream — only "wake up" (or Esc) brings you back
+    if (stage) return;
+    if (e.type === 'mousemove') {
+      // ignore tiny jitters
+      if (Math.abs(e.clientX - lx) < 3 && Math.abs(e.clientY - ly) < 3) return;
+      lx = e.clientX; ly = e.clientY;
+    }
+    last = Date.now();
+  }
+  document.getElementById('ds-wake').addEventListener('click', () => { last = Date.now(); wake(); });
+  addEventListener('keydown', e => { if (stage && e.key === 'Escape') { last = Date.now(); wake(); } });
+  ['mousemove','mousedown','keydown','wheel','touchstart','scroll'].forEach(t =>
+    addEventListener(t, activity, {passive:true, capture:true}));
+
+  setInterval(() => {
+    if (stage || document.hidden || busy()) return;
+    const idle = Date.now() - last;
+    if (idle >= (IDLE_SECONDS-5)*1000 && idle < (IDLE_SECONDS-4)*1000) fetchLastLine();
+    if (idle >= IDLE_SECONDS*1000) sleep(false);
+  }, 1000);
+
+  // coming back to a tab left open: it has already fallen asleep
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !stage && !busy() && Date.now() - last >= IDLE_SECONDS*1000) fetchLastLine().then(() => sleep(true));
+  });
+  fetchLastLine();
+
+  /* ── slow spiral behind the sleep screen ── */
+  const cv = document.getElementById('ds-cv'), cx = cv.getContext('2d');
+  let rot = 0, spinning = false;
+  function spin(){
+    if (spinning) return; spinning = true;
+    (function frame(){
+      if (!stage) { spinning = false; return; }
+      const W = cv.width = innerWidth, H = cv.height = innerHeight;
+      cx.clearRect(0,0,W,H); cx.save(); cx.translate(W/2,H/2); cx.rotate(rot);
+      cx.beginPath(); const R = Math.hypot(W,H)*.6;
+      for (let i=0;i<=900;i++){ const f=i/900, a=f*9*Math.PI*2, r=f*R; i?cx.lineTo(Math.cos(a)*r,Math.sin(a)*r):cx.moveTo(0,0); }
+      cx.strokeStyle='rgba(196,135,58,.16)'; cx.lineWidth=.8; cx.stroke(); cx.restore();
+      if (!STILL) rot += .0012;
+      requestAnimationFrame(frame);
+    })();
+  }
+
+  /* ── 3am door ── */
+  const now = new Date(), hour = q.get('hour') !== null ? +q.get('hour') : now.getHours();
+  const min = q.get('hour') !== null ? 0 : now.getMinutes();
+  const door = document.getElementById('dream-3am');
+  if (door) {
+    door.querySelector('a').href = GATE_URL;
+    if (hour === 3 && min <= 33) door.classList.add('on');
+  }
+
+  /* ── "be still" flicker in the hero title ── */
+  const hero = document.querySelector('.hero-name');
+  const CHARS = 'abcdefghijklmnopqrstuvwxyz·∞○◌∅';
+  function scrambleTo(target, frames, done){
+    let f = 0;
+    const len = Math.max(target.length, hero.textContent.length);
+    const id = setInterval(() => {
+      f++;
+      let s = '';
+      for (let i=0;i<len;i++){
+        const settle = f >= frames - (len - i) * .3;
+        s += (target[i] === ' ') ? ' ' : (settle && i < target.length ? target[i] : CHARS[Math.random()*CHARS.length|0]);
+      }
+      hero.textContent = f >= frames ? target : s.slice(0, Math.max(target.length, 1));
+      if (f >= frames) { clearInterval(id); done && done(); }
+    }, 55);
+  }
+  function flicker(){
+    const r = hero.getBoundingClientRect();
+    const visible = r.bottom > 0 && r.top < innerHeight && !document.hidden && !stage;
+    if (visible && hero.textContent === 'photon tide' && !STILL) {
+      scrambleTo('be still', 7, () => setTimeout(() => scrambleTo('photon tide', 8), 650));
+    }
+    setTimeout(flicker, 28000 + Math.random()*20000);
+  }
+  if (hero) setTimeout(flicker, 15000);
+})();
+</script>
 </body>
 </html>
