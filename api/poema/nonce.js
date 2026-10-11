@@ -10,6 +10,7 @@ export default async function handler(req, res) {
   if (!address) return send(res, 400, { error: 'invalid wallet address' });
 
   const nonce = newNonce();
-  await redis.set(K.nonce(address), nonce, { ex: 600 });
-  send(res, 200, { nonce, message: signInMessage(address, nonce) });
+  const message = signInMessage(req, address, nonce);
+  await redis.set(K.nonce(address), message, { ex: 600 }); // remember the exact message we asked them to sign
+  send(res, 200, { nonce, message });
 }

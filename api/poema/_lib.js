@@ -4,6 +4,7 @@ import { Redis } from '@upstash/redis';
 import { createHmac, createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { createPublicClient, http, getAddress, isAddress } from 'viem';
 import { mainnet } from 'viem/chains';
+import { createSiweMessage } from 'viem/siwe';
 
 export const MAX_LINES = 47;
 export const MAX_CHARS = 60;
@@ -31,9 +32,24 @@ export const K = {
   rate: (bucket, ip) => P + 'rate:' + bucket + ':' + ip,
 };
 
-// ── sign-in message (the browser builds exactly the same text) ──
-export const signInMessage = (address, nonce) =>
-  `photonisdead.com/poema\n\nI am entering the collective unconscious.\n\nwallet: ${address}\nnonce: ${nonce}`;
+// ── sign-in message: standard Sign-In with Ethereum (EIP-4361) ──
+// Wallets show it as a "Sign-in request" and check that the site asking matches the domain in the message.
+// It contains no transaction and grants no permissions.
+export function signInMessage(req, address, nonce) {
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || 'photonisdead.com').split(',')[0].trim();
+  const now = new Date();
+  return createSiweMessage({
+    domain: host,
+    address: getAddress(address),
+    statement: 'I am entering the collective unconscious. This only proves you own this wallet — no transaction, no approvals, nothing is spent.',
+    uri: `https://${host}/poema`,
+    version: '1',
+    chainId: 1,
+    nonce,
+    issuedAt: now,
+    expirationTime: new Date(now.getTime() + 10 * 60 * 1000),
+  });
+}
 
 export const normAddress = a => (typeof a === 'string' && isAddress(a) ? a.toLowerCase() : null);
 export const newNonce = () => randomBytes(12).toString('hex');
