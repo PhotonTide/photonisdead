@@ -2993,7 +2993,7 @@ const unbFile = (id, w) => 'media/unbreakable/' + String(id).padStart(2, '0') + 
 // large view: Transient's image service (animated WebP), loaded only when a piece is opened.
 // warbrand's large version is hosted here; the local thumbnail always shows first as a fallback.
 const unbLarge = (id, cid) => id === 1 ? unbFile(1, 600)
-  : 'https://img.transient.xyz/?n=-1&output=webp&w=720&url=' + encodeURIComponent('https://ipfs.transientusercontent.xyz/ipfs/' + cid + '/media') + '&we=';
+  : 'https://img.transient.xyz/?n=-1&output=webp&w=600&q=60&url=' + encodeURIComponent('https://ipfs.transientusercontent.xyz/ipfs/' + cid + '/media') + '&we=';
 let unbIdx = -1;   // -1 = grid view
 
 function openUnbreakable(){
