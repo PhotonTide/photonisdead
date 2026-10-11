@@ -1,4 +1,4 @@
-// POST /api/poema/decide  { title }   (photontide.eth only)
+// POST /api/poema/admin?action=decide  { title }   (photontide.eth only)
 // Sets the final title — used to break a tie when the vote closes. An empty title clears it.
 import { redis, K, ADMIN, readToken, cleanTitle, send, onlyMethod } from './_lib.js';
 

@@ -1,0 +1,5 @@
+{
+  "functions": {
+    "api/poema/admin.js": { "maxDuration": 30 }
+  }
+}

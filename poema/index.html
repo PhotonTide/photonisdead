@@ -143,6 +143,11 @@ main{position:relative;z-index:1}
 #admin-list li .w{grid-column:2/4;font-family:'Inconsolata',monospace;font-size:.7rem;color:#8f8982}
 .admin .rm{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.08em;color:#e07a5f;background:none;border:1px solid rgba(224,122,95,.4);padding:.25rem .55rem;cursor:pointer}
 .admin .tools{display:flex;gap:.8rem;margin-top:1.2rem;flex-wrap:wrap;align-items:center;font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--pale)}
+.admin .tools button:not(.link){font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.12em;color:var(--ember);background:none;border:1px solid rgba(196,135,58,.5);padding:.55rem 1rem;cursor:pointer}
+.admin .inc{display:inline-flex;gap:.4rem;align-items:center;cursor:pointer}
+.admin .inc input{accent-color:var(--ember)}
+.desc{margin-top:1.4rem}
+.desc textarea{width:100%;background:#07070b;border:1px solid #2a2a33;color:var(--ghost);font-family:'Inconsolata',monospace;font-size:.8rem;line-height:1.6;padding:.9rem;resize:vertical}
 .admin .tools #export{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.12em;color:var(--ember);background:none;border:1px solid rgba(196,135,58,.5);padding:.55rem 1rem;cursor:pointer}
 
 /* ── 4 · small print ── */
@@ -222,8 +227,16 @@ main{position:relative;z-index:1}
     <ol id="admin-list"></ol>
     <div class="tools">
       <button id="export" type="button">download poem + wallets</button>
+      <button id="airdrop" type="button">download airdrop list (csv)</button>
+      <label class="inc"><input type="checkbox" id="airdrop-me"> include my wallet</label>
+      <button id="describe" type="button">description for the 1/1</button>
       <button class="link" type="button" data-signout>disconnect</button>
       <span id="admin-status"></span>
+    </div>
+    <div class="desc" id="desc" hidden>
+      <p class="tt-label">description — names go here, not on the artwork · paste into Manifold</p>
+      <textarea id="desc-text" rows="14" readonly aria-label="description"></textarea>
+      <div class="tools"><button type="button" id="desc-copy">copy</button><span id="desc-note"></span></div>
     </div>
   </section>
 
@@ -582,7 +595,7 @@ main{position:relative;z-index:1}
           const what = s.complete ? 'The poem is finished, so the line becomes “—” and the dreamer keeps their place.'
             : 'The spot opens up for someone new.';
           if (!confirm('Remove line #' + l.n + '?\n\n“' + l.text + '”\n\n' + what + '\nThis wallet can\'t write again.')) return;
-          try { const r = await api('remove', { method: 'POST', body: JSON.stringify({ n: l.n }) }); $('admin-status').textContent = 'line #' + l.n + (r.blanked ? ' blanked' : ' removed'); load(); }
+          try { const r = await api('admin?action=remove', { method: 'POST', body: JSON.stringify({ n: l.n }) }); $('admin-status').textContent = 'line #' + l.n + (r.blanked ? ' blanked' : ' removed'); load(); }
           catch (e) { $('admin-status').textContent = e.message; }
         };
         li.appendChild(b);
@@ -623,7 +636,7 @@ main{position:relative;z-index:1}
           if (add.value.trim()) titles.push(add.value.trim());
           if (titles.length < 2) { $('admin-status').textContent = 'choose at least 2 titles'; return; }
           if (!confirm('Open the 72-hour vote with these titles?\n\n' + titles.map(t => '“' + t + '”').join('\n'))) return;
-          try { await api('shortlist', { method: 'POST', body: JSON.stringify({ titles }) }); $('admin-status').textContent = 'the vote is open'; load(); }
+          try { await api('admin?action=shortlist', { method: 'POST', body: JSON.stringify({ titles }) }); $('admin-status').textContent = 'the vote is open'; load(); }
           catch (e) { $('admin-status').textContent = e.message; }
         };
         row.append(add, go); box.appendChild(row);
@@ -642,7 +655,7 @@ main{position:relative;z-index:1}
         if (v.phase === 'closed' && v.tie && v.results[i] === best) {
           const pick = document.createElement('button'); pick.type = 'button'; pick.className = 'rm'; pick.style.color = 'var(--ember)'; pick.style.borderColor = 'rgba(196,135,58,.5)';
           pick.textContent = 'choose this';
-          pick.onclick = async () => { try { await api('decide', { method: 'POST', body: JSON.stringify({ title: t }) }); load(); } catch (e) { $('admin-status').textContent = e.message; } };
+          pick.onclick = async () => { try { await api('admin?action=decide', { method: 'POST', body: JSON.stringify({ title: t }) }); load(); } catch (e) { $('admin-status').textContent = e.message; } };
           li.appendChild(pick);
         }
         ul.appendChild(li);
@@ -652,9 +665,42 @@ main{position:relative;z-index:1}
     }
   }
 
+  function saveFile(name, type, content) {
+    const blob = new Blob([content], { type });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  // Manifold airdrop format: one row per wallet, 1 edition each
+  $('airdrop').onclick = async () => {
+    try {
+      const data = await api('admin?action=export');
+      let wallets = data.airdrop || [];
+      if (!$('airdrop-me').checked) wallets = wallets.filter(w => w !== session.address);
+      saveFile('collective-unconscious-airdrop.csv', 'text/csv', 'address,quantity\n' + wallets.map(w => w + ',1').join('\n') + '\n');
+      $('admin-status').textContent = wallets.length + ' wallets in the airdrop list' + (data.removed && data.removed.length ? ' · ' + data.removed.length + ' removed wallet(s) left out' : '');
+    } catch (e) { $('admin-status').textContent = e.message; }
+  };
+
+  $('describe').onclick = async () => {
+    $('desc').hidden = false; $('desc-text').value = 'looking up the dreamers\' ENS names — this can take up to 20 seconds…'; $('desc-note').textContent = '';
+    try {
+      const d = await api('admin?action=description');
+      $('desc-text').value = d.text;
+      $('desc-note').textContent = d.ensFound + ' dreamer' + (d.ensFound === 1 ? '' : 's') + ' shown by ENS name'
+        + (d.pending ? ' · ' + d.pending + ' still being looked up — press “description for the 1/1” again to finish' : '')
+        + (d.title ? '' : ' · the title fills in once the vote closes');
+    } catch (e) { $('desc-text').value = e.message; }
+  };
+  $('desc-copy').onclick = async () => {
+    try { await navigator.clipboard.writeText($('desc-text').value); $('desc-note').textContent = 'copied'; }
+    catch { $('desc-text').select(); $('desc-note').textContent = 'press ⌘C / Ctrl+C to copy'; }
+  };
+
   $('export').onclick = async () => {
     try {
-      const data = await api('export');
+      const data = await api('admin?action=export');
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob); a.download = 'collective-unconscious.json'; a.click();

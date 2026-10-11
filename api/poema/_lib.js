@@ -2,7 +2,7 @@
 // Files starting with "_" inside /api are not exposed as endpoints by Vercel.
 import { Redis } from '@upstash/redis';
 import { createHmac, createHash, randomBytes, timingSafeEqual } from 'node:crypto';
-import { createPublicClient, http, getAddress, isAddress } from 'viem';
+import { createPublicClient, http, fallback, getAddress, isAddress, verifyMessage, ContractFunctionRevertedError } from 'viem';
 import { mainnet } from 'viem/chains';
 import { createSiweMessage } from 'viem/siwe';
 
@@ -85,9 +85,18 @@ export function readToken(req) {
   return address;
 }
 
-// Works for normal wallets and smart-contract wallets (ERC-1271 / ERC-6492).
-const client = createPublicClient({ chain: mainnet, transport: http() });
+// Public Ethereum connection (PublicNode first — it resolves ENS reliably — then viem's default).
+const client = createPublicClient({
+  chain: mainnet,
+  transport: fallback([http('https://ethereum-rpc.publicnode.com', { timeout: 8000 }), http(undefined, { timeout: 8000 })]),
+});
+
+// Normal wallets are checked locally (no network needed); smart-contract wallets
+// (ERC-1271 / ERC-6492) fall back to an on-chain check.
 export async function verifySignature(address, message, signature) {
+  try {
+    if (await verifyMessage({ address: getAddress(address), message, signature })) return true;
+  } catch { /* not a plain wallet signature — try the on-chain check */ }
   try {
     return await client.verifyMessage({ address: getAddress(address), message, signature });
   } catch {
@@ -137,6 +146,25 @@ export function cleanTitle(raw) {
   if ([...t].length > MAX_TITLE) return { error: `keep it to ${MAX_TITLE} characters` };
   if (BLOCKED.test(t)) return { error: "links and wallet addresses can't be a title" };
   return { title: t };
+}
+
+// ── ENS names for the description (cached for a day; null when a wallet has none) ──
+const ensClient = createPublicClient({ chain: mainnet, transport: http('https://ethereum-rpc.publicnode.com', { timeout: 4000, retryCount: 1 }) });
+export async function ensCached(address) {
+  const c = await redis.get(P + 'ens:' + address);
+  return c === null || c === undefined ? undefined : (String(c) || null); // undefined = not looked up yet
+}
+export async function ensName(address) {
+  const cached = await ensCached(address);
+  if (cached !== undefined) return cached;
+  let name = null, ok = true;
+  try { name = await ensClient.getEnsName({ address: getAddress(address) }); }
+  catch (e) {
+    // a revert just means "no name"; anything else (network trouble) means "try again later" — don't remember it
+    ok = !!(e && typeof e.walk === 'function' && e.walk(x => x instanceof ContractFunctionRevertedError));
+  }
+  if (ok) await redis.set(P + 'ens:' + address, name || '', { ex: 86400 });
+  return name || null;
 }
 
 // ── small helpers ──

@@ -1,4 +1,4 @@
-// POST /api/poema/shortlist  { titles: [...] }   (photontide.eth only)
+// POST /api/poema/admin?action=shortlist  { titles: [...] }   (photontide.eth only)
 // Puts 2–8 titles on the ballot and opens the 72-hour vote. Can be changed until the first vote is cast.
 import { redis, K, ADMIN, MAX_LINES, VOTE_MS, readToken, cleanTitle, send, onlyMethod } from './_lib.js';
 
