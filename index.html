@@ -739,7 +739,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 
 <div class="wcard" data-s="sold">
       <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="media/witness.jpg" alt="Witness" loading="lazy">
+        <video data-src="media/witness.mp4" poster="media/witness.jpg" muted loop playsinline preload="none" aria-label="Witness" style="width:100%;height:100%;object-fit:cover;display:block"></video>
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
@@ -1154,7 +1154,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 
 <div class="wcard" data-s="available">
       <a href="https://foundation.app/mint/eth/0xF5803Ec48a495547eF2CBE5861fA0d7C64a22Bab/4" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <video src="media/1422e9a0d0.mp4" autoplay muted loop playsinline style="width:100%;display:block;object-fit:cover"></video>
+        <video data-src="media/1422e9a0d0.mp4" muted loop playsinline preload="none" aria-label="Depersonalization" style="width:100%;height:100%;display:block;object-fit:cover"></video>
         <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">available</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
       </div>
@@ -2313,6 +2313,20 @@ document.querySelectorAll('.tgl-btn').forEach(btn=>{
   if(document.fonts) document.fonts.ready.then(setNavH);
 })();
 
+/* ═══ GRID VIDEOS: load when near the screen, pause when off it ═══ */
+(function(){
+  const vids=document.querySelectorAll('#wgrid video[data-src]');
+  if(!('IntersectionObserver' in window)){vids.forEach(v=>{v.src=v.dataset.src;v.autoplay=true});return}
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{
+    const v=e.target;
+    if(e.isIntersecting){
+      if(!v.src){v.src=v.dataset.src}
+      if(!REDUCED) v.play().catch(()=>{});
+    } else v.pause();
+  }),{rootMargin:'300px 0px'});
+  vids.forEach(v=>io.observe(v));
+})();
+
 /* ═══ WORK COUNT ═══ */
 document.querySelectorAll('.works-count').forEach(el=>{
   el.textContent=document.querySelectorAll('#wgrid .wcard').length;
@@ -2584,7 +2598,8 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
         // Show video in viewer
         vImg.style.display = 'none';
         vVideo.style.display = 'block';
-        vVideo.src = vid.src;
+        vVideo.src = vid.src || vid.dataset.src;
+        vVideo.poster = vid.poster || '';
         vVideo.style.opacity = '1';
         vVideo.play();
       } else {
