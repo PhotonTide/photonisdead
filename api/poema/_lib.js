@@ -139,6 +139,18 @@ export function cleanTitle(raw) {
   return { title: t };
 }
 
+// ── ENS names for the description (cached for a day; null when a wallet has none) ──
+export async function ensName(address) {
+  const key = P + 'ens:' + address;
+  const cached = await redis.get(key);
+  if (cached !== null && cached !== undefined) return String(cached) || null;
+  let name = null;
+  try { name = await Promise.race([client.getEnsName({ address: getAddress(address) }), new Promise(r => setTimeout(() => r(null), 6000))]); }
+  catch { name = null; }
+  await redis.set(key, name || '', { ex: 86400 });
+  return name || null;
+}
+
 // ── small helpers ──
 export function cleanLine(raw) {
   if (typeof raw !== 'string') return { error: 'write a line first' };

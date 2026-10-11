@@ -6,7 +6,10 @@ export default async function handler(req, res) {
   if (!onlyMethod(req, res, 'GET')) return;
   if (readToken(req) !== ADMIN) return send(res, 403, { error: 'only photontide.eth can export the poem' });
 
-  const [lines, addrs, proposals] = await Promise.all([redis.lrange(K.lines, 0, -1), redis.lrange(K.addrs, 0, -1), redis.hgetall(K.proposals)]);
+  const [lines, addrs, proposals, banned] = await Promise.all([
+    redis.lrange(K.lines, 0, -1), redis.lrange(K.addrs, 0, -1), redis.hgetall(K.proposals), redis.smembers(K.banned),
+  ]);
+  const removed = new Set((banned || []).map(String));
   const rows = lines.length
     ? lines.map((t, i) => ({ n: i + 1, text: String(t), wallet: addrs[i] }))
     : [{ n: 1, text: OPENING_LINE, wallet: ADMIN }];
@@ -20,5 +23,8 @@ export default async function handler(req, res) {
     poem: rows.map(r => r.text).join('\n'),
     dreamers: rows,
     wallets: [...new Set(rows.map(r => r.wallet))],
+    // everyone who should receive an edition: line owners, minus wallets whose line was removed
+    airdrop: [...new Set(rows.map(r => r.wallet))].filter(w => w && !removed.has(w)),
+    removed: [...removed],
   });
 }

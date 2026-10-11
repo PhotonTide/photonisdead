@@ -3045,6 +3045,7 @@ document.addEventListener('keydown',e=>{
   /* ── settings ── */
   const q = new URLSearchParams(location.search);
   const GATE_URL = '/poema';                                 // the hidden poem page
+  const SLEEP_ON = q.get('sleep') !== null || false;         // the fall-asleep screen: off until launch (?sleep=N previews it)
   const IS_PHONE = matchMedia('(pointer:coarse)').matches;
   const IDLE_SECONDS = q.get('sleep') ? +q.get('sleep') : (IS_PHONE ? 25 : 60);
   // newest line of the poem, fetched from the poem's server (the opening line until anyone writes)
@@ -3120,7 +3121,7 @@ document.addEventListener('keydown',e=>{
     addEventListener(t, activity, {passive:true, capture:true}));
 
   setInterval(() => {
-    if (stage || document.hidden || busy()) return;
+    if (!SLEEP_ON || stage || document.hidden || busy()) return;
     const idle = Date.now() - last;
     if (idle >= (IDLE_SECONDS-5)*1000 && idle < (IDLE_SECONDS-4)*1000) fetchLastLine();
     if (idle >= IDLE_SECONDS*1000) sleep(false);
@@ -3128,9 +3129,9 @@ document.addEventListener('keydown',e=>{
 
   // coming back to a tab left open: it has already fallen asleep
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && !stage && !busy() && Date.now() - last >= IDLE_SECONDS*1000) fetchLastLine().then(() => sleep(true));
+    if (SLEEP_ON && !document.hidden && !stage && !busy() && Date.now() - last >= IDLE_SECONDS*1000) fetchLastLine().then(() => sleep(true));
   });
-  fetchLastLine();
+  if (SLEEP_ON) fetchLastLine();
 
   /* ── slow spiral behind the sleep screen ── */
   const cv = document.getElementById('ds-cv'), cx = cv.getContext('2d');
