@@ -505,6 +505,9 @@ footer span{font-size:.75rem;letter-spacing:.16em;color:#8f8982}
 .wcollect{display:block;padding:.75rem 1rem .9rem;border-top:1px solid rgba(255,255,255,.06);font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.16em;color:var(--ember);text-decoration:none;transition:background .25s,color .25s}
 .wcollect:hover,.wcollect:focus-visible{background:rgba(196,135,58,.1);color:var(--ghost)}
 
+.wcollab{color:var(--pale)}
+.wcollab:hover,.wcollab:focus-visible{color:var(--ghost)}
+
 /* pills get a solid dark backing so they stay readable over bright artwork */
 .wpill,.wplat,.wimg > div[style*="Inconsolata"]{background:rgba(0,0,0,.78)!important;backdrop-filter:blur(4px)}
 
@@ -736,7 +739,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 
 <div class="wcard" data-s="sold">
       <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://arweave.net/AyRgLmfmydnbJMF8Fs80D18icfId-lb3Wa3AnvuDC_0" alt="Witness" loading="lazy">
+        <img src="media/witness.jpg" alt="Witness" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
@@ -749,7 +752,8 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
-      <div class="winfo"><p class="wtitle">Chasing Rabbits</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 1.429 Ξ · 12 bids</p><p class="wprice">Manifold</p></div></a>
+      <div class="winfo"><p class="wtitle">Chasing Rabbits</p><p class="wsub">2026 · Spirals (2026) · w/ mendezmendez · 1/1 · 1.429 Ξ · 12 bids</p><p class="wprice">Manifold</p></div></a>
+      <a class="wcollect wcollab" href="https://x.com/mendezmendez" target="_blank" rel="noopener">w/ mendezmendez on X ↗</a>
     </div>
 
 <div class="wcard" data-s="available">
@@ -795,7 +799,8 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
-      <div class="winfo"><p class="wtitle">No Way Back</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 0.537 Ξ · 2 bids</p><p class="wprice">Manifold</p></div></a>
+      <div class="winfo"><p class="wtitle">No Way Back</p><p class="wsub">2026 · Spirals (2026) · w/ Hazed · 1/1 · 0.537 Ξ · 2 bids</p><p class="wprice">Manifold</p></div></a>
+      <a class="wcollect wcollab" href="https://x.com/hazedlockdown" target="_blank" rel="noopener">w/ Hazed on X ↗</a>
     </div>
 
 <div class="wcard" data-s="available">
@@ -2595,8 +2600,8 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
       vTitle.textContent = title ? title.textContent : '';
       vSub.textContent   = sub ? sub.textContent : '';
       const platName = plat ? plat.textContent : 'platform';
-      vLink.textContent  = card.querySelector('.wcollect') ? 'collect →' : `view on ${platName.toLowerCase()} →`;
-      const collect = card.querySelector('.wcollect');
+      vLink.textContent  = card.querySelector('.wcollect:not(.wcollab)') ? 'collect →' : `view on ${platName.toLowerCase()} →`;
+      const collect = card.querySelector('.wcollect:not(.wcollab)');
       const url = collect ? collect.href : (link ? (link.dataset.url || '') : '');
       vLink.href = url || '#';
       vLink.style.display = url ? '' : 'none';
