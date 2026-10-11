@@ -1868,6 +1868,51 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
       </div>
     </div>
     <div class="exh-card reveal">
+      <div class="exh-img" style="background:radial-gradient(circle at 50% 40%,#1a0400,#000)"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2025</span><span class="exh-tag k-res">billboard</span></div>
+        <p class="exh-name">NFT NYC · Times Square</p>
+        <p class="exh-venue"><strong>OneHub billboard · 1540 Broadway</strong><br>Times Square, New York · Jun 2025</p>
+        <p class="exh-piece">on screen during NFT NYC 2025</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="media/56603b56f8.avif" alt="Digital Decay — Offline by SuperRare" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2025</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">Digital Decadence: The Art of Falling Apart</p>
+        <p class="exh-venue"><strong>Offline by SuperRare</strong><br>243 Bowery, New York · Apr 3–24, 2025</p>
+        <p class="exh-piece">Digital Decay · w/ FVCKRENDER, Sasha Stiles, Omentejovem &amp; others</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="media/7da16a04ab.jpg" alt="The Cell — Foundry LA" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2023</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">Foundry</p>
+        <p class="exh-venue"><strong>Foundry by PROOF</strong><br>Arts District, Los Angeles · Oct 2023</p>
+        <p class="exh-piece">The Cell</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img" style="background:radial-gradient(circle at 50% 40%,#1a0400,#000)"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2023</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">Trippy Labs × Korea Blockchain Week</p>
+        <p class="exh-venue"><strong>Trippy Labs</strong><br>Seoul, South Korea · Sep 2023</p>
+        <p class="exh-piece">digital art exhibition during Korea Blockchain Week</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="https://aotm.gallery/wp-content/uploads/2023/01/A-Lonely-Mans-Last-Day-600x600-c-default.jpeg" alt="A Lonely Mans Last Day — NABU Paris" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2023</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">#NABU Crypto Art Exhibition</p>
+        <p class="exh-venue"><strong>Les Salles Royales · Église de la Madeleine</strong><br>75008 Paris · Jan 24–31, 2023 · by Nabulines</p>
+        <p class="exh-piece">A Lonely Mans Last Day</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
       <div class="exh-img"><img src="https://aotm.gallery/wp-content/uploads/2025/09/dont-go-600x600-c-default.jpeg" alt="BOUQUET" loading="lazy"></div>
       <div class="exh-body">
         <div class="exh-yr-row"><span class="exh-yr">2025</span><span class="exh-tag k-group">group</span></div>
@@ -3395,16 +3440,24 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     { id:'milan', name:'Milan', country:'Italy', ll:[9.19,45.4642], shows:[
       { yr:'2024', tag:'solo', name:'Rhythms of the Subconscious', venue:'<strong>NINFA Labs</strong><br>Milan, Italy · Jun 20, 2024', note:'debut solo exhibition in Italy · 20 digital artworks', imgs:['media/da174faa1f.jpg'] } ] },
     { id:'tokyo', name:'Tokyo', country:'Japan', ll:[139.6917,35.6895], shows:[] },
+    { id:'seoul', name:'Seoul', country:'South Korea', ll:[126.978,37.5665], shows:[
+      { yr:'2023', tag:'group', name:'Trippy Labs × Korea Blockchain Week', venue:'<strong>Trippy Labs</strong><br>Seoul, South Korea · Sep 2023', note:'digital art exhibition during Korea Blockchain Week', imgs:[] } ] },
+    { id:'paris', name:'Paris', country:'France', ll:[2.3245,48.87], shows:[
+      { yr:'2023', tag:'group', name:'#NABU Crypto Art Exhibition', venue:'<strong>Les Salles Royales · beneath the Église de la Madeleine</strong><br>75008 Paris · Jan 24–31, 2023 · by Nabulines', note:'A Lonely Mans Last Day', imgs:['https://aotm.gallery/wp-content/uploads/2023/01/A-Lonely-Mans-Last-Day-600x600-c-default.jpeg'] } ] },
+    { id:'los-angeles', name:'Los Angeles', country:'USA', ll:[-118.2437,34.0522], shows:[
+      { yr:'2023', tag:'group', name:'Foundry', venue:'<strong>Foundry by PROOF</strong><br>Arts District, Los Angeles · Oct 2023', note:'The Cell', imgs:['media/7da16a04ab.jpg'] } ] },
     { id:'mexico-city', name:'Mexico City', country:'Mexico', ll:[-99.1332,19.4326], shows:[
       { yr:'2025', tag:'group', name:'Un Sueño Digital', venue:'<strong>30 Campos Elíseos &amp; Wait &amp; Hope Foundation</strong><br>Ciudad de México · Dec 13–16, 2025', note:'digital art exhibition · Mexico City', imgs:['media/a9f99fd556.jpg'] } ] },
     { id:'new-york', name:'New York', country:'USA', ll:[-74.006,40.7128], shows:[
+      { yr:'2025', tag:'billboard', name:'NFT NYC · Times Square', venue:'<strong>OneHub billboard · 1540 Broadway</strong><br>Times Square, New York · Jun 2025', note:'on screen during NFT NYC 2025', imgs:[] },
+      { yr:'2025', tag:'group', name:'Digital Decadence: The Art of Falling Apart', venue:'<strong>Offline by SuperRare</strong><br>243 Bowery, New York · Apr 3–24, 2025', note:'Digital Decay · w/ FVCKRENDER, Sasha Stiles, Omentejovem &amp; others', imgs:['media/56603b56f8.avif'] },
       { yr:'2024', tag:'auction', name:'Digital Art Day Sale', venue:'<strong>Sotheby\'s</strong><br>New York · Aug 15–22, 2024', note:'One Last Dance · Lot 26 · w/ XCOPY, Pak, Refik Anadol', imgs:['https://i2c.seadn.io/ethereum/0x67f8de3a7ab9ce266e44a17b0467860634865171/7e4aa0d97a131c8a997686c585ffbeaa.jpeg?w=600'] },
       { yr:'2023', tag:'solo', name:'CCO Moment: Pho\'s Spiral &amp; Derivatives', venue:'<strong>JOYN</strong><br>88 Clinton St, New York, NY · Apr 13', note:'the spiral &amp; derivatives · w/ Latent Dreams AI Art Show', imgs:['https://aotm.gallery/wp-content/uploads/2023/01/The-Spiral-1000x1000-c-default.png'] },
       { yr:'2023', tag:'group', name:'NFT NYC', venue:'<strong>NFT NYC Conference</strong><br>New York, USA', note:'Psychedelic Hues (alone, again)', imgs:['https://aotm.gallery/wp-content/uploads/2023/03/Psychedelc-Hues-scaled-1000x1000-c-default.jpg'] } ] },
     { id:'miami', name:'Miami', country:'USA', ll:[-80.1918,25.7617], shows:[
       { yr:'2023', tag:'group', name:'Art Basel Miami', venue:'<strong>Art Basel</strong><br>Miami, USA', note:'Amaterasu · featured', imgs:['https://aotm.gallery/wp-content/uploads/2023/05/Amaterasu-scaled-1000x1000-c-default.jpeg'] } ] },
   ];
-  const TAGCLASS = { solo:'k-solo', group:'k-group', auction:'k-auction', residency:'k-res' };
+  const TAGCLASS = { solo:'k-solo', group:'k-group', auction:'k-auction', residency:'k-res', billboard:'k-res' };
   const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const LIBS = [
     'https://cdn.jsdelivr.net/npm/d3-array@3.2.4/dist/d3-array.min.js',
