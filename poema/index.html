@@ -23,7 +23,9 @@ main{position:relative;z-index:1}
 
 /* ── 1 · arrival ── */
 .arrival{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 6vw 7rem;position:relative}
-.back{position:absolute;top:1.8rem;left:5vw;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.2em;color:var(--pale);text-decoration:none;opacity:.8}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.1rem 5vw 1.6rem;background:linear-gradient(to bottom,#000 65%,rgba(0,0,0,0));pointer-events:none}
+.topbar > *{pointer-events:auto}
+.back{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.2em;color:var(--pale);text-decoration:none;opacity:.8}
 .back:hover,.back:focus-visible{color:var(--ghost);opacity:1}
 .title{font-weight:300;font-style:italic;font-size:clamp(3rem,8vw,6.5rem);line-height:1.02;letter-spacing:.02em;color:var(--ghost);opacity:0;animation:rise 2.4s .3s ease forwards}
 .descend{position:absolute;bottom:3.5rem;left:0;right:0;margin:0 auto;width:max-content;display:flex;flex-direction:column;align-items:center;gap:.7rem;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.3em;color:var(--ember);text-decoration:none;opacity:0;animation:rise 2s 1.8s ease forwards}
@@ -32,15 +34,15 @@ main{position:relative;z-index:1}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 
 /* always-visible sign-in button */
-.top-btn{position:fixed;top:1.4rem;right:5vw;z-index:20;font-family:'Inconsolata',monospace;font-size:.85rem;letter-spacing:.14em;color:#000;background:var(--ember);border:none;padding:.7rem 1.15rem;cursor:pointer;transition:filter .2s,background .2s,color .2s}
+.top-btn{font-family:'Inconsolata',monospace;font-size:.85rem;letter-spacing:.14em;color:#000;background:var(--ember);border:none;padding:.7rem 1.15rem;cursor:pointer;transition:filter .2s,background .2s,color .2s}
 .top-btn:hover,.top-btn:focus-visible{filter:brightness(1.1)}
 .top-btn:focus-visible{outline:2px solid var(--ghost);outline-offset:3px}
 .top-btn.signed{background:rgba(14,14,20,.85);color:var(--pale);border:1px solid #2a2a33}
 .top-btn.signed:hover{color:var(--ghost)}
-@media(max-width:640px){.top-btn{top:1rem;font-size:.78rem;padding:.6rem .9rem}.back{top:1.3rem}}
+@media(max-width:640px){.topbar{padding:.8rem 5vw 1.3rem}.top-btn{font-size:.78rem;padding:.6rem .9rem}}
 
 /* ── 2 · the page ── */
-.page-section{padding:4rem 4vw 3rem;display:flex;flex-direction:column;align-items:center}
+.page-section{padding:5.5rem 4vw 3rem;scroll-margin-top:0;display:flex;flex-direction:column;align-items:center}
 .count{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.24em;color:var(--pale);margin-bottom:1.4rem;text-align:center}
 .count b{color:var(--ember);font-weight:500}
 .paper{container-type:inline-size;position:relative;width:min(880px,94vw);aspect-ratio:1/1.414;background:var(--paper);padding:7% 10% 8%;box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
@@ -116,11 +118,13 @@ main{position:relative;z-index:1}
 <body>
 <canvas id="bg"></canvas>
 
-<button class="top-btn" id="top-btn" type="button">connect wallet</button>
+<header class="topbar">
+  <a class="back" href="/">← photon tide</a>
+  <button class="top-btn" id="top-btn" type="button">connect wallet</button>
+</header>
 
 <main>
   <section class="arrival">
-    <a class="back" href="/">← photon tide</a>
     <h1 class="title">collective<br>unconscious</h1>
     <a class="descend" href="#page">continue the dream<i></i></a>
   </section>
