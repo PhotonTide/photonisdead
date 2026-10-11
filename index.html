@@ -568,6 +568,34 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   .unb-arrow{font-size:.72rem;padding:.6rem .2rem}
   #unb-big{width:min(72vw,60vh)}
 }
+
+/* ═══ EXHIBITIONS GLOBE ═══ */
+.globe-wrap{position:relative;margin:1.5rem 0 .5rem;height:min(78vw,600px);touch-action:none;user-select:none;-webkit-user-select:none}
+#globe{width:100%;height:100%;display:block;cursor:grab}
+#globe.drag{cursor:grabbing}
+.globe-hint{position:absolute;left:0;bottom:.2rem;font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.25em;color:rgba(168,162,155,.55);pointer-events:none;transition:opacity 1s}
+.globe-cities{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 2.2rem}
+.globe-cities button{font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.16em;color:var(--ghost);background:transparent;border:1px solid var(--dim);padding:.45rem .8rem;cursor:pointer;transition:border-color .3s,color .3s}
+.globe-cities button:hover,.globe-cities button.on{border-color:rgba(196,135,58,.6);color:var(--ember)}
+.globe-cities button i{font-style:normal;color:rgba(196,135,58,.7);margin-left:.4rem}
+.globe-cities button.soon{color:rgba(168,162,155,.6)}
+.gp{position:absolute;top:0;right:0;width:min(380px,46%);max-height:100%;overflow:auto;background:rgba(6,6,10,.94);border:1px solid var(--dim);padding:1.4rem 1.4rem 1.6rem;opacity:0;transform:translateX(12px);pointer-events:none;transition:opacity .4s,transform .4s;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.gp.open{opacity:1;transform:none;pointer-events:auto}
+.gp-x{position:absolute;top:.6rem;right:.8rem;background:none;border:0;color:var(--pale);font-size:1.5rem;line-height:1;cursor:pointer;padding:.2rem .4rem}
+.gp-x:hover{color:var(--ember)}
+.gp-kicker{font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.32em;color:var(--ember);margin:0 0 1rem;text-transform:uppercase}
+.gp-show{padding:0 0 1.3rem;margin:0 0 1.3rem;border-bottom:1px solid var(--dim)}
+.gp-show:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.gp-strip{display:flex;gap:6px;overflow-x:auto;margin:0 0 .9rem;scrollbar-width:thin}
+.gp-strip img{height:150px;width:auto;max-width:none;flex:0 0 auto;object-fit:cover;background:#0b0b10}
+.gp-strip img:only-child{width:100%;height:auto;max-height:230px}
+.gp-soon{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--pale)}
+@media(max-width:700px){
+  .globe-wrap{height:92vw;touch-action:pan-y}
+  .gp{position:fixed;left:0;right:0;top:auto;bottom:0;width:auto;max-height:72vh;transform:translateY(16px);border-width:1px 0 0;padding:1.2rem 16px 1.6rem;z-index:950}
+  .gp.open{transform:none}
+  .gp-strip img{height:120px}
+}
 </style>
 </head>
 <body class="gate-open">
@@ -1817,6 +1845,18 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   <p class="s-label reveal">history</p>
   <h2 class="s-title reveal d1"><em>exhibitions</em></h2>
 
+  <div class="globe-wrap" id="globe-wrap">
+    <canvas id="globe" aria-label="globe of exhibition cities — drag to spin, tap a city"></canvas>
+    <p class="globe-hint">drag to spin · tap a city</p>
+    <div class="gp" id="gp" role="dialog" aria-modal="false" aria-labelledby="gp-city">
+      <button class="gp-x" type="button" onclick="globeClose()" aria-label="close">×</button>
+      <p class="gp-kicker" id="gp-city"></p>
+      <div id="gp-shows"></div>
+    </div>
+  </div>
+  <div class="globe-cities" id="globe-cities"></div>
+
+
   <div class="exh-grid">
     <div class="exh-card reveal">
       <div class="exh-img"><img src="media/withdrawn.jpg" alt="Cold Blooded — StudioG Rome" loading="lazy"></div>
@@ -1825,6 +1865,69 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
         <p class="exh-name">Cold Blooded</p>
         <p class="exh-venue"><strong>StudioG, Rome</strong><br>June 25 – July 25 · curated by Domvs, Satyrus Meta Art &amp; Giuseppe Stagnitta</p>
         <p class="exh-piece">5 works in thermal imaging · 1/1s with certified prints</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="media/memory.jpg" alt="Cold Blooded — Rome New Media Week" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2026</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">Rome New Media Week · Patrons After Hour</p>
+        <p class="exh-venue"><strong>Galleria Nazionale d'Arte Moderna</strong><br>Rome · July 6, 2026 · DOMVS hosts Wait &amp; Hope</p>
+        <p class="exh-piece">the Cold Blooded works · w/ exchange art, mallow, Satyrus &amp; a|dai</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="media/butterfly-effect.jpg" alt="Butterfly Effect — Times Square" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2025</span><span class="exh-tag k-res">billboard</span></div>
+        <p class="exh-name">NFT NYC · Times Square</p>
+        <p class="exh-venue"><strong>OneHub billboard · 1540 Broadway</strong><br>Times Square, New York · Jun 2025</p>
+        <p class="exh-piece">Butterfly Effect · unminted · on screen during NFT NYC 2025</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="media/56603b56f8.avif" alt="Digital Decay — Offline by SuperRare" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2025</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">Digital Decadence: The Art of Falling Apart</p>
+        <p class="exh-venue"><strong>Offline by SuperRare</strong><br>243 Bowery, New York · Apr 3–24, 2025</p>
+        <p class="exh-piece">Digital Decay · w/ FVCKRENDER, Sasha Stiles, Omentejovem &amp; others</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="media/7da16a04ab.jpg" alt="The Cell — Foundry LA" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2023</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">Foundry</p>
+        <p class="exh-venue"><strong>Foundry by PROOF</strong><br>Arts District, Los Angeles · Oct 2023</p>
+        <p class="exh-piece">The Cell</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="media/a2a7069e3e.jpg" alt="seconds after death, i left my body — Seoul" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2023</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">Trippy Labs × Korea Blockchain Week</p>
+        <p class="exh-venue"><strong>Trippy Labs</strong><br>Seoul, South Korea · Sep 2023</p>
+        <p class="exh-piece">seconds after death, i left my body</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="https://aotm.gallery/wp-content/uploads/2023/02/acceptance-600x600-c-default.jpeg" alt="acceptance — Tokyo" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2023</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">Reaching For The Future</p>
+        <p class="exh-venue"><strong>UltraSuperNew Gallery, Shibuya</strong><br>Tokyo · May 6–10, 2023 · WEN Tokyo, curated by A-Mashiro</p>
+        <p class="exh-piece">acceptance · 30 generative &amp; 1/1 artists</p>
+      </div>
+    </div>
+    <div class="exh-card reveal">
+      <div class="exh-img"><img src="https://aotm.gallery/wp-content/uploads/2023/01/A-Lonely-Mans-Last-Day-600x600-c-default.jpeg" alt="A Lonely Mans Last Day — NABU Paris" loading="lazy"></div>
+      <div class="exh-body">
+        <div class="exh-yr-row"><span class="exh-yr">2023</span><span class="exh-tag k-group">group</span></div>
+        <p class="exh-name">#NABU Crypto Art Exhibition</p>
+        <p class="exh-venue"><strong>Les Salles Royales · Église de la Madeleine</strong><br>75008 Paris · Jan 24–31, 2023 · by Nabulines</p>
+        <p class="exh-piece">A Lonely Mans Last Day</p>
       </div>
     </div>
     <div class="exh-card reveal">
@@ -3204,6 +3307,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     const g = document.getElementById('gate');
     if (g && getComputedStyle(g).display !== 'none') return true;
     if (document.getElementById('viewer')?.classList.contains('open')) return true;
+    if (document.getElementById('gp')?.classList.contains('open')) return true;
     return ['cell-gallery','corridor-gallery','stars-gallery','unb-gallery'].some(id => document.getElementById(id)?.style.display === 'block');
   }
 
@@ -3344,5 +3448,264 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     <p class="unb-row"><button type="button" class="unb-back" onclick="unbGrid()">← all 48</button><span id="unb-count"></span><a id="unb-link" href="#" target="_blank" rel="noopener">view on transient →</a></p>
   </div>
 </div>
+<script>
+/* ═══ EXHIBITIONS GLOBE ═══ */
+(function(){
+  const COLD = ['withdrawn','meridian','endless','memory','beyond'].map(n => 'media/' + n + '.jpg');
+  const CITIES = [
+    { id:'rome', name:'Rome', country:'Italy', ll:[12.4964,41.9028], shows:[
+      { yr:'2026', tag:'solo', name:'Cold Blooded', venue:'<strong>StudioG, Rome</strong><br>June 25 – July 25 · curated by Domvs, Satyrus Meta Art &amp; Giuseppe Stagnitta', note:'5 works in thermal imaging · 1/1s with certified prints', imgs:COLD },
+      { yr:'2026', tag:'group', name:'Rome New Media Week · Patrons After Hour', venue:'<strong>Galleria Nazionale d\'Arte Moderna</strong><br>Rome · July 6, 2026 · DOMVS hosts Wait &amp; Hope', note:'the Cold Blooded works · w/ exchange art, mallow, Satyrus &amp; a|dai', imgs:COLD } ] },
+    { id:'milan', name:'Milan', country:'Italy', ll:[9.19,45.4642], shows:[
+      { yr:'2024', tag:'solo', name:'Rhythms of the Subconscious', venue:'<strong>NINFA Labs</strong><br>Milan, Italy · Jun 20, 2024', note:'debut solo exhibition in Italy · 20 digital artworks', imgs:['media/da174faa1f.jpg'] } ] },
+    { id:'tokyo', name:'Tokyo', country:'Japan', ll:[139.6917,35.6895], shows:[
+      { yr:'2023', tag:'group', name:'Reaching For The Future', venue:'<strong>UltraSuperNew Gallery, Shibuya</strong><br>Tokyo · May 6–10, 2023 · WEN Tokyo, curated by A-Mashiro', note:'acceptance · 30 generative &amp; 1/1 artists', imgs:['https://aotm.gallery/wp-content/uploads/2023/02/acceptance-600x600-c-default.jpeg'] } ] },
+    { id:'seoul', name:'Seoul', country:'South Korea', ll:[126.978,37.5665], shows:[
+      { yr:'2023', tag:'group', name:'Trippy Labs × Korea Blockchain Week', venue:'<strong>Trippy Labs</strong><br>Seoul, South Korea · Sep 2023', note:'seconds after death, i left my body', imgs:['media/a2a7069e3e.jpg'] } ] },
+    { id:'paris', name:'Paris', country:'France', ll:[2.3245,48.87], shows:[
+      { yr:'2023', tag:'group', name:'#NABU Crypto Art Exhibition', venue:'<strong>Les Salles Royales · beneath the Église de la Madeleine</strong><br>75008 Paris · Jan 24–31, 2023 · by Nabulines', note:'A Lonely Mans Last Day', imgs:['https://aotm.gallery/wp-content/uploads/2023/01/A-Lonely-Mans-Last-Day-600x600-c-default.jpeg'] } ] },
+    { id:'los-angeles', name:'Los Angeles', country:'USA', ll:[-118.2437,34.0522], shows:[
+      { yr:'2023', tag:'group', name:'Foundry', venue:'<strong>Foundry by PROOF</strong><br>Arts District, Los Angeles · Oct 2023', note:'The Cell', imgs:['media/7da16a04ab.jpg'] } ] },
+    { id:'mexico-city', name:'Mexico City', country:'Mexico', ll:[-99.1332,19.4326], shows:[
+      { yr:'2025', tag:'group', name:'Un Sueño Digital', venue:'<strong>30 Campos Elíseos &amp; Wait &amp; Hope Foundation</strong><br>Ciudad de México · Dec 13–16, 2025', note:'digital art exhibition · Mexico City', imgs:['media/a9f99fd556.jpg'] } ] },
+    { id:'new-york', name:'New York', country:'USA', ll:[-74.006,40.7128], shows:[
+      { yr:'2025', tag:'billboard', name:'NFT NYC · Times Square', venue:'<strong>OneHub billboard · 1540 Broadway</strong><br>Times Square, New York · Jun 2025', note:'Butterfly Effect · unminted · on screen during NFT NYC 2025', imgs:['media/butterfly-effect.jpg'] },
+      { yr:'2025', tag:'group', name:'Digital Decadence: The Art of Falling Apart', venue:'<strong>Offline by SuperRare</strong><br>243 Bowery, New York · Apr 3–24, 2025', note:'Digital Decay · w/ FVCKRENDER, Sasha Stiles, Omentejovem &amp; others', imgs:['media/56603b56f8.avif'] },
+      { yr:'2024', tag:'auction', name:'Digital Art Day Sale', venue:'<strong>Sotheby\'s</strong><br>New York · Aug 15–22, 2024', note:'One Last Dance · Lot 26 · w/ XCOPY, Pak, Refik Anadol', imgs:['https://i2c.seadn.io/ethereum/0x67f8de3a7ab9ce266e44a17b0467860634865171/7e4aa0d97a131c8a997686c585ffbeaa.jpeg?w=600'] },
+      { yr:'2023', tag:'solo', name:'CCO Moment: Pho\'s Spiral &amp; Derivatives', venue:'<strong>JOYN</strong><br>88 Clinton St, New York, NY · Apr 13', note:'the spiral &amp; derivatives · w/ Latent Dreams AI Art Show', imgs:['https://aotm.gallery/wp-content/uploads/2023/01/The-Spiral-1000x1000-c-default.png'] },
+      { yr:'2023', tag:'group', name:'NFT NYC', venue:'<strong>NFT NYC Conference</strong><br>New York, USA', note:'Psychedelic Hues (alone, again)', imgs:['https://aotm.gallery/wp-content/uploads/2023/03/Psychedelc-Hues-scaled-1000x1000-c-default.jpg'] } ] },
+    { id:'miami', name:'Miami', country:'USA', ll:[-80.1918,25.7617], shows:[
+      { yr:'2023', tag:'group', name:'Art Basel Miami', venue:'<strong>Art Basel</strong><br>Miami, USA', note:'Amaterasu · featured', imgs:['https://aotm.gallery/wp-content/uploads/2023/05/Amaterasu-scaled-1000x1000-c-default.jpeg'] } ] },
+  ];
+  const TAGCLASS = { solo:'k-solo', group:'k-group', auction:'k-auction', residency:'k-res', billboard:'k-res' };
+  const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const LIBS = [
+    'https://cdn.jsdelivr.net/npm/d3-array@3.2.4/dist/d3-array.min.js',
+    'https://cdn.jsdelivr.net/npm/d3-geo@3.1.1/dist/d3-geo.min.js',
+    'https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js',
+  ];
+  const LAND = 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json';
+
+  const wrap = document.getElementById('globe-wrap');
+  const cv = document.getElementById('globe');
+  const panel = document.getElementById('gp');
+  const chips = document.getElementById('globe-cities');
+  if (!wrap || !cv) return;
+  const ctx = cv.getContext('2d');
+
+  // city buttons under the globe (also the accessible way in)
+  chips.innerHTML = CITIES.map(c =>
+    `<button type="button" data-c="${c.id}" class="${c.shows.length ? '' : 'soon'}">${c.name}<i>${c.shows.length || '·'}</i></button>`
+  ).join('');
+  chips.addEventListener('click', e => { const b = e.target.closest('button'); if (b) focusCity(b.dataset.c); });
+
+  const loadScript = src => new Promise((ok, no) => { const el = document.createElement('script'); el.src = src; el.onload = ok; el.onerror = no; document.head.appendChild(el); });
+
+  let ready = false, starting = false, visible = false;
+  let proj, path, grat, dots = [], W = 0, H = 0, R = 0, dpr = 1;
+  let rot = [-20, -28], vel = 0, drag = null, lastTouch = 0, anim = null, focused = null, raf = 0;
+
+  async function start(){
+    if (starting) return; starting = true;
+    try {
+      for (const src of LIBS) if (!(src.includes('topojson') ? window.topojson : (src.includes('d3-geo') ? window.d3?.geoOrthographic : window.d3?.range))) await loadScript(src);
+      const topo = await fetch(LAND).then(r => r.json());
+      buildDots(topojson.feature(topo, topo.objects.land));
+      proj = d3.geoOrthographic().clipAngle(90).precision(.5);
+      path = d3.geoPath(proj, ctx);
+      grat = d3.geoGraticule10();
+    } catch (e) { wrap.style.display = 'none'; return; }
+    ready = true; size(); kick();
+  }
+
+  // land as a field of dots: rasterize the land shape once, then sample it
+  function buildDots(land){
+    const w = 1440, h = 720, off = document.createElement('canvas');
+    off.width = w; off.height = h;
+    const o = off.getContext('2d');
+    d3.geoPath(d3.geoEquirectangular().scale(w / (2 * Math.PI)).translate([w / 2, h / 2]), o)(land);
+    o.fillStyle = '#fff'; o.fill();
+    const px = o.getImageData(0, 0, w, h).data;
+    const step = 1.35;
+    for (let lat = -82; lat <= 84; lat += step) {
+      const ls = step / Math.max(.2, Math.cos(lat * Math.PI / 180));
+      for (let lon = -180; lon < 180; lon += ls) {
+        const x = Math.floor((lon + 180) / 360 * w), y = Math.floor((90 - lat) / 180 * h);
+        if (px[(y * w + x) * 4 + 3] > 128) {
+          const a = lon * Math.PI / 180, b = lat * Math.PI / 180;
+          dots.push([lon, lat, Math.cos(b) * Math.cos(a), Math.cos(b) * Math.sin(a), Math.sin(b)]);
+        }
+      }
+    }
+  }
+
+  function size(){
+    const r = wrap.getBoundingClientRect();
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    cv.width = W * dpr; cv.height = H * dpr;
+    R = Math.min(W, H) / 2 - 14;
+    if (proj) proj.scale(R).translate([W / 2, H / 2]);
+  }
+
+  // unit vector of the point facing the viewer
+  function facing(){
+    const a = -rot[0] * Math.PI / 180, b = -rot[1] * Math.PI / 180;
+    return [Math.cos(b) * Math.cos(a), Math.cos(b) * Math.sin(a), Math.sin(b)];
+  }
+  function cityVec(c){
+    const a = c.ll[0] * Math.PI / 180, b = c.ll[1] * Math.PI / 180;
+    return [Math.cos(b) * Math.cos(a), Math.cos(b) * Math.sin(a), Math.sin(b)];
+  }
+
+  function draw(t){
+    if (R < 20) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    proj.rotate(rot);
+    const cx = W / 2, cy = H / 2;
+
+    // atmosphere
+    const glow = ctx.createRadialGradient(cx, cy, R * .9, cx, cy, R * 1.12);
+    glow.addColorStop(0, 'rgba(196,135,58,.10)'); glow.addColorStop(1, 'rgba(196,135,58,0)');
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, R * 1.12, 0, 7); ctx.fill();
+    // body
+    const body = ctx.createRadialGradient(cx - R * .35, cy - R * .4, R * .1, cx, cy, R);
+    body.addColorStop(0, '#15131a'); body.addColorStop(1, '#050507');
+    ctx.fillStyle = body; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
+    // graticule
+    ctx.beginPath(); path(grat); ctx.strokeStyle = 'rgba(212,207,200,.05)'; ctx.lineWidth = .6; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.strokeStyle = 'rgba(196,135,58,.22)'; ctx.lineWidth = 1; ctx.stroke();
+
+    // land dots, fading toward the rim
+    const f = facing(), ds = Math.max(1.1, R / 210);
+    for (let i = 0; i < dots.length; i++) {
+      const d = dots[i], k = d[2] * f[0] + d[3] * f[1] + d[4] * f[2];
+      if (k <= .02) continue;
+      const p = proj([d[0], d[1]]);
+      ctx.fillStyle = `rgba(212,207,200,${(.1 + .5 * k).toFixed(3)})`;
+      ctx.fillRect(p[0] - ds / 2, p[1] - ds / 2, ds, ds);
+    }
+
+    // cities
+    ctx.font = `${Math.max(11, Math.round(R / 26))}px Inconsolata, monospace`;
+    ctx.textBaseline = 'middle';
+    for (const c of CITIES) {
+      const v = cityVec(c), k = v[0] * f[0] + v[1] * f[1] + v[2] * f[2];
+      c._p = null;
+      if (k <= .05) continue;
+      const p = proj(c.ll); c._p = p;
+      const live = c.shows.length > 0, on = focused === c.id;
+      const a = Math.min(1, k * 2.2);
+      if (live && !REDUCE) {
+        const ph = ((((t / 2400) + c.ll[0] / 90) % 1) + 1) % 1;
+        ctx.beginPath(); ctx.arc(p[0], p[1], 4 + ph * 16, 0, 7);
+        ctx.strokeStyle = `rgba(196,135,58,${((1 - ph) * .55 * a).toFixed(3)})`; ctx.lineWidth = 1; ctx.stroke();
+      }
+      const g = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], on ? 16 : 11);
+      g.addColorStop(0, `rgba(230,170,90,${(live ? .85 : .35) * a})`); g.addColorStop(1, 'rgba(196,135,58,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p[0], p[1], on ? 16 : 11, 0, 7); ctx.fill();
+      ctx.fillStyle = live ? `rgba(255,214,150,${a})` : `rgba(212,207,200,${.55 * a})`;
+      ctx.beginPath(); ctx.arc(p[0], p[1], on ? 3.6 : 2.6, 0, 7); ctx.fill();
+      ctx.fillStyle = live ? `rgba(212,207,200,${.85 * a})` : `rgba(168,162,155,${.6 * a})`;
+      ctx.fillText(c.name.toLowerCase(), p[0] + 9, p[1] - 1);
+    }
+  }
+
+  function loop(t){
+    raf = 0;
+    if (!ready || !visible || document.hidden) return;
+    t = t || performance.now();
+    if (R < 20) size();
+    if (anim) {
+      const u = Math.min(1, (t - anim.t0) / anim.dur), e = 1 - Math.pow(1 - u, 3);
+      rot = [anim.from[0] + (anim.to[0] - anim.from[0]) * e, anim.from[1] + (anim.to[1] - anim.from[1]) * e];
+      if (u >= 1) { const done = anim.done; anim = null; done && done(); }
+    } else if (!drag) {
+      if (Math.abs(vel) > .01) { rot[0] += vel; vel *= .94; }
+      else if (!REDUCE && !focused && t - lastTouch > 2500) rot[0] += .06;
+    }
+    raf = requestAnimationFrame(loop);
+    try { draw(t); } catch (e) {}
+  }
+  const kick = () => { if (!raf && ready && visible) raf = requestAnimationFrame(loop); };
+
+  // drag to spin, tap to choose
+  cv.addEventListener('pointerdown', e => {
+    if (!ready) return;
+    cv.setPointerCapture(e.pointerId);
+    drag = { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, moved: 0 };
+    anim = null; vel = 0; lastTouch = performance.now();
+    cv.classList.add('drag');
+  });
+  cv.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const k = 57.3 / R * .9, dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    rot[0] += dx * k; rot[1] = Math.max(-75, Math.min(75, rot[1] - dy * k));
+    vel = dx * k;
+    drag.x = e.clientX; drag.y = e.clientY;
+    drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0));
+    lastTouch = performance.now();
+    document.querySelector('.globe-hint').style.opacity = 0;
+  });
+  const up = e => {
+    if (!drag) return;
+    const tap = drag.moved < 6; drag = null; cv.classList.remove('drag');
+    lastTouch = performance.now();
+    if (tap) {
+      vel = 0;
+      const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      let best = null, bd = 26;
+      for (const c of CITIES) if (c._p) { const d = Math.hypot(c._p[0] - x, c._p[1] - y); if (d < bd) { bd = d; best = c; } }
+      if (best) focusCity(best.id);
+    }
+  };
+  cv.addEventListener('pointerup', up);
+  cv.addEventListener('pointercancel', up);
+
+  function focusCity(id){
+    const c = CITIES.find(x => x.id === id); if (!c) return;
+    focused = id; vel = 0;
+    chips.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === id));
+    openPanel(c);
+    if (!ready) return;
+    // on a wide screen the panel sits right, so park the city left of centre
+    const shift = window.innerWidth > 700 ? 28 : 0;
+    let to = [-c.ll[0] - shift, Math.max(-60, Math.min(60, -c.ll[1]))];
+    to[0] = rot[0] + ((((to[0] - rot[0]) % 360) + 540) % 360 - 180);
+    anim = { from: rot.slice(), to, t0: performance.now(), dur: REDUCE ? 1 : 1100 };
+    kick();
+  }
+
+  const esc = s => String(s);
+  function openPanel(c){
+    document.getElementById('gp-city').textContent = c.name + ' · ' + c.country;
+    document.getElementById('gp-shows').innerHTML = c.shows.length ? c.shows.map(s => `
+      <div class="gp-show">
+        <div class="gp-strip">${s.imgs.map(src => `<img src="${src}" alt="${esc(s.name)}" loading="lazy">`).join('')}</div>
+        <div class="exh-yr-row"><span class="exh-yr">${s.yr}</span><span class="exh-tag ${TAGCLASS[s.tag] || ''}">${s.tag}</span></div>
+        <p class="exh-name">${s.name}</p>
+        <p class="exh-venue">${s.venue}</p>
+        <p class="exh-piece">${s.note}</p>
+      </div>`).join('') : '<p class="gp-soon">details coming soon</p>';
+    panel.scrollTop = 0;
+    panel.classList.add('open');
+  }
+  window.globeClose = function(){
+    panel.classList.remove('open'); focused = null; lastTouch = performance.now();
+    chips.querySelectorAll('button').forEach(b => b.classList.remove('on'));
+    kick();
+  };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) globeClose(); });
+
+  // only load and spin while the globe is on screen
+  new IntersectionObserver(es => {
+    visible = es[0].isIntersecting;
+    if (visible) { start(); kick(); }
+  }, { rootMargin: '200px' }).observe(wrap);
+  new ResizeObserver(() => { if (ready) { size(); kick(); } }).observe(wrap);
+  document.addEventListener('visibilitychange', kick);
+})();
+</script>
 </body>
 </html>
