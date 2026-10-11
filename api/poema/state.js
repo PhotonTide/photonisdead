@@ -4,17 +4,17 @@
 //   · a dreamer (signed in, has written): every line up to and including theirs
 //   · when all 47 lines are written: the whole poem, for everyone
 //   · photontide.eth: everything, with wallets, for moderation
-import { redis, K, MAX_LINES, OPENING_LINE, ADMIN, readToken, send, onlyMethod } from './_lib.js';
+import { redis, K, MAX_LINES, OPENING_LINE, ADMIN, readToken, send, onlyMethod, voteState } from './_lib.js';
 
 export default async function handler(req, res) {
   if (!onlyMethod(req, res, 'GET')) return;
 
   const me = readToken(req);
-  const [stored, addrs, myN, title] = await Promise.all([
+  const [stored, addrs, myN, myProposal] = await Promise.all([
     redis.lrange(K.lines, 0, -1),
     redis.lrange(K.addrs, 0, -1),
     me ? redis.hget(K.idx, me) : null,
-    redis.get(K.title),
+    me ? redis.hget(K.proposals, me) : null,
   ]);
 
   // Before anyone writes, the poem is just the opening line.
@@ -32,6 +32,16 @@ export default async function handler(req, res) {
 
   if (isAdmin) visible.forEach(l => { l.wallet = owners[l.n - 1] || null; });
 
+  const vote = await voteState({ complete, me, isAdmin });
+  let proposals = null;
+  if (isAdmin) {
+    const all = await redis.hgetall(K.proposals) || {};
+    const counts = {};
+    Object.entries(all).forEach(([w, t]) => { const k = String(t); (counts[k] = counts[k] || []).push(w); });
+    proposals = Object.entries(counts).map(([title, wallets]) => ({ title, count: wallets.length, wallets }))
+      .sort((a, b) => b.count - a.count || a.title.localeCompare(b.title));
+  }
+
   send(res, 200, {
     max: MAX_LINES,
     count,
@@ -42,6 +52,9 @@ export default async function handler(req, res) {
     mine,
     admin: isAdmin,
     lines: visible,
-    title: (complete || isAdmin) && title ? String(title) : null,
+    title: vote.title,
+    vote,
+    myProposal: myProposal ? String(myProposal) : null,
+    proposals,
   });
 }

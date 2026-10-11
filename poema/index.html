@@ -111,7 +111,27 @@ main{position:relative;z-index:1}
 .tt-row input{flex:1 1 16rem;background:transparent;border:none;border-bottom:1px solid rgba(212,207,200,.3);color:var(--ghost);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;padding:.2rem 0;outline:none}
 .tt-row input:focus{border-bottom-color:var(--ember)}
 .tt-row button{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.12em;color:var(--ember);background:none;border:1px solid rgba(196,135,58,.5);padding:.5rem .9rem;cursor:pointer}
-.tt-words{margin-top:.8rem;font-family:'Inconsolata',monospace;font-size:.75rem;line-height:1.7;color:#8f8982}
+.tt-words,.tt-note{margin-top:.8rem;font-family:'Inconsolata',monospace;font-size:.75rem;line-height:1.7;color:#8f8982}
+.tt-label span{color:#7d7871}
+.suggest{margin:2.2rem auto 0;max-width:30rem;text-align:left}
+.ta-list{list-style:none;display:grid;gap:.4rem;margin:.8rem 0}
+.ta-list label{display:flex;gap:.7rem;align-items:baseline;font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ghost);cursor:pointer}
+.ta-list small{font-family:'Inconsolata',monospace;font-size:.72rem;color:#8f8982}
+.ta-list input{accent-color:var(--ember)}
+.ta-results li{display:flex;justify-content:space-between;gap:1rem;font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ghost)}
+.ta-results b{font-family:'Inconsolata',monospace;font-weight:400;font-size:.8rem;color:var(--ember)}
+/* the vote */
+.vote{text-align:center;padding:2.5rem 6vw 1rem;max-width:44rem;margin:0 auto}
+.vote .you{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.3em;color:var(--pale)}
+.vote-title{font-weight:300;font-style:italic;font-size:clamp(2.2rem,5vw,3.4rem);color:var(--ember);margin:.4rem 0 1rem}
+.vote-text{font-size:1.18rem;line-height:1.75;color:var(--pale)}
+.ballot{display:grid;gap:.7rem;margin:1.6rem auto 0;max-width:32rem}
+.ballot button,.ballot div{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;color:var(--ghost);background:var(--deep);border:1px solid #2a2a33;padding:.9rem 1.2rem;text-align:left;display:flex;justify-content:space-between;gap:1rem}
+.ballot button{cursor:pointer}
+.ballot button:hover,.ballot button:focus-visible{border-color:var(--ember)}
+.ballot .chosen{border-color:var(--ember);color:var(--ember)}
+.ballot small{font-family:'Inconsolata',monospace;font-style:normal;font-size:.75rem;color:#8f8982;align-self:center}
+.vote-note{margin-top:1.2rem;font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.06em;color:#8f8982}
 .admin li{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.2rem .7rem;align-items:center;font-size:1.1rem;color:var(--ghost)}
 .admin li small{font-family:'Inconsolata',monospace;font-size:.72rem;color:#8f8982}
 .admin li .w{grid-column:2/4;font-family:'Inconsolata',monospace;font-size:.7rem;color:#8f8982}
@@ -172,16 +192,25 @@ main{position:relative;z-index:1}
     <p class="dreamer" id="dreamer-no"></p>
     <p id="after-text"></p>
     <p id="left"></p>
+    <div class="suggest" id="suggest" hidden>
+      <p class="tt-label">suggest a title for the poem <span>(optional)</span></p>
+      <div class="tt-row"><input id="suggest-input" maxlength="40" placeholder="a title, as it came to you" aria-label="suggest a title"><button type="button" id="suggest-save">suggest</button></div>
+      <p class="tt-note" id="suggest-note">When the dream wakes, the dreamers vote on a title from the suggestions.</p>
+    </div>
     <p class="small"><button class="link" type="button" data-signout>disconnect</button></p>
+  </section>
+
+  <section class="vote" id="vote" hidden>
+    <p class="you" id="vote-kicker"></p>
+    <p class="vote-title" id="vote-title"></p>
+    <p class="vote-text" id="vote-text"></p>
+    <div class="ballot" id="ballot"></div>
+    <p class="vote-note" id="vote-note"></p>
   </section>
 
   <section class="admin" id="admin" hidden>
     <h2>moderation · photontide.eth</h2>
-    <div class="title-tools">
-      <p class="tt-label">title — revealed to everyone when the dream wakes</p>
-      <div class="tt-row"><input id="title-input" maxlength="80" placeholder="untitled" aria-label="poem title"><button type="button" id="title-save">save title</button></div>
-      <p class="tt-words" id="title-words"></p>
-    </div>
+    <div class="title-tools" id="title-admin"></div>
     <ol id="admin-list"></ol>
     <div class="tools">
       <button id="export" type="button">download poem + wallets</button>
@@ -312,8 +341,72 @@ main{position:relative;z-index:1}
       $('left').textContent = '';
     } else after.classList.remove('on');
 
+    // title suggestion (dreamers, while the poem is being written)
+    $('suggest').hidden = !(mine && !s.complete);
+    if (!$('suggest').hidden && document.activeElement !== $('suggest-input')) {
+      $('suggest-input').value = s.myProposal || '';
+      $('suggest-note').textContent = s.myProposal ? 'your suggestion is saved — you can change it until the dream wakes'
+        : 'When the dream wakes, the dreamers vote on a title from the suggestions.';
+    }
+
+    renderVote(s);
     if (s.admin) renderAdmin(s); else $('admin').hidden = true;
   }
+
+  function timeLeft(ms) {
+    const h = Math.max(0, Math.round(ms / 3600000));
+    return h >= 48 ? Math.round(h / 24) + ' days' : h >= 1 ? h + ' hour' + (h === 1 ? '' : 's') : 'less than an hour';
+  }
+
+  function renderVote(s) {
+    const v = s.vote, sec = $('vote'), ballot = $('ballot');
+    sec.hidden = !s.complete || s.admin;
+    if (sec.hidden) return;
+    ballot.innerHTML = ''; $('vote-note').textContent = '';
+    const dreamer = !!s.mine;
+    if (v.phase === 'shortlisting') {
+      $('vote-kicker').textContent = 'the dream has woken';
+      $('vote-title').textContent = 'it is choosing its name';
+      $('vote-text').textContent = 'The dreamers will vote on a title from their suggestions. The vote opens soon.';
+    } else if (v.phase === 'voting') {
+      $('vote-kicker').textContent = 'the dream is choosing its name';
+      $('vote-title').textContent = dreamer ? 'name the dream' : 'the dreamers are voting';
+      $('vote-text').textContent = dreamer ? (v.myVote === null ? 'You have one vote.' : 'Your vote is sealed.') : 'Only the forty-seven dreamers can vote.';
+      v.options.forEach((t, i) => {
+        const el = document.createElement(dreamer && v.myVote === null ? 'button' : 'div');
+        el.textContent = '“' + t + '”';
+        if (el.tagName === 'BUTTON') { el.type = 'button'; el.onclick = () => castVote(i, t); }
+        if (v.myVote === i) { el.classList.add('chosen'); const m = document.createElement('small'); m.textContent = 'your vote'; el.appendChild(m); }
+        ballot.appendChild(el);
+      });
+      $('vote-note').textContent = 'the vote closes in ' + timeLeft(v.endsAt - Date.now()) + ' · results stay hidden until then';
+    } else if (v.phase === 'closed') {
+      $('vote-kicker').textContent = v.title ? 'the dreamers named it' : 'the vote has closed';
+      $('vote-title').textContent = v.title ? '“' + v.title + '”' : 'a tie';
+      $('vote-text').textContent = v.title ? '' : 'The vote ended in a tie — Photon Tide will choose between the tied titles.';
+      if (v.results && v.options.length) v.options.forEach((t, i) => {
+        const el = document.createElement('div');
+        el.textContent = '“' + t + '”';
+        const m = document.createElement('small'); m.textContent = v.results[i] + ' vote' + (v.results[i] === 1 ? '' : 's');
+        el.appendChild(m);
+        if (t === v.title) el.classList.add('chosen');
+        ballot.appendChild(el);
+      });
+    }
+  }
+
+  async function castVote(i, t) {
+    if (!confirm('Vote for “' + t + '”?\n\nYou have one vote and it can\'t be changed.')) return;
+    try { await api('vote', { method: 'POST', body: JSON.stringify({ choice: i }) }); await load(); }
+    catch (e) { $('vote-note').textContent = e.message; }
+  }
+
+  $('suggest-save').onclick = async () => {
+    try {
+      const r = await api('propose', { method: 'POST', body: JSON.stringify({ title: $('suggest-input').value }) });
+      $('suggest-note').textContent = 'saved — “' + r.title + '” · you can change it until the dream wakes';
+    } catch (e) { $('suggest-note').textContent = e.message; }
+  };
 
   function updateTopButton(s) {
     const b = $('top-btn');
@@ -468,9 +561,7 @@ main{position:relative;z-index:1}
 
   function renderAdmin(s) {
     $('admin').hidden = false;
-    if (document.activeElement !== $('title-input')) $('title-input').value = s.title || '';
-    const top = themes(s.lines);
-    $('title-words').textContent = top.length > 1 ? 'most repeated words: ' + top.map(([w, c]) => w + (c > 1 ? ' ×' + c : '')).join(' · ') : 'the most repeated words will show here as the poem grows';
+    renderTitleAdmin(s);
     const ol = $('admin-list'); ol.innerHTML = '';
     s.lines.forEach(l => {
       const li = document.createElement('li');
@@ -491,12 +582,65 @@ main{position:relative;z-index:1}
       ol.appendChild(li);
     });
   }
-  $('title-save').onclick = async () => {
-    try {
-      const r = await api('title', { method: 'POST', body: JSON.stringify({ title: $('title-input').value }) });
-      $('admin-status').textContent = r.title ? 'title saved — it appears for everyone when the dream wakes' : 'title cleared';
-    } catch (e) { $('admin-status').textContent = e.message; }
-  };
+  function renderTitleAdmin(s) {
+    const box = $('title-admin'), v = s.vote, props = s.proposals || [];
+    if (box.contains(document.activeElement) && v.phase === 'shortlisting') return; // don't wipe ticks while choosing
+    box.innerHTML = '';
+    const label = (t) => { const p = document.createElement('p'); p.className = 'tt-label'; p.textContent = t; box.appendChild(p); };
+    const note = (t) => { const p = document.createElement('p'); p.className = 'tt-words'; p.textContent = t; box.appendChild(p); };
+    const top = themes(s.lines);
+    const words = top.length > 1 ? 'most repeated words: ' + top.map(([w, c]) => w + (c > 1 ? ' ×' + c : '')).join(' · ') : '';
+
+    if (v.phase === 'proposing' || v.phase === 'shortlisting') {
+      label(v.phase === 'proposing' ? 'title suggestions so far — the vote opens once all 47 lines are written'
+        : 'the dream has woken — tick 2 to 8 titles for the ballot, then open the 72-hour vote');
+      const ul = document.createElement('ul'); ul.className = 'ta-list';
+      if (!props.length) { const li = document.createElement('li'); li.innerHTML = '<small>no suggestions yet</small>'; ul.appendChild(li); }
+      props.forEach(pr => {
+        const li = document.createElement('li'), lab = document.createElement('label');
+        if (v.phase === 'shortlisting') { const cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = pr.title; cb.className = 'ta-pick'; lab.appendChild(cb); }
+        lab.append('“' + pr.title + '”');
+        const sm = document.createElement('small'); sm.textContent = pr.count > 1 ? '×' + pr.count : ''; lab.appendChild(sm);
+        li.appendChild(lab); ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      if (v.phase === 'shortlisting') {
+        const row = document.createElement('div'); row.className = 'tt-row';
+        const add = document.createElement('input'); add.maxLength = 40; add.placeholder = 'add your own option (optional)'; add.id = 'ta-add';
+        const go = document.createElement('button'); go.type = 'button'; go.textContent = 'open the vote · 72 hours';
+        go.onclick = async () => {
+          const titles = [...box.querySelectorAll('.ta-pick:checked')].map(c => c.value);
+          if (add.value.trim()) titles.push(add.value.trim());
+          if (titles.length < 2) { $('admin-status').textContent = 'choose at least 2 titles'; return; }
+          if (!confirm('Open the 72-hour vote with these titles?\n\n' + titles.map(t => '“' + t + '”').join('\n'))) return;
+          try { await api('shortlist', { method: 'POST', body: JSON.stringify({ titles }) }); $('admin-status').textContent = 'the vote is open'; load(); }
+          catch (e) { $('admin-status').textContent = e.message; }
+        };
+        row.append(add, go); box.appendChild(row);
+      }
+      if (words) note(words);
+    } else {
+      label(v.phase === 'voting' ? 'the vote is open — closes in ' + timeLeft(v.endsAt - Date.now()) + ' · ' + v.voters + ' of 47 have voted'
+        : (v.title ? 'the vote has closed — the title is “' + v.title + '”' : 'the vote ended in a tie — choose the title'));
+      const ul = document.createElement('ul'); ul.className = 'ta-list ta-results';
+      const best = v.results ? Math.max(...v.results) : 0;
+      v.options.forEach((t, i) => {
+        const li = document.createElement('li');
+        const name = document.createElement('span'); name.textContent = '“' + t + '”';
+        const n = document.createElement('b'); n.textContent = (v.results ? v.results[i] : 0) + ' votes';
+        li.append(name, n);
+        if (v.phase === 'closed' && v.tie && v.results[i] === best) {
+          const pick = document.createElement('button'); pick.type = 'button'; pick.className = 'rm'; pick.style.color = 'var(--ember)'; pick.style.borderColor = 'rgba(196,135,58,.5)';
+          pick.textContent = 'choose this';
+          pick.onclick = async () => { try { await api('decide', { method: 'POST', body: JSON.stringify({ title: t }) }); load(); } catch (e) { $('admin-status').textContent = e.message; } };
+          li.appendChild(pick);
+        }
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      if (words) note(words);
+    }
+  }
 
   $('export').onclick = async () => {
     try {
