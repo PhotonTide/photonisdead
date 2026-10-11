@@ -3048,7 +3048,7 @@ document.addEventListener('keydown',e=>{
   const IS_PHONE = matchMedia('(pointer:coarse)').matches;
   const IDLE_SECONDS = q.get('sleep') ? +q.get('sleep') : (IS_PHONE ? 25 : 60);
   // newest line of the poem, fetched from the poem's server (the opening line until anyone writes)
-  let LAST_LINE = 'i had a dream that';
+  let LAST_LINE = 'I had a dream that';
   function fetchLastLine(){
     return fetch('/api/poema/state', {cache:'no-store'}).then(r => r.ok ? r.json() : null)
       .then(s => { if (s && s.last && s.last.text) LAST_LINE = s.last.text; }).catch(() => {});

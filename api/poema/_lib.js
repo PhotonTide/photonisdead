@@ -11,7 +11,11 @@ export const VOTE_MS = 72 * 60 * 60 * 1000; // the title vote lasts 72 hours
 export const MAX_TITLE = 40;
 export const MAX_CHARS = 60;
 export const OPENING_LINE = 'I had a dream that';
-export const ADMIN = '0xa90dc6d356b622b9783f5020722e6f92b663438f'; // photontide.eth — the only wallet that can remove lines
+// photontide.eth — the only wallet that can moderate on the live site.
+// TEMPORARY (preview branch only): a throwaway test wallet moderates preview deployments so the vote can be tested.
+export const ADMIN = process.env.VERCEL_ENV === 'production'
+  ? '0xa90dc6d356b622b9783f5020722e6f92b663438f'
+  : '0x88154df3928156b2a9779367ac9dc5c363a29489';
 
 // Links and wallet addresses are never part of the dream (scam protection).
 export const BLOCKED = /(https?:\/\/|www\.|0x[a-f0-9]{6,}|[a-z0-9-]+\.(com|xyz|io|net|org|eth|app|gg|art|co|me|ly|link)\b)/i;
