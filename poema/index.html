@@ -132,9 +132,9 @@ main{position:relative;z-index:1}
 .ballot .chosen{border-color:var(--ember);color:var(--ember)}
 .ballot small{font-family:'Inconsolata',monospace;font-style:normal;font-size:.75rem;color:#8f8982;align-self:center}
 .vote-note{margin-top:1.2rem;font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.06em;color:#8f8982}
-.admin li{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.2rem .7rem;align-items:center;font-size:1.1rem;color:var(--ghost)}
-.admin li small{font-family:'Inconsolata',monospace;font-size:.72rem;color:#8f8982}
-.admin li .w{grid-column:2/4;font-family:'Inconsolata',monospace;font-size:.7rem;color:#8f8982}
+#admin-list li{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.2rem .7rem;align-items:center;font-size:1.1rem;color:var(--ghost)}
+#admin-list li small{font-family:'Inconsolata',monospace;font-size:.72rem;color:#8f8982}
+#admin-list li .w{grid-column:2/4;font-family:'Inconsolata',monospace;font-size:.7rem;color:#8f8982}
 .admin .rm{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.08em;color:#e07a5f;background:none;border:1px solid rgba(224,122,95,.4);padding:.25rem .55rem;cursor:pointer}
 .admin .tools{display:flex;gap:.8rem;margin-top:1.2rem;flex-wrap:wrap;align-items:center;font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--pale)}
 .admin .tools #export{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.12em;color:var(--ember);background:none;border:1px solid rgba(196,135,58,.5);padding:.55rem 1rem;cursor:pointer}
@@ -571,8 +571,10 @@ main{position:relative;z-index:1}
       if (l.n > 1) {
         const b = document.createElement('button'); b.className = 'rm'; b.type = 'button'; b.textContent = 'remove';
         b.onclick = async () => {
-          if (!confirm('Remove line #' + l.n + '?\n\n“' + l.text + '”\n\nThe spot opens up for someone new and this wallet can\'t write again.')) return;
-          try { await api('remove', { method: 'POST', body: JSON.stringify({ n: l.n }) }); $('admin-status').textContent = 'line #' + l.n + ' removed'; load(); }
+          const what = s.complete ? 'The poem is finished, so the line becomes “—” and the dreamer keeps their place.'
+            : 'The spot opens up for someone new.';
+          if (!confirm('Remove line #' + l.n + '?\n\n“' + l.text + '”\n\n' + what + '\nThis wallet can\'t write again.')) return;
+          try { const r = await api('remove', { method: 'POST', body: JSON.stringify({ n: l.n }) }); $('admin-status').textContent = 'line #' + l.n + (r.blanked ? ' blanked' : ' removed'); load(); }
           catch (e) { $('admin-status').textContent = e.message; }
         };
         li.appendChild(b);

@@ -1,13 +1,19 @@
 // POST /api/poema/remove  { n }   (photontide.eth only)
-// Emergency removal: deletes line n, frees the spot, and stops that wallet writing again.
+// Emergency removal. While the poem is being written: deletes line n, frees the spot, and stops
+// that wallet writing again. Once all 47 lines exist: blanks the line ("—") so the poem stays whole.
 // The opening line (n = 1) can't be removed.
-import { redis, K, ADMIN, readToken, send, onlyMethod } from './_lib.js';
+import { redis, K, ADMIN, MAX_LINES, readToken, send, onlyMethod } from './_lib.js';
 
 const REMOVE = `
 local len = redis.call('LLEN', KEYS[1])
 local n = tonumber(ARGV[1])
 if n < 2 or n > len then return 0 end
 local addr = redis.call('LINDEX', KEYS[2], n - 1)
+if len >= tonumber(ARGV[3]) then
+  redis.call('LSET', KEYS[1], n - 1, ARGV[4])
+  redis.call('SADD', KEYS[4], addr)
+  return 2
+end
 redis.call('LSET', KEYS[1], n - 1, ARGV[2])
 redis.call('LREM', KEYS[1], 1, ARGV[2])
 redis.call('LSET', KEYS[2], n - 1, ARGV[2])
@@ -27,7 +33,7 @@ export default async function handler(req, res) {
   if (!Number.isInteger(n)) return send(res, 400, { error: 'which line?' });
 
   const marker = '__removed__' + Math.random().toString(36).slice(2);
-  const ok = await redis.eval(REMOVE, [K.lines, K.addrs, K.idx, K.banned], [String(n), marker]);
-  if (!Number(ok)) return send(res, 400, { error: "that line can't be removed" });
-  send(res, 200, { removed: n });
+  const ok = Number(await redis.eval(REMOVE, [K.lines, K.addrs, K.idx, K.banned], [String(n), marker, String(MAX_LINES), '—']));
+  if (!ok) return send(res, 400, { error: "that line can't be removed" });
+  send(res, 200, { removed: n, blanked: ok === 2 });
 }
