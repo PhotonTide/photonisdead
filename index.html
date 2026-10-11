@@ -25,6 +25,7 @@
 <meta name="twitter:description" content="Photon Tide (Pho) is a Mexican digital artist exploring consciousness, dreams and the unknown. Works, exhibitions, Sotheby's record and prints.">
 <meta name="twitter:image" content="https://www.photonisdead.com/media/share.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;1,300&text=u%CD%93n%CD%93b%CD%93r%CD%93e%CD%93a%CD%93k%CD%93a%CD%93b%CD%93l%CD%93e%CD%93%20%E2%80%A0&display=swap" rel="stylesheet"><!-- only the characters of the u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ † title (Cormorant has no combining ×) -->
 <style>
 :root{
   --void:#000;--near:#06060a;--deep:#0e0e14;
@@ -533,6 +534,40 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   .cln{font-size:1.15rem}
   .cla{font-size:.75rem}
 }
+
+/* ═══ u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ † gallery ═══ */
+.unb-font.unb-font{font-family:'Noto Serif','Cormorant Garamond',serif;font-weight:300;letter-spacing:.02em} /* doubled class: wins over .unb-title / .wtitle */
+#unb-gallery{font-family:'Inconsolata',monospace;color:var(--ghost);padding:4.5rem 4vw 4rem}
+.unb-close{position:fixed;top:1.4rem;right:2rem;z-index:2;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.2em;color:var(--pale);background:rgba(5,5,8,.8);border:none;padding:.4rem .6rem;cursor:pointer}
+.unb-close:hover{color:var(--ghost)}
+.unb-head{text-align:center;margin-bottom:2.2rem}
+.unb-kicker{font-size:.75rem;letter-spacing:.3em;color:var(--ember)}
+.unb-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2rem,5vw,3.2rem);color:var(--ghost);margin:.5rem 0 .3rem}
+.unb-sub{font-size:.8rem;letter-spacing:.12em;color:var(--pale)}
+.unb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;max-width:1200px;margin:0 auto}
+.unb-tile{display:flex;flex-direction:column;gap:.45rem;background:none;border:none;padding:0;cursor:pointer;color:var(--pale);text-align:left;font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.06em}
+.unb-tile img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#0e0e14;border:1px solid #1e1d1b;transition:border-color .25s,transform .4s}
+.unb-tile:hover img,.unb-tile:focus-visible img{border-color:var(--ember);transform:translateY(-2px)}
+.unb-tile:hover span{color:var(--ghost)}
+.unb-foot{text-align:center;margin-top:2.4rem;font-size:.8rem;letter-spacing:.16em}
+.unb-foot a,#unb-link{color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.3);padding-bottom:2px}
+.unb-stage{display:flex;align-items:center;justify-content:center;gap:1.5rem}
+#unb-big{width:min(600px,78vw,68vh);aspect-ratio:1;object-fit:contain;display:block;background:#0e0e14;transition:filter .5s}
+#unb-big.soft{filter:blur(2px)}
+.unb-arrow{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.16em;color:var(--ember);background:none;border:none;cursor:pointer;padding:1rem .5rem;white-space:nowrap}
+.unb-name{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;color:var(--ghost);margin-top:1.2rem}
+.unb-meta{text-align:center;font-size:.8rem;letter-spacing:.1em;color:var(--pale);margin-top:.3rem}
+.unb-row{display:flex;justify-content:center;align-items:center;gap:1.6rem;flex-wrap:wrap;margin-top:1.3rem;font-size:.8rem;letter-spacing:.14em;color:#8f8982}
+.unb-back{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.14em;color:var(--pale);background:none;border:1px solid rgba(212,207,200,.25);padding:.5rem .9rem;cursor:pointer}
+.unb-back:hover{color:var(--ghost);border-color:rgba(212,207,200,.5)}
+@media(max-width:640px){
+  #unb-gallery{padding:4rem 4vw 3rem}
+  .unb-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .unb-tile{font-size:.68rem}
+  .unb-stage{gap:.3rem}
+  .unb-arrow{font-size:.72rem;padding:.6rem .2rem}
+  #unb-big{width:min(72vw,60vh)}
+}
 </style>
 </head>
 <body class="gate-open">
@@ -623,15 +658,6 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://superrare.com/artwork/eth/0x67F8De3A7aB9CE266e44A17B0467860634865171/32" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="media/the-night-you-left.jpg" alt="The Night You Left" loading="lazy">
-        <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
-        <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a9fb018;border:1px solid #7a9fb040;color:#7a9fb0">SuperRare</span>
-      </div>
-      <div class="winfo"><p class="wtitle">The Night You Left</p><p class="wsub">2026 · SuperRare · 1/1 · 1.0 Ξ · private sale · sneketoshi3</p><p class="wprice">SuperRare</p></div></a>
-    </div>
-
-<div class="wcard" data-s="sold">
       <a href="https://superrare.com/artwork/eth/0x67F8De3A7aB9CE266e44A17B0467860634865171/33" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/transcendence.jpg" alt="Transcendence" loading="lazy"
              onerror="this.outerHTML='<div class=&quot;wtext-tile&quot;><span>Transcendence</span></div>'">
@@ -639,6 +665,15 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a9fb018;border:1px solid #7a9fb040;color:#7a9fb0">SuperRare</span>
       </div>
       <div class="winfo"><p class="wtitle">Transcendence</p><p class="wsub">2026 · SuperRare · 1/1 · 1.5 Ξ · private sale · ack.eth</p><p class="wprice">SuperRare</p></div></a>
+    </div>
+
+<div class="wcard" data-s="sold">
+      <a href="https://superrare.com/artwork/eth/0x67F8De3A7aB9CE266e44A17B0467860634865171/32" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+        <img src="media/the-night-you-left.jpg" alt="The Night You Left" loading="lazy">
+        <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
+        <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a9fb018;border:1px solid #7a9fb040;color:#7a9fb0">SuperRare</span>
+      </div>
+      <div class="winfo"><p class="wtitle">The Night You Left</p><p class="wsub">2026 · SuperRare · 1/1 · 1.0 Ξ · private sale · sneketoshi3</p><p class="wprice">SuperRare</p></div></a>
     </div>
 
 <div class="wcard" data-s="sold">
@@ -833,6 +868,20 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
       </div>
       <div class="winfo"><p class="wtitle">Spiraling</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 0.5 Ξ · live auction</p><p class="wprice">Manifold</p></div></a>
       <a class="wcollect" href="https://manifold.xyz/@photon-tide" target="_blank" rel="noopener">collect →</a>
+    </div>
+
+<div class="wcard" data-s="sold" style="cursor:pointer" onclick="openUnbreakable()">
+      <div class="wimg" style="position:relative">
+        <img src="media/unbreakable/01-600.webp" alt="warbrand — u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ † w/ m0dest" loading="lazy">
+        <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
+        <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7e6aa018;border:1px solid #7e6aa040;color:#7e6aa0">Transient Labs</span>
+        <div style="position:absolute;bottom:.6rem;right:.6rem;font-family:'Inconsolata',monospace;font-size:.45rem;letter-spacing:.2em;color:rgba(196,135,58,.8);background:rgba(0,0,0,.6);padding:.2rem .5rem">48 works · w/ m0dest</div>
+      </div>
+      <div class="winfo">
+        <p class="wtitle unb-font">u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ †</p>
+        <p class="wsub">2025 · w/ m0dest · Transient Labs · 48 1/1s · all collected</p>
+        <p class="wprice">Transient Labs</p>
+      </div>
     </div>
 
 <div class="wcard" data-s="sold">
@@ -1611,12 +1660,12 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 
       <div style="background:var(--deep);padding:2rem;transition:background .3s" onmouseenter="this.style.background='#0e0e18'" onmouseleave="this.style.background='var(--deep)'">
         <div style="width:100%;aspect-ratio:1;overflow:hidden;margin-bottom:1.2rem">
-          <img src="media/685bbcafe6.jpg" alt="Unbreakable" style="width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.95);transition:all .6s" onmouseover="this.style.filter='saturate(1) brightness(1) scale(1.02)'" onmouseout="this.style.filter='saturate(.9) brightness(.95)'">
+          <img src="media/unbreakable/01-300.webp" alt="u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ †" loading="lazy" style="width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.95);transition:all .6s" onmouseover="this.style.filter='saturate(1) brightness(1) scale(1.02)'" onmouseout="this.style.filter='saturate(.9) brightness(.95)'">
         </div>
-        <p style="font-family:'Inconsolata',monospace;font-size:.5rem;color:var(--ember);letter-spacing:.3em;margin-bottom:.4rem">collab · active</p>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--ghost);margin-bottom:.5rem">Unbreakable</p>
-        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;color:var(--pale);line-height:1.8;margin-bottom:1rem">w/ mOdest · a collaboration between two worlds.</p>
-        <a href="https://www.transient.xyz/nfts/ethereum/0xac2348bbb2901802bf395b1b9d6778d99b105ff8" target="_blank" style="font-family:'Inconsolata',monospace;font-size:.55rem;letter-spacing:.28em;color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.3);padding-bottom:2px">view collection →</a>
+        <p style="font-family:'Inconsolata',monospace;font-size:.5rem;color:var(--ember);letter-spacing:.3em;margin-bottom:.4rem">collab · 48 / 48 collected</p>
+        <p class="unb-font" style="font-size:1.1rem;color:var(--ghost);margin-bottom:.5rem">u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ †</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;color:var(--pale);line-height:1.8;margin-bottom:1rem">w/ m0dest · a collaboration between two worlds.</p>
+        <a href="https://www.transient.xyz/nfts/ethereum/0xac2348bbb2901802bf395b1b9d6778d99b105ff8" onclick="openUnbreakable();return false" style="font-family:'Inconsolata',monospace;font-size:.55rem;letter-spacing:.28em;color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.3);padding-bottom:2px">view all 48 →</a>
       </div>
       <div style="background:var(--deep);padding:2rem;transition:background .3s" onmouseenter="this.style.background='#0e0e18'" onmouseleave="this.style.background='var(--deep)'">
         <div style="width:100%;aspect-ratio:1;overflow:hidden;margin-bottom:1.2rem">
@@ -2713,7 +2762,7 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   }
   window.clearWorkHash = clearWorkHash;
-  const slugify = t => t.toLowerCase().replace(/&/g, ' and ').replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const slugify = t => t.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/&/g, ' and ').replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   const bySlug = {};
   document.querySelectorAll('#wgrid .wcard').forEach(card => {
     const t = card.querySelector('.wtitle');
@@ -2937,8 +2986,82 @@ document.addEventListener('keydown',e=>{
 });
 
 
+/* ═══ u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ † — 48 one-of-ones w/ m0dest (animated WebP, local) ═══ */
+const UNB = [[1, "warbrand", "0.395", "@bk4479", "QmcoE7GHbCrJerbyMkNJ4jyWo6Dc5jQfjorpDT5XYhDRLs"], [2, "heretic", "0.25", "@0xd2e3…8b4f", "QmW2tN71YbpcGqiRXxmCRcp7y4L3vhkWGu8os8iUmaVALw"], [3, "visioncrypt", "0.3", "beldrueger.eth", "QmYLUDz2Mv5Dg8CQTozmXhKFSTDuDhUzts1jA6Ne7bDh5A"], [4, "dredd", "0.18", "@incept", "QmPcsCui8gi1Qyqn3EU3tx1iuLz5YpnovwAVc7ZB1pPbgk"], [5, "viridian", "0.28", "@pepp", "Qmb6f8bJDps6R35qy21diAUHmDLwQWAmCDcKRc3m4pjbPM"], [6, "skullcollector", "0.325", "@alexmpc23", "QmYQfffHvxQLiWpKndmj6LSnHrRo1hT2ZTV5fod1Qxpfev"], [7, "thumbscrew", "0.2205", "@pepp", "QmZQmh5s7xptUyLgxdVJ8D1t458RMT1b9JC7Ccx8CE7q8f"], [8, "bonehammer", "0.26", "valisdao2.eth", "QmUA5R7qgMLrrTvBY9gUz4Ls7sjgfiPamuGYWs8jtmNZwa"], [9, "ruiner", "0.315", "0xf851…239a", "QmZ6mNgtUdMyr8yEGgDZVKVJiYaT2b8BfUoVyUvh1FQmwm"], [10, "voidreaper", "0.288", "@killianmoore", "QmZCBfjdoSHqbURDBkEry1v8rUZFo1MXaWqg7AUxfmcdWM"], [11, "bane", "0.206745", "@grifterdmac", "QmQVUacMWB9TYefXMyWuBYynb6qJzdHMdHQSz1JQSENjxW"], [12, "mr malice", "0.2205", "@pepp", "QmagiFTyiDymH7p5yt1DjaUVSua3HCY7b1jRv9J9hzyVsF"], [13, "the warden", "0.17745", "@grifterdmac", "QmTs12tHwJDcPWughtRd98mW7fHJwkJQJLrdEai18XZka1"], [14, "inferno", "0.28", "@scamart", "QmXk63FKJjoEee4vZBEMUd37GKXJVowjdhB7MAKCL6bKSy"], [15, "harrow", "0.363825", "@scamart", "QmYqJKDGQEMpdQHe38Jk7oAcbyGBgdeh5wSK4pswZdoWXj"], [16, "hollowcross", "0.3975", "0xf851…239a", "QmWeF7sX4KNYHe5oxBieYTbqTmYZgWYxG6Cbv5TXVSBt82"], [17, "deathless", "0.2369", "@rain41", "QmNi3TbZ3KPTperFuFaeE6tuVV39aHtuT7QYPgtW3fWSA1"], [18, "the lynch", "0.294", "chickmagnet.eth", "QmV1eTrDeUB3ZWSbmZBTtXJJL4oqUwYjwjSHQtzUaqQmpp"], [19, "bloodbag", "0.1369", "@surfrider", "QmXFrqEECQJBPWmScpVnbmK6aPqrPhBJG5GfGxFQqvVHrg"], [20, "pantera", "0.1369", "@surfrider", "QmaUobBHBLDy9Uu49etDUTjT3WHzvx45hdWQDHC6FVa6ku"], [21, "ascendant", "0.11", "@timewalker", "QmbzHZVJFk4XLLpDeFFsA4BrNjFSqSq31i8ebUajcEnSVR"], [22, "wastegod", "0.1575", "@surfrider", "QmfBZvigynWUGh6hc4NGEcVLbZAYWv4R28WrjH4yBs7EKz"], [24, "crowfeeder", null, "@shaggy8627", "QmfJKSJ8bqkVqE9k7ohQVJzzoimrKbcGtVP6Y263TFKFHR"], [25, "cresentface", null, "0x9e2d…c70a", "QmYzE64iM754AUfz5wWWj2147Hbemg5CjKcgmNjwQbMBNB"], [26, "seer", null, "@nightshare", "QmYos7P2oR7zPfKcNCTmqaoHBCxASe2b7NZJkvx3arrg8v"], [27, "the butcher", null, "@suparno67", "QmZadZhhJP3TjH9sWLAfffKaw8ondkTfs9KyVS7dpXLZGz"], [28, "scabjack", null, "0xf795…21ac", "Qmf8rhTN9o8DETDm2rBcTvf7sCNoEQtvniFdJbDQWcwMAh"], [29, "crimson", null, "@awhurst", "QmWu8Q5CL1ykDdKDAafy4qGvCjntvjViEGBscx96MJtJMy"], [30, "necromancer", null, "punk8868.eth", "QmQonSGwno4tG6uK75Q3GHrmcseV24jy3zbLwc8DtAqdeg"], [31, "mr infinite", null, "@otoalchemist", "QmQv4VwSArkgxdtEWDk6W2BNjFLkQ87mNA62n8C6ogXr2M"], [32, "vessel", null, "chickmagnetvault.eth", "QmbCd9VaayCPgsmV4cPwFHAb4x19KLhoLfjDvTmBCxKSWC"], [33, "wastelander", null, "0xf1cf…30b0", "QmPcRdgt94ggvX5cwmxBJKiyZ2e5Kxf3piiMSKbVZ83nxZ"], [34, "solomon sunder", null, "@rain41", "Qmeizt5JnQhUPwdsv55zRMfB4bjDN4dqV1uRoyX24ciH3q"], [35, "arsonist", null, "@otoalchemist", "QmensznHQGHKqmHXmFsppoBnXNbdXwDJQ8UN1fCmDxHbjP"], [36, "doomed", null, "@scamart", "QmRZX4pPGLkzbBMDmkfzubsHDM8ctKDjrgwK2X7fRTwg7z"], [37, "luminant", null, "snox.eth", "QmPCSCtJtmAKfHAXoGuGVouQ5N5gqz7Dew8Taj6ShTE2jG"], [38, "phantom", null, "0x86d2…913f", "QmbFVmrsaAUkZDFjzi8Xqi5BVZBJiue9gidpSqpsxJU1dE"], [39, "the joker", null, "@wiic", "QmXXgmJJNaxwhsaRVCbx6T8XSx2wKngZg7diHnKjTriGwD"], [40, "nefarious", null, "@mrc", "QmW5D6d6vb4bfx6AR96LXXj2VT9Zbk6TbHaJFrzDXfvddn"], [41, "celestial guardian", null, "@nftlaurent", "QmbVMRr8wDReJX9Zp6XGBtYgs43Uenymbq4SFEABarGQH1"], [42, "chip the ripper", null, "0x8cf8…2c77", "QmT1Qcbkw7pxDdeH4zAE4SwDJZEwh1SNtDKiaahnQdGrwU"], [43, "vanguard", null, "0x509d…f968", "QmUQPB6PsveVJXb69k94pfeefYQ4AjR8kknQAVwtJUir4Z"], [44, "datawrath", null, "0xb6e3…d544", "QmQiy4QapTpayTnVeBxeP2EDGQ9KQ3MRLsWG1EhAaM7umU"], [45, "abandoned one", null, "0x15ab…e19f", "QmUHPjTVZJKZX7tc39hQes5QSsvNHD7oYD6uByzP4u62Wd"], [46, "shapeshifter", null, "0xbce9…5399", "QmQvf6KuRbuHpBkjHiqZoJbBE6DuDZj6T7BoM3agFDJMVH"], [47, "hallvard", null, "0x904f…f804", "QmRyVMa1S2aDATSFYwFvmCKdAdJs3c6if78KYCAAj1dHwq"], [48, "the conduit", null, "zoso.eth", "QmNy621K7LpXTf4j4Wj8icHrNdrhBxBFXzT4LSwTs65M1Z"], [49, "the high convener", null, "jediwolf.eth", "QmQjphJ2eppaTeBoyFqy1dmhzwb9nmUCdR9NLue84SeSE8"]];   // [token id, name, sold price Ξ or null, collector, media CID]
+const UNB_URL = 'https://www.transient.xyz/nfts/ethereum/0xac2348bbb2901802bf395b1b9d6778d99b105ff8/';
+const unbFile = (id, w) => 'media/unbreakable/' + String(id).padStart(2, '0') + '-' + w + '.webp';
+// large view: Transient's image service (animated WebP), loaded only when a piece is opened.
+// warbrand's large version is hosted here; the local thumbnail always shows first as a fallback.
+const unbLarge = (id, cid) => id === 1 ? unbFile(1, 600)
+  : 'https://img.transient.xyz/?n=-1&output=webp&w=600&q=60&url=' + encodeURIComponent('https://ipfs.transientusercontent.xyz/ipfs/' + cid + '/media') + '&we=';
+let unbIdx = -1;   // -1 = grid view
+
+function openUnbreakable(){
+  const g = document.getElementById('unb-gallery');
+  const grid = document.getElementById('unb-grid');
+  if (!grid.children.length) {
+    UNB.forEach(([id, name], i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'unb-tile';
+      b.setAttribute('aria-label', name);
+      const img = document.createElement('img');
+      img.src = unbFile(id, 300); img.alt = name; img.loading = 'lazy'; img.decoding = 'async';
+      const cap = document.createElement('span'); cap.textContent = name;
+      b.append(img, cap);
+      b.onclick = () => unbShow(i);
+      grid.appendChild(b);
+    });
+  }
+  g.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  unbGrid();
+}
+function closeUnbreakable(){
+  document.getElementById('unb-gallery').style.display = 'none';
+  document.getElementById('unb-big').removeAttribute('src');
+  document.body.style.overflow = '';
+}
+function unbGrid(){
+  unbIdx = -1;
+  document.getElementById('unb-detail').hidden = true;
+  document.getElementById('unb-gridview').hidden = false;
+  document.getElementById('unb-big').removeAttribute('src');
+}
+function unbShow(i){
+  unbIdx = (i + UNB.length) % UNB.length;
+  const [id, name, price, who, cid] = UNB[unbIdx];
+  const big = document.getElementById('unb-big');
+  const want = unbIdx;
+  big.onload = null;
+  big.src = unbFile(id, 300); big.alt = name;          // instant: the thumbnail, scaled up
+  big.classList.add('soft');
+  const hi = new Image();
+  hi.onload = () => { if (unbIdx === want) { big.src = hi.src; big.classList.remove('soft'); } };
+  hi.src = unbLarge(id, cid);                            // sharp version replaces it when ready
+  document.getElementById('unb-name').textContent = name;
+  document.getElementById('unb-meta').textContent = '1/1 · ' + (price ? 'sold ' + price + ' Ξ · ' : '') + 'collected by ' + who;
+  document.getElementById('unb-count').textContent = (unbIdx + 1) + ' / ' + UNB.length;
+  document.getElementById('unb-link').href = UNB_URL + id;
+  document.getElementById('unb-gridview').hidden = true;
+  document.getElementById('unb-detail').hidden = false;
+  document.getElementById('unb-gallery').scrollTop = 0;
+  [unbIdx + 1, unbIdx - 1].forEach(k => { const it = UNB[(k + UNB.length) % UNB.length]; const im = new Image(); im.src = unbLarge(it[0], it[4]); });
+}
+document.addEventListener('keydown', e => {
+  if (document.getElementById('unb-gallery').style.display !== 'block') return;
+  if (e.key === 'Escape') { unbIdx >= 0 ? unbGrid() : closeUnbreakable(); }
+  if (unbIdx >= 0 && e.key === 'ArrowLeft') unbShow(unbIdx - 1);
+  if (unbIdx >= 0 && e.key === 'ArrowRight') unbShow(unbIdx + 1);
+});
+document.addEventListener('DOMContentLoaded', function(){   // the gallery markup sits after this script
+  let x0 = 0;
+  const d = document.getElementById('unb-detail');
+  d.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, {passive: true});
+  d.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) unbShow(unbIdx + (dx < 0 ? 1 : -1)); }, {passive: true});
+});
+
 // closing a series gallery clears its #link
-['closeCellGallery','closeCorridorGallery','closeStarsGallery'].forEach(n => {
+['closeCellGallery','closeCorridorGallery','closeStarsGallery','closeUnbreakable'].forEach(n => {
   const f = window[n];
   if (typeof f === 'function') window[n] = function(){ f.apply(this, arguments); if (window.clearWorkHash) clearWorkHash(); };
 });
@@ -3070,7 +3193,7 @@ document.addEventListener('keydown',e=>{
     const g = document.getElementById('gate');
     if (g && getComputedStyle(g).display !== 'none') return true;
     if (document.getElementById('viewer')?.classList.contains('open')) return true;
-    return ['cell-gallery','corridor-gallery','stars-gallery'].some(id => document.getElementById(id)?.style.display === 'block');
+    return ['cell-gallery','corridor-gallery','stars-gallery','unb-gallery'].some(id => document.getElementById(id)?.style.display === 'block');
   }
 
   function sleep(instant){
@@ -3187,5 +3310,28 @@ document.addEventListener('keydown',e=>{
   if (hero) setTimeout(flicker, 15000);
 })();
 </script>
+<!-- u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ † GALLERY (48 pieces) -->
+<div id="unb-gallery" onclick="if(event.target===this)closeUnbreakable()" style="display:none;position:fixed;inset:0;background:rgba(5,5,8,.97);z-index:99999;overflow-y:auto;cursor:auto">
+  <button type="button" class="unb-close" onclick="closeUnbreakable()">✕ close</button>
+  <div class="unb-head">
+    <p class="unb-kicker">TRANSIENT LABS · ρнø × мødєѕт · 2025</p>
+    <h2 class="unb-title unb-font">u͓n͓b͓r͓e͓a͓k͓a͓b͓l͓e͓ †</h2>
+    <p class="unb-sub">48 one-of-ones with m0dest · all collected</p>
+  </div>
+  <div id="unb-gridview">
+    <div class="unb-grid" id="unb-grid"></div>
+    <p class="unb-foot"><a href="https://www.transient.xyz/nfts/ethereum/0xac2348bbb2901802bf395b1b9d6778d99b105ff8" target="_blank" rel="noopener">view the collection on transient →</a></p>
+  </div>
+  <div id="unb-detail" hidden>
+    <div class="unb-stage">
+      <button type="button" class="unb-arrow" onclick="unbShow(unbIdx-1)" aria-label="previous">← prev</button>
+      <img id="unb-big" alt="">
+      <button type="button" class="unb-arrow" onclick="unbShow(unbIdx+1)" aria-label="next">next →</button>
+    </div>
+    <p class="unb-name" id="unb-name"></p>
+    <p class="unb-meta" id="unb-meta"></p>
+    <p class="unb-row"><button type="button" class="unb-back" onclick="unbGrid()">← all 48</button><span id="unb-count"></span><a id="unb-link" href="#" target="_blank" rel="noopener">view on transient →</a></p>
+  </div>
+</div>
 </body>
 </html>
