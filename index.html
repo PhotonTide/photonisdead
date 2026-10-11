@@ -416,6 +416,92 @@ footer span{font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.
 #gate-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 body.gate-open{overflow:hidden}
 
+
+/* ═══════════════════════════════════════
+   READABILITY — collector feedback (Oct 2026)
+   Minimum ~12px for all text, tighter letter-spacing,
+   lighter greys. Placed last so it also applies on phones.
+═══════════════════════════════════════ */
+:root{--pale:#a8a29b}
+body{-webkit-font-smoothing:antialiased}
+
+/* navigation */
+.nav-links a,.tab-nav-btn{font-size:.8rem;letter-spacing:.16em}
+.pt-btn{font-size:.8rem;letter-spacing:.16em;padding:1.1rem 1.6rem}
+.tgl-btn{font-size:.8rem;letter-spacing:.14em}
+.s-label{font-size:.8rem;letter-spacing:.32em}
+.hero-sub{font-size:clamp(.78rem,1.1vw,.9rem);letter-spacing:.4em}
+.hero-desc{color:rgba(212,207,200,.6)}
+.scroll-cue span{font-size:.75rem;letter-spacing:.35em}
+.marquee-track span{font-size:.75rem;letter-spacing:.24em}
+
+/* work cards */
+.wtitle{font-size:1.2rem;font-weight:400}
+.wsub{font-size:.8rem;letter-spacing:.06em;line-height:1.55;margin-top:.35rem}
+.wprice{font-size:.8rem;letter-spacing:.1em}
+.wpill,.wplat{font-size:.75rem;letter-spacing:.08em;padding:.22rem .55rem}
+.wimg > div[style*="Inconsolata"]{font-size:.75rem!important;letter-spacing:.08em!important}
+.year-divider span{font-size:.95rem;letter-spacing:.35em}
+
+/* press, exhibitions, auctions */
+.press-source,.press-date,.press-type{font-size:.75rem;letter-spacing:.14em}
+.press-title{font-size:1.5rem;font-weight:400}
+.press-excerpt{font-size:1.12rem;font-weight:400;line-height:1.75}
+.press-link,.auction-a{font-size:.8rem;letter-spacing:.16em}
+.exh-yr{font-size:.8rem;letter-spacing:.22em}
+.exh-tag{font-size:.75rem;letter-spacing:.12em}
+.exh-name{font-weight:400}
+.exh-venue{font-size:1.1rem;font-weight:400;line-height:1.65}
+.exh-venue strong{color:rgba(212,207,200,.8)}
+.exh-piece{font-size:.78rem;letter-spacing:.1em;color:rgba(196,135,58,.85)}
+.am-item p:first-child{font-size:.75rem;letter-spacing:.24em}
+.am-item p:last-child{font-size:1.1rem}
+.auction-label{font-size:.75rem;letter-spacing:.16em}
+.auction-note{font-size:1.12rem;font-weight:400}
+
+/* collection, prints, statement, contact */
+.cartist{font-size:.75rem;letter-spacing:.12em}
+.ctitle{font-size:1.1rem;font-weight:400}
+.csub{font-size:.78rem;letter-spacing:.08em}
+.pbuy{font-size:.8rem;letter-spacing:.16em}
+.collector-intro,.c-intro{font-size:1.15rem;font-weight:400}
+.collector-note{font-size:.75rem;letter-spacing:.16em}
+.stmt-q{color:rgba(212,207,200,.7)}
+.stmt-attr{font-size:.8rem;letter-spacing:.35em}
+.bio-text{font-weight:400}
+.cln{font-size:1.35rem}
+.cla{font-size:.8rem;letter-spacing:.08em}
+footer span{font-size:.75rem;letter-spacing:.16em;color:#8f8982}
+
+/* fullscreen viewer and gallery pop-ups */
+#viewer-sub{font-size:.8rem;letter-spacing:.12em;line-height:1.6;color:var(--pale)}
+#viewer-counter{font-size:.75rem;letter-spacing:.2em;color:#8f8982}
+#viewer-link{font-size:.8rem;letter-spacing:.16em}
+#viewer-close,#viewer-prev,#viewer-next{font-size:.8rem;letter-spacing:.16em;color:rgba(212,207,200,.6)}
+#cell-gallery [style*="Inconsolata"],#corridor-gallery [style*="Inconsolata"],#stars-gallery [style*="Inconsolata"],
+#page-works [style*="Inconsolata"],#page-collector [style*="Inconsolata"]{font-size:.78rem!important;letter-spacing:.14em!important}
+
+/* pills get a solid dark backing so they stay readable over bright artwork */
+.wpill,.wplat,.wimg > div[style*="Inconsolata"]{background:rgba(0,0,0,.78)!important;backdrop-filter:blur(4px)}
+
+/* tab bar sticks just below the fixed menu instead of sliding underneath it */
+.page-tabs{top:var(--navh,0px)}
+.pt-btn{white-space:nowrap}
+
+/* phones: same minimums; pills a touch smaller so two fit on a narrow card */
+#page-works .wimg > div[style*="Inconsolata"]{font-size:.75rem!important;letter-spacing:.08em!important}
+@media(max-width:480px){
+  .wpill{font-size:.7rem!important;letter-spacing:.04em!important;padding:.18rem .4rem}
+  /* narrow cards: platform and badge already appear in the text below the image */
+  .wplat,#page-works .wimg > div[style*="Inconsolata"]{display:none}
+  .wtitle{font-size:1.05rem}
+  .wsub,.wprice{font-size:.75rem;letter-spacing:.03em}
+  .pt-btn{font-size:.75rem;letter-spacing:.12em;padding:.9rem 1.1rem}
+  .tgl-btn{font-size:.75rem;letter-spacing:.1em;padding:.55rem .9rem}
+  .s-label{font-size:.75rem}
+  .cln{font-size:1.15rem}
+  .cla{font-size:.75rem}
+}
 </style>
 </head>
 <body class="gate-open">
@@ -2182,6 +2268,14 @@ document.querySelectorAll('.tgl-btn').forEach(btn=>{
     });
   });
 });
+
+/* ═══ STICKY TAB OFFSET ═══ */
+(function(){
+  const nav=document.querySelector('nav');
+  const setNavH=()=>document.documentElement.style.setProperty('--navh',nav.offsetHeight+'px');
+  setNavH(); window.addEventListener('resize',setNavH);
+  if(document.fonts) document.fonts.ready.then(setNavH);
+})();
 
 /* ═══ WORK COUNT ═══ */
 document.querySelectorAll('.works-count').forEach(el=>{
