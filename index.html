@@ -3578,7 +3578,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
       const live = c.shows.length > 0, on = focused === c.id;
       const a = Math.min(1, k * 2.2);
       if (live && !REDUCE) {
-        const ph = ((t / 2400) + c.ll[0] / 90) % 1;
+        const ph = ((((t / 2400) + c.ll[0] / 90) % 1) + 1) % 1;
         ctx.beginPath(); ctx.arc(p[0], p[1], 4 + ph * 16, 0, 7);
         ctx.strokeStyle = `rgba(196,135,58,${((1 - ph) * .55 * a).toFixed(3)})`; ctx.lineWidth = 1; ctx.stroke();
       }
@@ -3605,8 +3605,8 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
       if (Math.abs(vel) > .01) { rot[0] += vel; vel *= .94; }
       else if (!REDUCE && !focused && t - lastTouch > 2500) rot[0] += .06;
     }
-    draw(t);
     raf = requestAnimationFrame(loop);
+    try { draw(t); } catch (e) {}
   }
   const kick = () => { if (!raf && ready && visible) raf = requestAnimationFrame(loop); };
 
