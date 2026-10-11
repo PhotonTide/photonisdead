@@ -497,6 +497,8 @@ footer span{font-size:.75rem;letter-spacing:.16em;color:#8f8982}
 #viewer-sub{font-size:.8rem;letter-spacing:.12em;line-height:1.6;color:var(--pale)}
 #viewer-counter{font-size:.75rem;letter-spacing:.2em;color:#8f8982}
 #viewer-link{font-size:.8rem;letter-spacing:.16em}
+#viewer-share{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.16em;color:var(--pale);background:none;border:none;border-bottom:1px solid rgba(212,207,200,.25);padding:0 0 2px;cursor:pointer;transition:color .25s}
+#viewer-share:hover{color:var(--ghost)}
 #viewer-close,#viewer-prev,#viewer-next{font-size:.8rem;letter-spacing:.16em;color:rgba(212,207,200,.6)}
 #cell-gallery [style*="Inconsolata"],#corridor-gallery [style*="Inconsolata"],#stars-gallery [style*="Inconsolata"],
 #page-works [style*="Inconsolata"],#page-collector [style*="Inconsolata"]{font-size:.78rem!important;letter-spacing:.14em!important}
@@ -617,6 +619,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
         <p class="wsub">2026 · 8NAP ART · Event Horizon + Youniverse · editions</p>
         <p class="wprice">8NAP</p>
       </div>
+      <a class="wcollect" href="https://8nap.art/editions/when-all-i-had-was-stars" rel="noopener" target="_blank">collect →</a>
     </div>
 
 <div class="wcard" data-s="sold">
@@ -759,7 +762,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 <div class="wcard" data-s="available">
       <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://assets.manifold.xyz/optimized/92dfd7a10c3864a9b4666ddd70718e1261375d068a9fd03a445daac09f52a772/w_1000.jpg" alt="Keep It Together" loading="lazy">
-        <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">inquire</span>
+        <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">available</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
       <div class="winfo"><p class="wtitle">Keep It Together</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 0.5 Ξ · live auction</p><p class="wprice">Manifold</p></div></a>
@@ -806,7 +809,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 <div class="wcard" data-s="available">
       <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://assets.manifold.xyz/original/7cbb4a5ff32886f9447007788f7f38c781ab8f70ebe768e261fec582e1ab819d.jpg" alt="Voidrunner" loading="lazy">
-        <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">inquire</span>
+        <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">available</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
       <div class="winfo"><p class="wtitle">Voidrunner</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 0.5 Ξ · live auction</p><p class="wprice">Manifold</p></div></a>
@@ -825,7 +828,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 <div class="wcard" data-s="available">
       <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://assets.manifold.xyz/original/458290a6ee64cc16ce7ce1ce31d4607037d36e03c9129a734499ad3d3062cf72.jpg" alt="Spiraling" loading="lazy">
-        <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">inquire</span>
+        <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">available</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
       <div class="winfo"><p class="wtitle">Spiraling</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 0.5 Ξ · live auction</p><p class="wprice">Manifold</p></div></a>
@@ -902,6 +905,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7e6aa018;border:1px solid #7e6aa040;color:#7e6aa0">Transient Labs</span>
       </div>
       <div class="winfo"><p class="wtitle">3AM / Paranoia</p><p class="wsub">2025 · Transient Labs · 1/1 · 2.0 Ξ</p><p class="wprice">Transient Labs</p></div></a>
+      <a class="wcollect" href="https://transient.xyz/nfts/ethereum/0xf26d5f421ca6aab35e6bb09a33c9502f12412e31/1" rel="noopener" target="_blank">collect →</a>
     </div>
 
 <div class="wcard" data-s="sold">
@@ -1090,12 +1094,13 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="available">
-      <a href="https://superrare.com/artwork/eth/0x67F8De3A7aB9CE266e44A17B0467860634865171/" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://aotm.gallery/artwork/i-never-seem-to-fit-in/" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://aotm.gallery/wp-content/uploads/2024/03/I-never-seem-to-fit-in-1-600x600-c-default.jpeg" alt="I Never Seem to Fit In" loading="lazy">
         <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">inquire</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#c4873a18;border:1px solid #c4873a40;color:#c4873a">AOTM</span>
       </div>
       <div class="winfo"><p class="wtitle">I Never Seem to Fit In</p><p class="wsub">2024 · AOTM · 1/1</p><p class="wprice">SuperRare</p></div></a>
+      <a class="wcollect" href="https://aotm.gallery/artwork/i-never-seem-to-fit-in/" rel="noopener" target="_blank">inquire on AOTM →</a>
     </div>
 
 <div class="wcard" data-s="sold">
@@ -1153,12 +1158,13 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="available">
-      <a href="https://foundation.app/mint/eth/0xF5803Ec48a495547eF2CBE5861fA0d7C64a22Bab/4" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a style="text-decoration:none"><div class="wimg" style="position:relative">
         <video data-src="media/1422e9a0d0.mp4" muted loop playsinline preload="none" aria-label="Depersonalization" style="width:100%;height:100%;display:block;object-fit:cover"></video>
-        <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">available</span>
+        <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">inquire</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
       </div>
       <div class="winfo"><p class="wtitle">Depersonalization</p><p class="wsub">2023 · Psychedelia · 1/1 · 5.00 Ξ reserve</p><p class="wprice">Foundation</p></div></a>
+      <a class="wcollect" href="mailto:photontideisdead@gmail.com?subject=Depersonalization">inquire →</a>
     </div>
 
 <div class="wcard" data-s="sold">
@@ -2029,6 +2035,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
     <p class="c-intro reveal d2">acquisition, exhibitions, collaborations.</p>
     <div class="reveal d3">
+      <a href="mailto:photontideisdead@gmail.com" class="clink"><span class="cln">Email</span><span class="cla">photontideisdead@gmail.com →</span></a>
       <a href="https://www.instagram.com/photontide/" class="clink" target="_blank"><span class="cln">Instagram</span><span class="cla">@photontide →</span></a>
       <a href="https://twitter.com/photonisdead" class="clink" target="_blank"><span class="cln">X / Twitter</span><span class="cla">@photonisdead →</span></a>
       <a href="https://superrare.com/photontide" class="clink" target="_blank"><span class="cln">SuperRare</span><span class="cla">superrare.com/photontide →</span></a>
@@ -2068,7 +2075,10 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
     <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:.8rem">
       <div id="viewer-counter"></div>
-      <a id="viewer-link" href="#" target="_blank">view on platform →</a>
+      <div style="display:flex;gap:1.4rem;align-items:center">
+        <button id="viewer-share" type="button">copy link</button>
+        <a id="viewer-link" href="#" target="_blank">view on platform →</a>
+      </div>
     </div>
   </div>
 </div>
@@ -2574,6 +2584,7 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     document.body.style.overflow = '';
     const vv = document.getElementById('viewer-video');
     if (vv) { vv.pause(); vv.src = ''; }
+    clearWorkHash();
   }
 
   function showCard(idx) {
@@ -2615,13 +2626,15 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
       vTitle.textContent = title ? title.textContent : '';
       vSub.textContent   = sub ? sub.textContent : '';
       const platName = plat ? plat.textContent : 'platform';
-      vLink.textContent  = card.querySelector('.wcollect:not(.wcollab)') ? 'collect →' : `view on ${platName.toLowerCase()} →`;
       const collect = card.querySelector('.wcollect:not(.wcollab)');
+      vLink.textContent  = collect ? collect.textContent : `view on ${platName.toLowerCase()} →`;
       const url = collect ? collect.href : (link ? (link.dataset.url || '') : '');
       vLink.href = url || '#';
+      vLink.target = url.startsWith('mailto:') ? '' : '_blank';
       vLink.style.display = url ? '' : 'none';
       vCounter.textContent = `${idx + 1} / ${cards.length}`;
     }, 180);
+    setWorkHash(card);
   }
 
   // Neutralise all wcard <a> hrefs so they have zero navigation behaviour.
@@ -2644,6 +2657,11 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     });
   });
 
+  // Collect / collab links only navigate — stop them before a card's own gallery onclick fires
+  document.getElementById('wgrid').addEventListener('click', e => {
+    if (e.target.closest('.wcollect')) e.stopPropagation();
+  }, true);
+
   // Open viewer on any wcard click
   document.getElementById('wgrid').addEventListener('click', e => {
     const card = e.target.closest('.wcard');
@@ -2651,7 +2669,7 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     // Collect links go straight to the marketplace
     if (e.target.closest('.wcollect')) return;
     // Oculus and The Cell open their own gallery via inline onclick — don't stack the viewer on top
-    if (card.hasAttribute('onclick')) return;
+    if (card.hasAttribute('onclick')) { setWorkHash(card); return; }
     // Platform pill click → open external URL directly
     if (e.target.closest('.wplat')) {
       const a = card.querySelector('a');
@@ -2685,8 +2703,52 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     if (Math.abs(dx) > 50) dx < 0 ? showCard(currentIdx+1) : showCard(currentIdx-1);
   }, {passive:true});
 
+  /* ── Links to single artworks: photonisdead.com/#witness ── */
+  function setWorkHash(card) {
+    if (card && card.dataset.slug) history.replaceState(null, '', '#' + card.dataset.slug);
+  }
+  function clearWorkHash() {
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  }
+  window.clearWorkHash = clearWorkHash;
+  const slugify = t => t.toLowerCase().replace(/&/g, ' and ').replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const bySlug = {};
+  document.querySelectorAll('#wgrid .wcard').forEach(card => {
+    const t = card.querySelector('.wtitle');
+    if (!t) return;
+    let s = slugify(t.textContent), n = 2;
+    while (bySlug[s]) s = slugify(t.textContent) + '-' + n++;
+    card.dataset.slug = s;
+    bySlug[s] = card;
+  });
+  function openFromHash() {
+    const card = bySlug[decodeURIComponent(location.hash.slice(1))];
+    if (!card) return false;
+    // skip the intro for direct links
+    const gate = document.getElementById('gate');
+    if (gate) gate.style.display = 'none';
+    document.body.classList.remove('gate-open');
+    showPage('works');
+    if (card.style.display === 'none') document.querySelector('.tgl-btn[data-f="all"]').click();
+    card.scrollIntoView({block: 'center'});
+    if (card.hasAttribute('onclick')) { card.click(); return true; }
+    const list = getVisibleCards();
+    openViewer(Math.max(0, list.indexOf(card)), list);
+    return true;
+  }
+  window.addEventListener('hashchange', openFromHash);
+  if (location.hash.length > 1) setTimeout(openFromHash, 60);
+
+  const vShare = document.getElementById('viewer-share');
+  vShare.addEventListener('click', async e => {
+    e.stopPropagation();
+    try { await navigator.clipboard.writeText(location.href); vShare.textContent = 'link copied'; }
+    catch (err) { vShare.textContent = location.href; }
+    setTimeout(() => { vShare.textContent = 'copy link'; }, 1800);
+  });
+
   // Add cursor listeners for viewer elements
-  [vClose, vPrev, vNext, vLink].forEach(el => {
+  [vClose, vPrev, vNext, vLink, vShare].forEach(el => {
     el.addEventListener('mouseenter', () => { const spc = document.getElementById('spc'); if(spc) spc.style.transform='translate(-50%,-50%) scale(1.7)'; });
     el.addEventListener('mouseleave', () => { const spc = document.getElementById('spc'); if(spc) spc.style.transform='translate(-50%,-50%) scale(1)'; });
   });
@@ -2872,6 +2934,12 @@ document.addEventListener('keydown',e=>{
   }
 });
 
+
+// closing a series gallery clears its #link
+['closeCellGallery','closeCorridorGallery','closeStarsGallery'].forEach(n => {
+  const f = window[n];
+  if (typeof f === 'function') window[n] = function(){ f.apply(this, arguments); if (window.clearWorkHash) clearWorkHash(); };
+});
 </script>
 
 
