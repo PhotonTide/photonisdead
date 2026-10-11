@@ -2,7 +2,7 @@
 // Files starting with "_" inside /api are not exposed as endpoints by Vercel.
 import { Redis } from '@upstash/redis';
 import { createHmac, createHash, randomBytes, timingSafeEqual } from 'node:crypto';
-import { createPublicClient, http, fallback, getAddress, isAddress, verifyMessage } from 'viem';
+import { createPublicClient, http, fallback, getAddress, isAddress, verifyMessage, ContractFunctionRevertedError } from 'viem';
 import { mainnet } from 'viem/chains';
 import { createSiweMessage } from 'viem/siwe';
 
@@ -161,8 +161,8 @@ export async function ensName(address) {
   let name = null, ok = true;
   try { name = await ensClient.getEnsName({ address: getAddress(address) }); }
   catch (e) {
-    // a revert just means "no name"; a network problem means "try again later" (don't cache)
-    ok = /revert|returned no data|ContractFunction/i.test(String(e && (e.name + e.message)));
+    // a revert just means "no name"; anything else (network trouble) means "try again later" — don't remember it
+    ok = !!(e && typeof e.walk === 'function' && e.walk(x => x instanceof ContractFunctionRevertedError));
   }
   if (ok) await redis.set(P + 'ens:' + address, name || '', { ex: 86400 });
   return name || null;
