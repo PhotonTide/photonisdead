@@ -7,8 +7,10 @@ import { mainnet } from 'viem/chains';
 import { createSiweMessage } from 'viem/siwe';
 
 export const MAX_LINES = 47;
+export const VOTE_MS = 72 * 60 * 60 * 1000; // the title vote lasts 72 hours
+export const MAX_TITLE = 40;
 export const MAX_CHARS = 60;
-export const OPENING_LINE = 'i had a dream that';
+export const OPENING_LINE = 'I had a dream that';
 export const ADMIN = '0xa90dc6d356b622b9783f5020722e6f92b663438f'; // photontide.eth — the only wallet that can remove lines
 
 // Links and wallet addresses are never part of the dream (scam protection).
@@ -28,6 +30,11 @@ export const K = {
   addrs: P + 'addrs',     // list of wallet addresses, parallel to lines
   idx: P + 'idx',         // hash: wallet -> its line number (1-based)
   banned: P + 'banned',   // set: wallets whose line was removed (can't write again)
+  title: P + 'title',          // final title override, set by photontide.eth (e.g. to break a tie)
+  proposals: P + 'proposals',  // hash: wallet -> suggested title
+  shortlist: P + 'shortlist',  // JSON array of titles on the ballot
+  voteStart: P + 'voteStart',  // ms timestamp when the vote opened
+  votes: P + 'votes',          // hash: wallet -> index on the ballot
   nonce: a => P + 'nonce:' + a,
   rate: (bucket, ip) => P + 'rate:' + bucket + ':' + ip,
 };
@@ -86,6 +93,42 @@ export async function verifySignature(address, message, signature) {
   } catch {
     return false;
   }
+}
+
+// ── the title vote ──
+// phases: proposing (poem unfinished) · shortlisting (waiting for photontide.eth) · voting · closed
+export async function voteState({ complete, me, isAdmin }) {
+  const [titleOverride, shortlistRaw, startRaw, votes] = await Promise.all([
+    redis.get(K.title), redis.get(K.shortlist), redis.get(K.voteStart), redis.hgetall(K.votes),
+  ]);
+  const options = shortlistRaw ? JSON.parse(String(shortlistRaw)) : [];
+  const start = startRaw ? Number(startRaw) : null;
+  const endsAt = start ? start + VOTE_MS : null;
+  const tally = options.map(() => 0);
+  Object.values(votes || {}).forEach(i => { if (tally[Number(i)] !== undefined) tally[Number(i)]++; });
+  let phase = !complete ? 'proposing' : !start ? 'shortlisting' : Date.now() < endsAt ? 'voting' : 'closed';
+  if (titleOverride) phase = 'closed';
+
+  let title = titleOverride ? String(titleOverride) : null, tie = false;
+  if (!title && phase === 'closed' && options.length) {
+    const best = Math.max(...tally);
+    const winners = options.filter((_, i) => tally[i] === best);
+    if (winners.length === 1) title = winners[0]; else tie = true;
+  }
+  const myVote = me && votes && votes[me] !== undefined ? Number(votes[me]) : null;
+  return {
+    phase, options, endsAt, myVote, title, tie,
+    results: (phase === 'closed' || isAdmin) ? tally : null,
+    voters: Object.keys(votes || {}).length,
+  };
+}
+
+export function cleanTitle(raw) {
+  const t = typeof raw === 'string' ? raw.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim() : '';
+  if (!t) return { error: 'write a title first' };
+  if ([...t].length > MAX_TITLE) return { error: `keep it to ${MAX_TITLE} characters` };
+  if (BLOCKED.test(t)) return { error: "links and wallet addresses can't be a title" };
+  return { title: t };
 }
 
 // ── small helpers ──
