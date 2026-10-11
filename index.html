@@ -3567,23 +3567,23 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
 
     // atmosphere
     const glow = ctx.createRadialGradient(cx, cy, R * .9, cx, cy, R * 1.12);
-    glow.addColorStop(0, 'rgba(196,135,58,.10)'); glow.addColorStop(1, 'rgba(196,135,58,0)');
+    glow.addColorStop(0, 'rgba(255,255,255,.05)'); glow.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, R * 1.12, 0, 7); ctx.fill();
     // body
     const body = ctx.createRadialGradient(cx - R * .35, cy - R * .4, R * .1, cx, cy, R);
-    body.addColorStop(0, '#15131a'); body.addColorStop(1, '#050507');
+    body.addColorStop(0, '#08080c'); body.addColorStop(1, '#000');
     ctx.fillStyle = body; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
     // graticule
-    ctx.beginPath(); path(grat); ctx.strokeStyle = 'rgba(212,207,200,.05)'; ctx.lineWidth = .6; ctx.stroke();
-    ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.strokeStyle = 'rgba(196,135,58,.22)'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.beginPath(); path(grat); ctx.strokeStyle = 'rgba(255,255,255,.03)'; ctx.lineWidth = .6; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 1; ctx.stroke();
 
     // land dots, fading toward the rim
-    const f = facing(), ds = Math.max(1.1, R / 210);
+    const f = facing(), ds = Math.max(1.6, R / 140);
     for (let i = 0; i < dots.length; i++) {
       const d = dots[i], k = d[2] * f[0] + d[3] * f[1] + d[4] * f[2];
       if (k <= .02) continue;
       const p = proj([d[0], d[1]]);
-      ctx.fillStyle = `rgba(212,207,200,${(.1 + .5 * k).toFixed(3)})`;
+      ctx.fillStyle = `hsla(${(((d[0] * 1.2 + d[1] * 2 + (REDUCE ? 0 : t / 40)) % 360) + 360) % 360},90%,64%,${(.25 + .75 * k).toFixed(3)})`;
       ctx.fillRect(p[0] - ds / 2, p[1] - ds / 2, ds, ds);
     }
 
@@ -3600,14 +3600,14 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
       if (live && !REDUCE) {
         const ph = ((((t / 2400) + c.ll[0] / 90) % 1) + 1) % 1;
         ctx.beginPath(); ctx.arc(p[0], p[1], 4 + ph * 16, 0, 7);
-        ctx.strokeStyle = `rgba(196,135,58,${((1 - ph) * .55 * a).toFixed(3)})`; ctx.lineWidth = 1; ctx.stroke();
+        ctx.strokeStyle = `rgba(255,255,255,${((1 - ph) * .55 * a).toFixed(3)})`; ctx.lineWidth = 1; ctx.stroke();
       }
       const g = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], on ? 16 : 11);
-      g.addColorStop(0, `rgba(230,170,90,${(live ? .85 : .35) * a})`); g.addColorStop(1, 'rgba(196,135,58,0)');
+      g.addColorStop(0, `rgba(255,255,255,${(live ? .8 : .35) * a})`); g.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p[0], p[1], on ? 16 : 11, 0, 7); ctx.fill();
-      ctx.fillStyle = live ? `rgba(255,214,150,${a})` : `rgba(212,207,200,${.55 * a})`;
+      ctx.fillStyle = live ? `rgba(255,255,255,${a})` : `rgba(212,207,200,${.55 * a})`;
       ctx.beginPath(); ctx.arc(p[0], p[1], on ? 3.6 : 2.6, 0, 7); ctx.fill();
-      ctx.fillStyle = live ? `rgba(212,207,200,${.85 * a})` : `rgba(168,162,155,${.6 * a})`;
+      ctx.fillStyle = live ? `rgba(255,255,255,${.9 * a})` : `rgba(168,162,155,${.6 * a})`;
       ctx.fillText(c.name.toLowerCase(), p[0] + 9, p[1] - 1);
     }
   }
