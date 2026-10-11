@@ -2,7 +2,7 @@
 // Files starting with "_" inside /api are not exposed as endpoints by Vercel.
 import { Redis } from '@upstash/redis';
 import { createHmac, createHash, randomBytes, timingSafeEqual } from 'node:crypto';
-import { createPublicClient, http, getAddress, isAddress } from 'viem';
+import { createPublicClient, http, fallback, getAddress, isAddress, verifyMessage } from 'viem';
 import { mainnet } from 'viem/chains';
 import { createSiweMessage } from 'viem/siwe';
 
@@ -86,9 +86,18 @@ export function readToken(req) {
   return address;
 }
 
-// Works for normal wallets and smart-contract wallets (ERC-1271 / ERC-6492).
-const client = createPublicClient({ chain: mainnet, transport: http() });
+// Public Ethereum connection (PublicNode first — it resolves ENS reliably — then viem's default).
+const client = createPublicClient({
+  chain: mainnet,
+  transport: fallback([http('https://ethereum-rpc.publicnode.com', { timeout: 8000 }), http(undefined, { timeout: 8000 })]),
+});
+
+// Normal wallets are checked locally (no network needed); smart-contract wallets
+// (ERC-1271 / ERC-6492) fall back to an on-chain check.
 export async function verifySignature(address, message, signature) {
+  try {
+    if (await verifyMessage({ address: getAddress(address), message, signature })) return true;
+  } catch { /* not a plain wallet signature — try the on-chain check */ }
   try {
     return await client.verifyMessage({ address: getAddress(address), message, signature });
   } catch {
