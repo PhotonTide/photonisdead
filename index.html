@@ -660,6 +660,8 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 .gild .gframe{position:absolute;pointer-events:none;overflow:visible;filter:drop-shadow(0 30px 50px rgba(0,0,0,.9)) drop-shadow(0 0 40px rgba(255,160,60,.12));animation:gildFlicker 3.1s ease-in-out infinite}
 @keyframes gildFlicker{0%,100%{opacity:1}35%{opacity:.93}60%{opacity:.98}80%{opacity:.9}}
 .gild img,.gild video{position:relative;display:block;object-fit:contain;max-height:calc(var(--sh) - 2 * var(--fb));max-width:calc(var(--sw) - 2 * var(--fb));box-shadow:0 0 0 2px #0b0704,inset 0 0 40px rgba(0,0,0,.5)}
+.gild.missing{padding:0}
+.sc-missing{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;line-height:1.7;color:rgba(222,200,170,.6);text-align:center;margin:0}
 .gild.in{opacity:1;transform:none;filter:none}
 .gild.out{opacity:0;transform:translateY(-14px) scale(1.02);filter:blur(16px) brightness(.4) sepia(.5);transition:opacity .9s ease,transform 1.1s ease,filter .9s ease}
 .sc-inscr{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(.8rem,1.3vw,1.05rem);letter-spacing:.55em;padding-left:.55em;color:rgba(222,184,120,.6);margin:0;position:absolute;top:calc(1.9rem - 10vh);left:0;right:0;text-align:center;text-shadow:0 0 18px rgba(255,180,80,.25);white-space:nowrap}
@@ -804,7 +806,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   <div class="wgrid" id="wgrid">
 <div class="wcard" data-s="available" data-p="8nap" style="cursor:pointer" onclick="openStarsGallery()">
       <div class="wimg" style="position:relative">
-        <img src="https://8nap.s3.eu-central-1.amazonaws.com/previews/197/large/0" alt="When All I Had Was Stars" loading="lazy">
+        <img src="media/when-all-i-had-was-stars.jpg" alt="When All I Had Was Stars" loading="lazy">
         <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">minting</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#9b8ec418;border:1px solid #9b8ec440;color:#9b8ec4">8NAP</span>
         <div style="position:absolute;bottom:.6rem;right:.6rem;font-family:'Inconsolata',monospace;font-size:.45rem;letter-spacing:.2em;color:rgba(196,135,58,.8);background:rgba(0,0,0,.6);padding:.2rem .5rem">2 editions · 0.042 Ξ</div>
@@ -890,7 +892,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 
 <div class="wcard" data-s="sold">
       <a href="https://www.mentographs.art/" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://mentographs.art/og-card.jpg" alt="Mentographs" loading="lazy"
+        <img src="https://www.mentographs.art/og-card.jpg" alt="Mentographs" loading="lazy"
              onerror="this.src='https://i.seadn.io/s/raw/files/mentographs.jpg?w=500'">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">mint ended</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a9fb018;border:1px solid #7a9fb040;color:#7a9fb0">mentographs.art</span>
@@ -956,7 +958,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://manifold.xyz/@photon-tide/id/4081592560" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://assets.manifold.xyz/optimized/e5e505fa387c2d8e61ce09583da75a8c1d462b5305f6a352c2e574954ba92da4/w_1000.jpg" alt="Chasing Rabbits" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
@@ -966,17 +968,17 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="available">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://manifold.xyz/@photon-tide/id/4081637616" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://assets.manifold.xyz/optimized/92dfd7a10c3864a9b4666ddd70718e1261375d068a9fd03a445daac09f52a772/w_1000.jpg" alt="Keep It Together" loading="lazy">
         <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">available</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
       <div class="winfo"><p class="wtitle">Keep It Together</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 0.5 Ξ · live auction</p><p class="wprice">Manifold</p></div></a>
-      <a class="wcollect" href="https://manifold.xyz/@photon-tide" target="_blank" rel="noopener">collect →</a>
+      <a class="wcollect" href="https://manifold.xyz/@photon-tide/id/4081637616" target="_blank" rel="noopener">collect →</a>
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://manifold.xyz/@photon-tide/id/4081635568" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://assets.manifold.xyz/optimized/117ce57d09d24922682099ea52a5271654e8c83203c6f0147025bc73b82b78e5/w_1000.jpg" alt="The Endless Cycle of Self Destruction" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
@@ -985,7 +987,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://manifold.xyz/@photon-tide/id/4081639664" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://assets.manifold.xyz/optimized/fd91de78d01e0e127804edc55fc98223510418bb146c2ef5762121c32c237bbf/w_1000.jpg" alt="Don&#39;t Forget Me" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
@@ -994,7 +996,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://manifold.xyz/@photon-tide/id/4081584368" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://assets.manifold.xyz/optimized/e1ad61e10d420bcd91369fa7666d6bcae18a45ca381be3b8b546930e455b69f8/w_1000.jpg" alt="Headlocked" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
@@ -1003,8 +1005,8 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://assets.manifold.xyz/optimized/085fef53abfa3b31941d27db7a32cef123c166a776d45a56ad2d983cb04b8ebc/w_1000.webp" alt="No Way Back" loading="lazy">
+      <a href="https://manifold.xyz/@photon-tide/id/4081588464" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+        <img src="media/no-way-back.webp" alt="No Way Back" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
@@ -1013,18 +1015,18 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="available">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://assets.manifold.xyz/original/7cbb4a5ff32886f9447007788f7f38c781ab8f70ebe768e261fec582e1ab819d.jpg" alt="Voidrunner" loading="lazy">
+      <a href="https://manifold.xyz/@photon-tide/id/4081617136" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+        <img src="media/voidrunner.jpg" alt="Voidrunner" loading="lazy">
         <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">available</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
       <div class="winfo"><p class="wtitle">Voidrunner</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 0.5 Ξ · live auction</p><p class="wprice">Manifold</p></div></a>
-      <a class="wcollect" href="https://manifold.xyz/@photon-tide" target="_blank" rel="noopener">collect →</a>
+      <a class="wcollect" href="https://manifold.xyz/@photon-tide/id/4081617136" target="_blank" rel="noopener">collect →</a>
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://assets.manifold.xyz/original/296cbeaf8cb68448b80d667181ef0c2d11414f9ee6822c2df14011a46884eb98.jpg" alt="Singularity" loading="lazy">
+      <a href="https://manifold.xyz/@photon-tide/id/4081643760" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+        <img src="media/singularity.jpg" alt="Singularity" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
@@ -1032,13 +1034,13 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="available">
-      <a href="https://manifold.xyz/@photon-tide/p/1983085273" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://assets.manifold.xyz/original/458290a6ee64cc16ce7ce1ce31d4607037d36e03c9129a734499ad3d3062cf72.jpg" alt="Spiraling" loading="lazy">
+      <a href="https://manifold.xyz/@photon-tide/id/4081645808" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+        <img src="media/spiraling.jpg" alt="Spiraling" loading="lazy">
         <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">available</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
       <div class="winfo"><p class="wtitle">Spiraling</p><p class="wsub">2026 · Spirals (2026) · 1/1 · 0.5 Ξ · live auction</p><p class="wprice">Manifold</p></div></a>
-      <a class="wcollect" href="https://manifold.xyz/@photon-tide" target="_blank" rel="noopener">collect →</a>
+      <a class="wcollect" href="https://manifold.xyz/@photon-tide/id/4081645808" target="_blank" rel="noopener">collect →</a>
     </div>
 
 <div class="wcard" data-s="sold" style="cursor:pointer" onclick="openUnbreakable()">
@@ -1066,7 +1068,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 
 <div class="wcard" data-s="sold">
       <a href="https://manifold.xyz/@photon-tide/id/4218951920" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://assets.manifold.xyz/optimized/ab352bcba35a6ac52b688ad05f052d311f1dc08d71cf609dc137d08e5b4f6ed4/w_1024.webp" alt="Face The Monster" loading="lazy">
+        <img src="media/face-the-monster.webp" alt="Face The Monster" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
@@ -1075,7 +1077,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 
 <div class="wcard" data-s="sold">
       <a href="https://manifold.xyz/@photon-tide/id/4219044080" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://assets.manifold.xyz/optimized/68c2539d066eb5f276b6d7167397d3208e639053f99c95c1bfc17e840d570b09/w_1024.webp" alt="Ignorance Is Bliss" loading="lazy">
+        <img src="media/ignorance-is-bliss.webp" alt="Ignorance Is Bliss" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
@@ -1210,21 +1212,21 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://superrare.com/artwork/eth/0x67F8De3A7aB9CE266e44A17B0467860634865171/18" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://aotm.gallery/artwork/icarus/" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://aotm.gallery/wp-content/uploads/2025/02/Icarus-600x600-c-default.jpeg" alt="Icarus" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#c4873a18;border:1px solid #c4873a40;color:#c4873a">AOTM</span>
       </div>
-      <div class="winfo"><p class="wtitle">Icarus</p><p class="wsub">2025 · AOTM · 1/1 · 3.0 Ξ · CyborgNomad</p><p class="wprice">SuperRare</p></div></a>
+      <div class="winfo"><p class="wtitle">Icarus</p><p class="wsub">2025 · AOTM · 1/1 · 3.0 Ξ · CyborgNomad</p><p class="wprice">AOTM</p></div></a>
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://superrare.com/artwork/eth/0x67F8De3A7aB9CE266e44A17B0467860634865171/17" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://aotm.gallery/artwork/outer-visions/" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://aotm.gallery/wp-content/uploads/2025/02/wOtWfMbQNM7gPf9j1VdZrfF37ty_PrEs600ie9zKHVE-600x600-c-default.jpg" alt="Outer Visions" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#c4873a18;border:1px solid #c4873a40;color:#c4873a">AOTM</span>
       </div>
-      <div class="winfo"><p class="wtitle">Outer Visions</p><p class="wsub">2025 · AOTM · 1/1 · 2.169 Ξ · w/ Chema Mendez</p><p class="wprice">SuperRare</p></div></a>
+      <div class="winfo"><p class="wtitle">Outer Visions</p><p class="wsub">2025 · AOTM · 1/1 · 2.169 Ξ · w/ Chema Mendez</p><p class="wprice">AOTM</p></div></a>
     </div>
 
 <div class="wcard" data-s="sold">
@@ -1406,7 +1408,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://superrare.com/photontide" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x490aa43b7ffb4f457237d369fff492f962ecdf1d/2" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://aotm.gallery/wp-content/uploads/2023/02/acceptance-600x600-c-default.jpeg" alt="acceptance" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a9fb018;border:1px solid #7a9fb040;color:#7a9fb0">SuperRare</span>
@@ -1415,7 +1417,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://superrare.com/photontide" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://manifold.xyz/@photon-tide/id/430530800" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://aotm.gallery/wp-content/uploads/2023/03/Psychedelc-Hues-scaled-600x600-c-default.jpg" alt="Psychedelic Hues (alone, again)" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a9fb018;border:1px solid #7a9fb040;color:#7a9fb0">SuperRare</span>
@@ -1622,7 +1624,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0xaF729a08812Df6Bcd73030a6F4F8f938FC213066/2" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0xaf729a08812df6bcd73030a6f4f8f938fc213066/2" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/e3ead3f0ea.jpg" alt="Dante&#39;s Inferno" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#c4873a18;border:1px solid #c4873a40;color:#c4873a">Symbols &amp; Omens</span>
@@ -1631,7 +1633,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x490Aa43B7FFb4f457237d369fFf492f962ecDF1d/6" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x490aa43b7ffb4f457237d369fff492f962ecdf1d/6" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/3765b27448.jpg" alt="a visit to the beach, on psychedelics" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1640,7 +1642,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x490Aa43B7FFb4f457237d369fFf492f962ecDF1d/5" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x490aa43b7ffb4f457237d369fff492f962ecdf1d/5" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/42df6497e5.jpg" alt="Running from myself" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1649,7 +1651,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x490Aa43B7FFb4f457237d369fFf492f962ecDF1d/3" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x490aa43b7ffb4f457237d369fff492f962ecdf1d/3" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/d3d890aff8.jpg" alt="Radiance" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1658,7 +1660,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0xF5803Ec48a495547eF2CBE5861fA0d7C64a22Bab/1" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0xf5803ec48a495547ef2cbe5861fa0d7c64a22bab/1" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/4867521b32.webp" alt="mind control" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1667,7 +1669,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x490Aa43B7FFb4f457237d369fFf492f962ecDF1d/1" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x490aa43b7ffb4f457237d369fff492f962ecdf1d/1" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/499c67f704.jpg" alt="chamber of reflection" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1676,7 +1678,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://opensea.io/collection/recurring-dreams-pho" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x490aa43b7ffb4f457237d369fff492f962ecdf1d/8" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://aotm.gallery/wp-content/uploads/2023/01/Valley-of-forgotten-dreams-600x600-c-default.jpg" alt="Valley of Forgotten Dreams" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#9b8ec418;border:1px solid #9b8ec440;color:#9b8ec4">Recurring Dreams</span>
@@ -1694,7 +1696,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://opensea.io/collection/recurring-dreams-pho" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x490aa43b7ffb4f457237d369fff492f962ecdf1d/9" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://aotm.gallery/wp-content/uploads/2023/01/Modern-man-in-search-of-soul-600x600-c-default.jpg" alt="Modern man, in search of a soul" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#9b8ec418;border:1px solid #9b8ec440;color:#9b8ec4">Recurring Dreams</span>
@@ -1703,7 +1705,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/@Photontide/photon/3" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/photon/3" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="https://aotm.gallery/wp-content/uploads/2023/01/I-tried-to-keep-it-all-inside-600x600-c-default.jpg" alt="i tried to keep it all inside" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Foundation</span>
@@ -1712,7 +1714,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x6A966aD625ae35cE8aDc291e14d602732183Be7c/1" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://manifold.xyz/@photon-tide/id/291002608" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/a4cfbe0051.jpg" alt="Portrait of Tjo and Sisi" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">gifted</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1721,7 +1723,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x3B3ee1931Dc30C1957379FAc9aba94D1C48a5405/122901" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x3b3ee1931dc30c1957379fac9aba94d1c48a5405/122901" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/d8b26ba988.jpg" alt="no one can walk this road but you" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1730,7 +1732,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x3B3ee1931Dc30C1957379FAc9aba94D1C48a5405/124585" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x3b3ee1931dc30c1957379fac9aba94d1c48a5405/124585" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/d1e64a4464.jpg" alt="i thought about jumping again" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1739,7 +1741,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x3B3ee1931Dc30C1957379FAc9aba94D1C48a5405/116003" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x3b3ee1931dc30c1957379fac9aba94d1c48a5405/116003" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/bae77ee73b.jpg" alt="Alucinación" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1748,7 +1750,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x3B3ee1931Dc30C1957379FAc9aba94D1C48a5405/115442" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x3b3ee1931dc30c1957379fac9aba94d1c48a5405/115442" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/f48136eb98.jpg" alt="chaos theory" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1757,7 +1759,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x3B3ee1931Dc30C1957379FAc9aba94D1C48a5405/106429" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x3b3ee1931dc30c1957379fac9aba94d1c48a5405/106429" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/a2a7069e3e.jpg" alt="seconds after death, i left my body" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1766,7 +1768,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x3B3ee1931Dc30C1957379FAc9aba94D1C48a5405/115244" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x3b3ee1931dc30c1957379fac9aba94d1c48a5405/115244" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/9d719f20ec.jpg" alt="this feeling has been eating me alive" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1775,7 +1777,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x3B3ee1931Dc30C1957379FAc9aba94D1C48a5405/103011" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x3b3ee1931dc30c1957379fac9aba94d1c48a5405/103011" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/f4d1813ab9.jpg" alt="the illusion of control" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -1784,7 +1786,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     </div>
 
 <div class="wcard" data-s="sold">
-      <a href="https://foundation.app/mint/eth/0x3B3ee1931Dc30C1957379FAc9aba94D1C48a5405/105538" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
+      <a href="https://networked.art/photontide/0x3b3ee1931dc30c1957379fac9aba94d1c48a5405/105538" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/965c4359e3.jpg" alt="i left my body last night" loading="lazy">
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7a6a4a18;border:1px solid #7a6a4a40;color:#b8a070">Foundation</span>
@@ -2334,7 +2336,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
       <a href="https://www.instagram.com/photontide/" class="clink" target="_blank"><span class="cln">Instagram</span><span class="cla">@photontide →</span></a>
       <a href="https://twitter.com/photonisdead" class="clink" target="_blank"><span class="cln">X / Twitter</span><span class="cla">@photonisdead →</span></a>
       <a href="https://superrare.com/photontide" class="clink" target="_blank"><span class="cln">SuperRare</span><span class="cla">superrare.com/photontide →</span></a>
-      <a href="https://foundation.app/@Photontide" class="clink" target="_blank"><span class="cln">Foundation</span><span class="cla">foundation.app/@Photontide →</span></a>
+      <a href="https://networked.art/photontide/artist" class="clink" target="_blank"><span class="cln">networked.art</span><span class="cla">networked.art/photontide →</span></a>
       <a href="https://www.heartwork.gallery/collections/photon-tide" class="clink" target="_blank"><span class="cln">Prints</span><span class="cla">heartwork.gallery →</span></a>
       <a href="https://aotm.gallery/artist/pho/" class="clink" target="_blank"><span class="cln">AOTM Gallery</span><span class="cla">aotm.gallery/artist/pho →</span></a>
       <a href="https://manifold.xyz/@photon-tide" class="clink" target="_blank"><span class="cln">Manifold</span><span class="cla">manifold.xyz/@photon-tide →</span></a>
@@ -3183,7 +3185,7 @@ document.addEventListener('keydown',e=>{
 
 /* ═══ WHEN ALL I HAD WAS STARS GALLERY (8NAP) ═══ */
 const starsItems = [
-  {name:"Event Horizon", img:"https://8nap.s3.eu-central-1.amazonaws.com/previews/197/large/0", desc:"Event Horizon examines the boundary between presence and disappearance.", editions:"39 / 42 minted · 0.042 Ξ"},
+  {name:"Event Horizon", img:"media/when-all-i-had-was-stars.jpg", desc:"Event Horizon examines the boundary between presence and disappearance.", editions:"39 / 42 minted · 0.042 Ξ"},
   {name:"Youniverse", img:"https://8nap.s3.eu-central-1.amazonaws.com/previews/197/large/1", desc:"A place where identity, memory, and perception are pulled inward and distorted.", editions:"10 / 22 minted · 0.042 Ξ"}
 ];
 let starsIdx = 0;
@@ -3935,8 +3937,16 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     el.className = 'gild';
     el.prepend(art);
     const reveal = () => { if (el.classList.contains('out')) return; carve(el); setTimeout(() => { if (!el.classList.contains('out')) el.classList.add('in'); }, old ? 800 : 60); };
-    if (w.video) art.addEventListener('loadeddata', reveal, { once: true });
-    else { art.onload = reveal; art.onerror = reveal; }
+    let shown = false;
+    const once = () => { if (!shown) { shown = true; reveal(); } };
+    if (w.video) art.addEventListener('loadedmetadata', once, { once: true });
+    else {
+      art.onload = once;
+      // a slow or failing image never leaves the room empty
+      art.onerror = () => { el.classList.add('missing'); el.innerHTML = '<p class="sc-missing">the image is still on its way…<br>view it on its page below</p>'; once(); };
+      // show the work as soon as its size is known, and let it paint in as it arrives
+      const poll = setInterval(() => { if (shown || el.classList.contains('out')) return clearInterval(poll); if (art.naturalWidth) { clearInterval(poll); once(); } }, 80);
+    }
     art.src = w.src;
     frame.appendChild(el);
     const aura = (auraFlip = !auraFlip) ? auraA : auraB, prev = auraFlip ? auraB : auraA;
@@ -3958,7 +3968,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
   function carve(el){
     const art = el.firstElementChild;
     const w = Math.round(art.offsetWidth), h = Math.round(art.offsetHeight);
-    if (!w || !h) return;
+    if (!w || !h || el.classList.contains('missing')) return;
     const fb = parseFloat(getComputedStyle(el).paddingLeft) || 40;
     const m = Math.round(fb * 1.3), W = w + 2 * fb, H = h + 2 * fb, id = 'gf' + (++fid);
     const f = n => (n * fb).toFixed(2), F = n => n.toFixed(2);
