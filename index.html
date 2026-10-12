@@ -651,7 +651,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 @keyframes warm{0%,100%{opacity:.75}30%{opacity:1}55%{opacity:.82}80%{opacity:.95}}
 .sc-motes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
-.sc-altar{--sh:71vh;--sw:min(80vw,calc(97vw - 350px));position:absolute;left:0;right:0;top:10vh;bottom:19vh;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.sc-altar{--sh:56vh;--sw:84vw;position:absolute;left:0;right:0;top:10vh;bottom:31vh;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
 .sc-frame{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 /* the antique frame: carved and gilded in SVG, cut to each work's shape */
 .gild{--fb:clamp(28px,5vh,54px);position:absolute;display:inline-flex;padding:var(--fb);box-sizing:border-box;
@@ -667,6 +667,19 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 .sc-inscr{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(.8rem,1.3vw,1.05rem);letter-spacing:.55em;padding-left:.55em;color:rgba(222,184,120,.6);margin:0;position:absolute;top:calc(1.9rem - 10vh);left:0;right:0;text-align:center;text-shadow:0 0 18px rgba(255,180,80,.25);white-space:nowrap}
 
 /* candles */
+/* the keepers: hooded figures holding the light either side of the work */
+.sc-room{--figh:min(72vh,660px)}
+.sc-keeper{position:absolute;bottom:0;height:var(--figh);max-height:76vh;aspect-ratio:500/1100;pointer-events:none;transition:left 1.4s ease,right 1.4s ease;animation:keepBreathe 7s ease-in-out infinite;animation-delay:calc(var(--d) * -1s);transform-origin:50% 100%}
+.sc-keeper img{position:absolute;inset:0;width:100%;height:100%;filter:brightness(.82) contrast(1.05) drop-shadow(0 0 40px rgba(0,0,0,.95));user-select:none}
+.sc-keeper.r img{transform:scaleX(-1)}
+.sc-keeper{left:auto;right:auto;opacity:0;transition:left 1.2s ease,right 1.2s ease,height 1.2s ease,opacity 1s ease}
+.sc-keeper.placed{opacity:1}
+.kglow{position:absolute;left:48.9%;top:31.5%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,214,140,.55),rgba(255,150,50,.18) 38%,transparent 70%);mix-blend-mode:screen;animation:kflick 2.3s ease-in-out infinite;animation-delay:calc(var(--d) * -1s)}
+.sc-keeper.r .kglow{left:51.1%}
+.kspill{position:absolute;left:49%;top:34%;width:240%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,150,60,.16),rgba(255,120,40,.05) 40%,transparent 68%);mix-blend-mode:screen;z-index:-1;animation:kflick 3.1s ease-in-out infinite;animation-delay:calc(var(--d) * -1.4s)}
+@keyframes kflick{0%,100%{opacity:.85;transform:translate(-50%,-50%) scale(1)}22%{opacity:1;transform:translate(-50%,-52%) scale(1.06)}48%{opacity:.72;transform:translate(-50%,-49%) scale(.95)}71%{opacity:.95;transform:translate(-50%,-51%) scale(1.03)}}
+@keyframes keepBreathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+#sanctum.flare .kglow{animation:kflick .5s ease-in-out 2}
 .sc-room{--cs:1;--cb:12vh;--cgap:70px}
 .sc-candles{position:absolute;bottom:var(--cb);width:124px;height:240px;pointer-events:none;transform:scale(var(--cs));transition:left 1.4s ease,right 1.4s ease}
 .sc-candles.l{left:max(1.5vw,calc(50% - var(--fw,700px) / 2 - var(--cgap) - 124px * var(--cs)));transform-origin:bottom left}
@@ -713,22 +726,22 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 .sc-progress{position:absolute;left:0;bottom:0;height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(222,176,100,.85));opacity:0}
 .sc-progress.run{opacity:1;animation:scProg linear forwards}
 @keyframes scProg{from{width:0}to{width:100%}}
+@media (min-aspect-ratio:5/4) and (min-width:901px){
+  .sc-altar{--sh:71vh;--sw:min(80vw,calc(100vw - 2 * (14vw + 13vh + 40px)));bottom:19vh}
+}
 @media(max-width:1150px) and (min-width:701px){
-  .sc-room{--cs:.72;--cgap:30px}
-  .sc-altar{--sw:min(80vw,calc(97vw - 250px))}
+  .sc-room{--cs:.72;--cgap:20px}
 }
 @media(max-width:700px){
-  .sc-altar{top:12vh;bottom:28vh;--sh:60vh;--sw:80vw}
+  .sc-altar{top:12vh;bottom:33vh;--sh:54vh;--sw:80vw}
   .gild{--fb:22px}
   .sc-inscr{letter-spacing:.32em;font-size:.68rem;top:calc(4.4rem - 12vh)}
-  .sc-room{--cs:.42;--cb:24vh}
-  .sc-candles.l{left:1vw}.sc-candles.r{right:1vw}
   .sc-altar{z-index:1}
   .sc-prev,.sc-next{width:18vw;font-size:2.4rem}
   .sc-sub{font-size:.68rem}
   .door{width:70vw}
 }
-@media(prefers-reduced-motion:reduce){.sc-aura img.on,.sc-rays,.sc-grain,.sc-warm,.cdl-flame,.cdl-glow{animation:none}}
+@media(prefers-reduced-motion:reduce){.sc-keeper,.kglow,.kspill,.sc-aura img.on,.sc-rays,.sc-grain,.sc-warm,.cdl-flame,.cdl-glow{animation:none}}
 </style>
 </head>
 <body class="gate-open">
@@ -3874,12 +3887,12 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     <div class="sc-rays"></div>
     <div class="sc-warm l"></div><div class="sc-warm r"></div>
     <canvas class="sc-motes" id="sc-motes"></canvas>
+    <div class="sc-keeper l" style="--d:0s"><img src="media/keeper.webp" alt="" draggable="false"><i class="kglow"></i><i class="kspill"></i></div>
+    <div class="sc-keeper r" style="--d:2.3s"><img src="media/keeper.webp" alt="" draggable="false"><i class="kglow"></i><i class="kspill"></i></div>
     <div class="sc-altar">
       <p class="sc-inscr">QVOD · VIDES · SOMNIVM · EST</p>
       <div class="sc-frame" id="sc-frame"></div>
     </div>
-    <div class="sc-candles l"><div class="cstand"><i class="tray"></i><i class="stem"></i><i class="foot"></i></div><div class="cdl" style="--h:150px;--d:0s;--x:0px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:210px;--d:0.7s;--x:34px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:120px;--d:1.3s;--x:70px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:180px;--d:0.4s;--x:104px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div></div>
-    <div class="sc-candles r"><div class="cstand"><i class="tray"></i><i class="stem"></i><i class="foot"></i></div><div class="cdl" style="--h:180px;--d:0.9s;--x:0px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:120px;--d:0.2s;--x:34px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:210px;--d:1.1s;--x:70px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:150px;--d:0.5s;--x:104px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div></div>
     <div class="sc-floor"></div>
     <div class="sc-plaque" id="sc-plaque">
       <p class="sc-num" id="sc-num"></p>
@@ -4066,7 +4079,36 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     el.querySelector('.gframe')?.remove();
     el.insertAdjacentHTML('beforeend', svg);
     room.style.setProperty('--fw', Math.round(W + 2 * m * .75) + 'px');
+    placeKeepers(el);
   }
+
+  // the keepers stand beside the frame, never over it or behind it
+  function placeKeepers(el){
+    const ks = room.querySelectorAll('.sc-keeper');
+    const gf = (el || frame.querySelector('.gild:not(.out)'))?.querySelector('.gframe');
+    if (!gf || !ks.length) return;
+    const fr = gf.getBoundingClientRect(), vw = innerWidth, vh = innerHeight, gap = 26, edge = 6, AR = 500 / 1100;
+    // the gild may still be easing in from 97%: measure as if full size
+    const grow = (fr.width / .97 - fr.width) / 2;
+    const L = fr.left - grow, R = fr.right + grow, B = fr.bottom + grow;
+    let h, pos;
+    if (matchMedia('(min-aspect-ratio: 5/4) and (min-width: 901px)').matches) {
+      const side = Math.min(L, vw - R) - gap - edge;
+      h = Math.min(vh * .76, side / AR);
+      pos = w => [L - gap - w, R + gap];
+    } else {
+      h = Math.min(vh * .34, vh - B - 6);
+      pos = w => [Math.max(vw * .03, vw / 2 - w - vw * .22), Math.min(vw - vw * .03 - w, vw / 2 + vw * .22)];
+    }
+    const w = h * AR, show = h >= 150;
+    const [xl, xr] = pos(w);
+    ks.forEach((k, i) => {
+      k.style.height = Math.max(0, h) + 'px';
+      k.style.left = (i === 0 ? xl : xr) + 'px';
+      k.classList.toggle('placed', show);
+    });
+  }
+  addEventListener('resize', () => setTimeout(() => placeKeepers(), 260));
   let carveT = 0;
   addEventListener('resize', () => { clearTimeout(carveT); carveT = setTimeout(() => { const el = frame.querySelector('.gild.in'); if (el) carve(el); }, 200); });
   window.openSanctum = function(slug){
