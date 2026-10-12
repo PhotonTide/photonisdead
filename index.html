@@ -600,52 +600,120 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 /* ═══ THE SANCTUM ═══ */
 .sanct-entry{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin:1.1rem 0 .4rem}
 .sanct-entry button{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;letter-spacing:.12em;color:var(--ghost);background:transparent;border:1px solid rgba(212,207,200,.18);padding:.6rem 1.4rem;cursor:pointer;transition:border-color .5s,color .5s,box-shadow .5s}
-.sanct-entry button:hover{border-color:rgba(196,135,58,.6);color:#f1e3c9;box-shadow:0 0 30px rgba(196,135,58,.18)}
+.sanct-entry button:hover{border-color:rgba(214,160,80,.65);color:#f1e3c9;box-shadow:0 0 34px rgba(214,140,50,.22)}
 .sanct-entry span{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.22em;color:rgba(168,162,155,.6)}
-#sanctum{position:fixed;inset:0;z-index:2000;background:#000;display:none;overflow:hidden;color:#e9e3da;user-select:none;-webkit-user-select:none;touch-action:pan-y}
-#sanctum.open{display:block;animation:scIn 1.6s ease both}
-@keyframes scIn{from{opacity:0}to{opacity:1}}
-.sc-aura{position:absolute;inset:-20%;pointer-events:none}
-.sc-aura img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(90px) saturate(1.5);opacity:0;transform:scale(1.1);transition:opacity 2.4s ease}
-.sc-aura img.on{opacity:.42;animation:scBreathe 9s ease-in-out infinite}
-@keyframes scBreathe{0%,100%{transform:scale(1.05)}50%{transform:scale(1.18)}}
-.sc-rays{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 38% 55% at 50% 44%,rgba(255,240,215,.07),transparent 70%);animation:scHalo 7s ease-in-out infinite}
-@keyframes scHalo{0%,100%{opacity:.6}50%{opacity:1}}
-.sc-vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 30%,rgba(0,0,0,.55) 62%,#000 100%)}
-.sc-grain{position:absolute;inset:-50%;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:scGrain 1.2s steps(6) infinite}
-@keyframes scGrain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-2%)}60%{transform:translate(-2%,-4%)}80%{transform:translate(4%,2%)}100%{transform:translate(0,0)}}
-.sc-rite{position:absolute;left:0;right:0;top:44%;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.6rem,3.4vw,2.6rem);letter-spacing:.3em;color:rgba(233,227,218,.85);margin:0;opacity:0;pointer-events:none}
-.sc-rite.show{animation:scRite 3.2s ease both}
-@keyframes scRite{0%{opacity:0;letter-spacing:.6em;filter:blur(6px)}35%{opacity:1;letter-spacing:.3em;filter:blur(0)}70%{opacity:1}100%{opacity:0;filter:blur(4px)}}
-.sc-stage{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;padding:6vh 12vw 22vh;pointer-events:none}
-.sc-frame{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
-.sc-frame img,.sc-frame video{max-width:100%;max-height:100%;object-fit:contain;display:block;box-shadow:0 30px 120px rgba(0,0,0,.9),0 0 80px rgba(255,235,200,.06);opacity:0;transform:translateY(14px) scale(.985);filter:blur(10px) brightness(.7);transition:opacity 1.6s ease,transform 2.2s cubic-bezier(.2,.7,.1,1),filter 1.8s ease}
+#sanctum{position:fixed;inset:0;z-index:2000;background:#000;display:none;overflow:hidden;color:#ece4d6;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+#sanctum.open{display:block}
+
+/* the door */
+.sc-door{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#000;perspective:1100px;pointer-events:none;z-index:5}
+.door{position:relative;width:min(42vh,62vw);aspect-ratio:1/1.75;border-radius:50% 50% 0 0/28% 28% 0 0;overflow:hidden;box-shadow:0 0 0 1px rgba(214,165,90,.35),0 0 90px rgba(214,140,60,.12);transform:scale(.55);opacity:0;transform-style:preserve-3d}
+.door-light{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,#fff6e0 0%,#ffcf7a 30%,#c06a20 65%,#2a1004 100%)}
+.door-leaf{position:absolute;top:0;bottom:0;width:50%;background:
+  linear-gradient(90deg,rgba(0,0,0,.55),transparent 18%,transparent 82%,rgba(0,0,0,.55)),
+  repeating-linear-gradient(90deg,#1a120c 0 22px,#150e09 22px 24px),#160f0a;
+  box-shadow:inset 0 0 0 1px rgba(214,165,90,.18),inset 0 0 60px rgba(0,0,0,.8);display:flex;align-items:center;transition:transform 2.1s cubic-bezier(.6,0,.2,1)}
+.door-leaf.l{left:0;transform-origin:left center;justify-content:flex-end;border-right:1px solid rgba(255,200,120,.5)}
+.door-leaf.r{right:0;transform-origin:right center;justify-content:flex-start}
+.door-sigil{width:72%;height:auto;overflow:visible}
+.door-leaf.l .door-sigil{margin-right:-36%}.door-leaf.r .door-sigil{margin-left:-36%}
+.door-sigil path{fill:none;stroke:rgba(222,176,100,.75);stroke-width:1.4}
+.door-leaf.l .door-sigil{clip-path:inset(0 50% 0 0)}.door-leaf.r .door-sigil{clip-path:inset(0 0 0 50%)}
+.door-flood{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,#fff3d6,#e9a24a 40%,#000 80%);opacity:0;pointer-events:none}
+#sanctum.entering .door{animation:doorIn 1.1s cubic-bezier(.2,.7,.2,1) forwards}
+#sanctum.entering .door-leaf.l{transform:rotateY(-108deg);transition-delay:1.25s}
+#sanctum.entering .door-leaf.r{transform:rotateY(108deg);transition-delay:1.25s}
+#sanctum.entering .door{animation:doorIn 1.1s cubic-bezier(.2,.7,.2,1) forwards,doorThrough 1.6s 2.3s cubic-bezier(.6,0,.4,1) forwards}
+#sanctum.entering .door-flood{animation:flood 1.8s 2.3s ease forwards}
+#sanctum.entered .sc-door{opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s 1.2s}
+@keyframes doorIn{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+@keyframes doorThrough{to{transform:scale(5.5);opacity:0}}
+@keyframes flood{0%{opacity:0}35%{opacity:.9}100%{opacity:0}}
+
+/* the room */
+.sc-room{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
+#sanctum.entered .sc-room{opacity:1}
+.sc-wall{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 70% at 50% 40%,rgba(60,40,24,.55),transparent 70%),
+  repeating-linear-gradient(0deg,transparent 0 58px,rgba(0,0,0,.35) 58px 60px),
+  repeating-linear-gradient(90deg,transparent 0 118px,rgba(0,0,0,.22) 118px 120px),
+  linear-gradient(#0f0b08,#070504 70%,#030202)}
+.sc-aura{position:absolute;inset:-20%;pointer-events:none;mix-blend-mode:screen}
+.sc-aura img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(100px) saturate(1.4);opacity:0;transition:opacity 2.4s ease}
+.sc-aura img.on{opacity:.2;animation:scBreathe 9s ease-in-out infinite}
+@keyframes scBreathe{0%,100%{transform:scale(1.02)}50%{transform:scale(1.14)}}
+.sc-rays{position:absolute;left:50%;top:-10%;width:120vw;height:90vh;transform:translateX(-50%);pointer-events:none;
+  background:conic-gradient(from 180deg at 50% 0%,transparent 160deg,rgba(255,228,180,.07) 172deg,transparent 176deg,rgba(255,228,180,.05) 181deg,transparent 186deg,rgba(255,228,180,.06) 190deg,transparent 200deg);
+  filter:blur(6px);animation:rays 11s ease-in-out infinite}
+@keyframes rays{0%,100%{opacity:.55}50%{opacity:1}}
+.sc-warm{position:absolute;bottom:0;width:55vw;height:90vh;pointer-events:none;background:radial-gradient(ellipse at 50% 85%,rgba(255,150,50,.2),transparent 60%);animation:warm 3.1s ease-in-out infinite}
+.sc-warm.l{left:-14vw}.sc-warm.r{right:-14vw;animation-delay:-1.4s}
+@keyframes warm{0%,100%{opacity:.75}30%{opacity:1}55%{opacity:.82}80%{opacity:.95}}
+.sc-motes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+.sc-altar{position:absolute;left:0;right:0;top:8vh;bottom:24vh;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.sc-inscr{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(.8rem,1.3vw,1.05rem);letter-spacing:.55em;padding-left:.55em;color:rgba(222,184,120,.6);margin:0 0 2.4vh;text-shadow:0 0 18px rgba(255,180,80,.25);white-space:nowrap}
+.sc-niche{position:relative;height:100%;max-height:68vh;aspect-ratio:3/4;max-width:72vw;padding:7% 6% 5%;box-sizing:border-box;border-radius:50% 50% 0 0/24% 24% 0 0;
+  background:radial-gradient(ellipse at 50% 35%,rgba(255,225,170,.09),rgba(0,0,0,.6) 75%);
+  box-shadow:0 0 0 1px rgba(214,165,90,.28),0 0 0 7px rgba(0,0,0,.6),0 0 0 8px rgba(214,165,90,.12),inset 0 0 80px rgba(0,0,0,.9),0 0 120px rgba(255,170,70,.07)}
+.sc-niche::before{content:'';position:absolute;left:50%;top:-14px;width:9px;height:9px;transform:translateX(-50%) rotate(45deg);border:1px solid rgba(222,176,100,.6);background:#0b0705}
+.sc-frame{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.sc-frame img,.sc-frame video{position:absolute;max-width:100%;max-height:100%;object-fit:contain;display:block;box-shadow:0 20px 70px rgba(0,0,0,.95),0 0 40px rgba(255,200,130,.08);opacity:0;transform:scale(.97);filter:blur(14px) brightness(.4) sepia(.4);transition:opacity 1.8s ease,transform 2.4s cubic-bezier(.2,.7,.1,1),filter 2s ease}
 .sc-frame .in{opacity:1;transform:none;filter:none}
-.sc-frame .out{opacity:0;transform:translateY(-10px) scale(1.01);filter:blur(12px) brightness(.5);transition:opacity .7s ease,transform .9s ease,filter .7s ease}
-.sc-plaque{position:absolute;left:0;right:0;bottom:4.5vh;text-align:center;padding:0 16px;transition:opacity 1.2s ease}
-.sc-num{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.55em;color:rgba(196,135,58,.85);margin:0 0 .6rem;padding-left:.55em}
-.sc-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(1.7rem,3vw,2.5rem);letter-spacing:.06em;margin:0 0 .4rem;color:#f1ebe2}
-.sc-sub{font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.16em;color:rgba(200,193,184,.6);margin:0 auto .7rem;max-width:44rem;line-height:1.7}
-.sc-link{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.22em;color:rgba(196,135,58,.8);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.25);padding-bottom:2px}
-.sc-link:hover{color:#e8b56f}
+.sc-frame .out{opacity:0;transform:translateY(-14px) scale(1.02);filter:blur(16px) brightness(.4) sepia(.5);transition:opacity .9s ease,transform 1.1s ease,filter .9s ease}
+
+/* candles */
+.sc-candles{position:absolute;bottom:13vh;width:140px;height:240px;pointer-events:none}
+.sc-candles.l{left:max(2vw,calc(50% - 34vh - 220px))}.sc-candles.r{right:max(2vw,calc(50% - 34vh - 220px))}
+.cdl{position:absolute;bottom:0;left:var(--x);width:16px;height:var(--h)}
+.cdl-wax{position:absolute;left:0;right:0;bottom:0;top:22px;border-radius:3px 3px 1px 1px;background:linear-gradient(90deg,#6d5a44,#e9dcc4 35%,#f6ecd8 50%,#cbb898 70%,#5a4a38);box-shadow:inset 0 10px 14px -6px rgba(255,190,110,.55)}
+.cdl-wax::before{content:'';position:absolute;left:7px;top:-6px;width:2px;height:8px;background:#2a1d14}
+.cdl-flame{position:absolute;left:50%;top:0;width:11px;height:26px;margin-left:-5.5px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;
+  background:radial-gradient(ellipse at 50% 78%,#fff 0 18%,#fff1b8 30%,#ffb648 55%,rgba(255,110,20,.6) 72%,transparent 78%);
+  filter:blur(.4px);transform-origin:50% 90%;animation:flame 1.6s ease-in-out infinite;animation-delay:calc(var(--d) * -1s)}
+.cdl-glow{position:absolute;left:50%;top:-34px;width:96px;height:96px;margin-left:-48px;border-radius:50%;background:radial-gradient(circle,rgba(255,190,90,.38),rgba(255,140,40,.1) 45%,transparent 70%);animation:glow 2.3s ease-in-out infinite;animation-delay:calc(var(--d) * -1s)}
+@keyframes flame{0%,100%{transform:scale(1,1) rotate(-1deg)}25%{transform:scale(.92,1.08) rotate(2deg)}50%{transform:scale(1.05,.94) rotate(-2deg)}75%{transform:scale(.96,1.05) rotate(1deg)}}
+@keyframes glow{0%,100%{opacity:.85;transform:scale(1)}40%{opacity:1;transform:scale(1.08)}70%{opacity:.75;transform:scale(.96)}}
+#sanctum.flare .cdl-flame{animation:flame .5s ease-in-out 2,flare .9s ease}
+@keyframes flare{30%{transform:scale(.7,1.35) rotate(-6deg)}}
+.sc-floor{position:absolute;left:0;right:0;bottom:0;height:16vh;pointer-events:none;background:linear-gradient(transparent,rgba(0,0,0,.85)),repeating-linear-gradient(90deg,transparent 0 160px,rgba(255,200,140,.03) 160px 161px)}
+
+.sc-grain{position:absolute;inset:-50%;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:scGrain 1.2s steps(6) infinite}
+@keyframes scGrain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-2%)}60%{transform:translate(-2%,-4%)}80%{transform:translate(4%,2%)}100%{transform:translate(0,0)}}
+
+.sc-plaque{position:absolute;left:0;right:0;bottom:3vh;text-align:center;padding:0 16px;transition:opacity 1.2s ease}
+.sc-num{font-family:'Cormorant Garamond',serif;font-size:.95rem;letter-spacing:.6em;padding-left:.6em;color:rgba(222,176,100,.85);margin:0 0 .35rem}
+.sc-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(1.6rem,2.8vw,2.4rem);letter-spacing:.06em;margin:0 0 .3rem;color:#f4ecdf;text-shadow:0 0 24px rgba(255,190,110,.25)}
+.sc-sub{font-family:'Inconsolata',monospace;font-size:.74rem;letter-spacing:.16em;color:rgba(205,192,172,.55);margin:0 auto .6rem;max-width:44rem;line-height:1.7}
+.sc-link{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.22em;color:rgba(222,176,100,.8);text-decoration:none;border-bottom:1px solid rgba(222,176,100,.25);padding-bottom:2px}
+.sc-link:hover{color:#f0c27e}
 .sc-ui>*{transition:opacity 1.4s ease}
 #sanctum.still .sc-ui>*,#sanctum.still .sc-plaque{opacity:0}
 #sanctum.still{cursor:none}
-.sc-leave,.sc-pray{position:absolute;top:1.4rem;background:none;border:0;font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.3em;color:rgba(212,207,200,.6);cursor:pointer;padding:.5rem}
+.sc-leave,.sc-pray{position:absolute;top:1.4rem;background:none;border:0;font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.3em;color:rgba(222,210,190,.6);cursor:pointer;padding:.5rem;z-index:2}
 .sc-leave{left:1.4rem}.sc-pray{right:1.4rem}
-.sc-leave:hover,.sc-pray:hover,.sc-pray.on{color:#e8b56f}
-.sc-prev,.sc-next{position:absolute;top:0;bottom:0;width:14vw;min-width:56px;background:none;border:0;cursor:pointer;color:rgba(233,227,218,.35);font-family:'Cormorant Garamond',serif;font-size:3.4rem;font-weight:300;transition:color .5s,opacity 1.4s}
+.sc-leave:hover,.sc-pray:hover,.sc-pray.on{color:#f0c27e}
+.sc-prev,.sc-next{position:absolute;top:0;bottom:0;width:12vw;min-width:56px;background:none;border:0;cursor:pointer;color:rgba(236,228,214,.35);font-family:'Cormorant Garamond',serif;font-size:3.4rem;font-weight:300;transition:color .5s,opacity 1.4s;z-index:1}
 .sc-prev{left:0}.sc-next{right:0}
-.sc-prev:hover,.sc-next:hover{color:rgba(241,227,201,.9)}
-.sc-progress{position:absolute;left:0;bottom:0;height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(196,135,58,.8));opacity:0}
+.sc-prev:hover,.sc-next:hover{color:rgba(255,226,180,.95);text-shadow:0 0 20px rgba(255,180,80,.5)}
+.sc-progress{position:absolute;left:0;bottom:0;height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(222,176,100,.85));opacity:0}
 .sc-progress.run{opacity:1;animation:scProg linear forwards}
 @keyframes scProg{from{width:0}to{width:100%}}
-@media(max-width:700px){
-  .sc-stage{padding:9vh 16px 27vh}
-  .sc-prev,.sc-next{width:22vw;font-size:2.4rem;align-items:flex-end}
-  .sc-sub{font-size:.7rem}
+@media(max-width:1150px) and (min-width:701px){
+  .sc-candles{transform:scale(.72);transform-origin:bottom}
+  .sc-candles.l{left:0;transform-origin:bottom left}.sc-candles.r{right:0;transform-origin:bottom right}
 }
-@media(prefers-reduced-motion:reduce){.sc-aura img.on,.sc-rays,.sc-grain{animation:none}}
+@media(max-width:700px){
+  .sc-altar{top:11vh;bottom:30vh}
+  .sc-niche{max-width:84vw}
+  .sc-inscr{letter-spacing:.32em;font-size:.68rem}
+  .sc-candles{bottom:27vh;transform:scale(.42);transform-origin:bottom}
+  .sc-candles.l{left:-30px;transform-origin:bottom left}.sc-candles.r{right:-30px;transform-origin:bottom right}
+  .sc-prev,.sc-next{width:18vw;font-size:2.4rem}
+  .sc-sub{font-size:.68rem}
+  .door{width:70vw}
+}
+@media(prefers-reduced-motion:reduce){.sc-aura img.on,.sc-rays,.sc-grain,.sc-warm,.cdl-flame,.cdl-glow{animation:none}}
 </style>
 </head>
 <body class="gate-open">
@@ -718,7 +786,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     <button class="tgl-btn" data-f="transient">transient</button>
     <button class="tgl-btn" data-f="8nap">8nap</button>
   </div>
-  <div class="sanct-entry reveal d2"><button type="button" onclick="openSanctum()">✦ &nbsp;enter the sanctum&nbsp; ✦</button><span>every work, one at a time, in the dark</span></div>
+  <div class="sanct-entry reveal d2"><button type="button" onclick="openSanctum()">✦ &nbsp;enter the sanctum&nbsp; ✦</button><span>every work, alone, by candlelight</span></div>
 
   <div class="wgrid" id="wgrid">
 <div class="wcard" data-s="available" data-p="8nap" style="cursor:pointer" onclick="openStarsGallery()">
@@ -3767,39 +3835,61 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
 
 <!-- ══ THE SANCTUM ══ -->
 <div id="sanctum" aria-hidden="true" role="dialog" aria-label="the sanctum">
-  <div class="sc-aura"><img id="sc-aura-a" alt=""><img id="sc-aura-b" alt=""></div>
-  <div class="sc-rays"></div>
-  <div class="sc-vignette"></div>
-  <div class="sc-grain"></div>
-  <p class="sc-rite" id="sc-rite">be still</p>
-  <div class="sc-stage" id="sc-stage">
-    <div class="sc-frame" id="sc-frame"></div>
+  <div class="sc-room" id="sc-room">
+    <div class="sc-wall"></div>
+    <div class="sc-aura"><img id="sc-aura-a" alt=""><img id="sc-aura-b" alt=""></div>
+    <div class="sc-rays"></div>
+    <div class="sc-warm l"></div><div class="sc-warm r"></div>
+    <canvas class="sc-motes" id="sc-motes"></canvas>
+    <div class="sc-altar">
+      <p class="sc-inscr">QVOD · VIDES · SOMNIVM · EST</p>
+      <div class="sc-niche"><div class="sc-frame" id="sc-frame"></div></div>
+    </div>
+    <div class="sc-candles l"><div class="cdl" style="--h:150px;--d:0s;--x:0px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:210px;--d:0.7s;--x:34px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:120px;--d:1.3s;--x:70px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:180px;--d:0.4s;--x:104px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div></div>
+    <div class="sc-candles r"><div class="cdl" style="--h:180px;--d:0.9s;--x:0px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:120px;--d:0.2s;--x:34px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:210px;--d:1.1s;--x:70px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div><div class="cdl" style="--h:150px;--d:0.5s;--x:104px"><i class="cdl-glow"></i><i class="cdl-flame"></i><i class="cdl-wax"></i></div></div>
+    <div class="sc-floor"></div>
+    <div class="sc-plaque" id="sc-plaque">
+      <p class="sc-num" id="sc-num"></p>
+      <h2 class="sc-title" id="sc-title"></h2>
+      <p class="sc-sub" id="sc-sub"></p>
+      <a class="sc-link" id="sc-link" target="_blank" rel="noopener">view the work →</a>
+    </div>
+    <div class="sc-grain"></div>
+    <div class="sc-ui">
+      <button type="button" class="sc-leave" onclick="closeSanctum()">✕ &nbsp;leave</button>
+      <button type="button" class="sc-pray" id="sc-pray" onclick="sanctumVigil()" title="the works pass on their own, one every 14 seconds">keep vigil</button>
+      <button type="button" class="sc-prev" onclick="sanctumGo(-1)" aria-label="previous work"><span>‹</span></button>
+      <button type="button" class="sc-next" onclick="sanctumGo(1)" aria-label="next work"><span>›</span></button>
+      <div class="sc-progress" id="sc-progress"></div>
+    </div>
   </div>
-  <div class="sc-plaque" id="sc-plaque">
-    <p class="sc-num" id="sc-num"></p>
-    <h2 class="sc-title" id="sc-title"></h2>
-    <p class="sc-sub" id="sc-sub"></p>
-    <a class="sc-link" id="sc-link" target="_blank" rel="noopener">view the work →</a>
-  </div>
-  <div class="sc-ui">
-    <button type="button" class="sc-leave" onclick="closeSanctum()">✕ &nbsp;leave</button>
-    <button type="button" class="sc-pray" id="sc-pray" onclick="sanctumContemplate()">contemplate</button>
-    <button type="button" class="sc-prev" onclick="sanctumGo(-1)" aria-label="previous work"><span>‹</span></button>
-    <button type="button" class="sc-next" onclick="sanctumGo(1)" aria-label="next work"><span>›</span></button>
-    <div class="sc-progress" id="sc-progress"></div>
+  <div class="sc-door" id="sc-door">
+    <div class="door">
+      <div class="door-light"></div>
+      <div class="door-leaf l"><svg class="door-sigil" viewBox="-50 -50 100 100"><path id="sc-spiral-l"/></svg></div>
+      <div class="door-leaf r"><svg class="door-sigil" viewBox="-50 -50 100 100"><path id="sc-spiral-r"/></svg></div>
+    </div>
+    <div class="door-flood"></div>
   </div>
 </div>
 <script>
-/* ═══ THE SANCTUM: every work, one at a time ═══ */
+/* ═══ THE SANCTUM: every work, alone, by candlelight ═══ */
 (function(){
   const room = document.getElementById('sanctum');
   if (!room) return;
-  const frame = document.getElementById('sc-frame');
-  const auraA = document.getElementById('sc-aura-a'), auraB = document.getElementById('sc-aura-b');
   const $ = id => document.getElementById(id);
+  const frame = $('sc-frame'), auraA = $('sc-aura-a'), auraB = $('sc-aura-b');
+  const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ROMAN = n => { const m=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']]; let r=''; for (const [v,k] of m) while (n>=v){r+=k;n-=v;} return r; };
-  let works = [], i = 0, auraFlip = false, idleT = 0, prayT = 0, praying = false, busy = false;
-  const PRAY_MS = 14000;
+  let works = [], i = 0, auraFlip = false, idleT = 0, vigilT = 0, vigil = false, busy = false, motesOn = false;
+  const VIGIL_MS = 14000;
+
+  // the spiral sigil carved across the two door leaves
+  (function(){
+    let d = '';
+    for (let a = 0; a < Math.PI * 9; a += .08) { const r = 1.6 * a; d += (d ? 'L' : 'M') + (Math.cos(a) * r).toFixed(2) + ' ' + (Math.sin(a) * r).toFixed(2); }
+    $('sc-spiral-l').setAttribute('d', d); $('sc-spiral-r').setAttribute('d', d);
+  })();
 
   function collect(){
     return [...document.querySelectorAll('#wgrid .wcard')].map(c => {
@@ -3816,33 +3906,33 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     }).filter(Boolean);
   }
 
-  function show(n, dir){
+  function show(n){
     if (!works.length) return;
     i = (n + works.length) % works.length;
     const w = works[i];
     const old = frame.firstElementChild;
-    if (old) { old.classList.remove('in'); old.classList.add('out'); setTimeout(() => old.remove(), 900); }
+    if (old) { old.classList.remove('in'); old.classList.add('out'); setTimeout(() => old.remove(), 1100); }
+    // the candles bow as the work changes
+    room.classList.remove('flare'); void room.offsetWidth; if (old) room.classList.add('flare');
     const el = document.createElement(w.video ? 'video' : 'img');
     if (w.video) { el.muted = true; el.loop = true; el.playsInline = true; el.autoplay = true; if (w.poster) el.poster = w.poster; }
     el.alt = w.title;
-    const reveal = () => setTimeout(() => el.classList.add('in'), old ? 650 : 60);
+    const reveal = () => setTimeout(() => el.classList.add('in'), old ? 800 : 60);
     if (w.video) el.addEventListener('loadeddata', reveal, { once: true });
     else { el.onload = reveal; el.onerror = reveal; }
     el.src = w.src;
     frame.appendChild(el);
-    // aura: a huge blurred copy of the work glowing behind it
     const aura = (auraFlip = !auraFlip) ? auraA : auraB, prev = auraFlip ? auraB : auraA;
     aura.src = w.video ? (w.poster || '') : w.src;
     aura.classList.add('on'); prev.classList.remove('on');
-    $('sc-num').textContent = ROMAN(i + 1) + '  ·  ' + ROMAN(works.length);
+    $('sc-num').textContent = ROMAN(i + 1);
     $('sc-title').textContent = w.title;
     $('sc-sub').textContent = w.sub;
     const link = $('sc-link');
     if (w.href) { link.href = w.href; link.style.display = ''; } else link.style.display = 'none';
     if (w.slug) history.replaceState(null, '', '#sanctum/' + w.slug);
-    // warm the next two
     [1, 2, -1].forEach(d => { const x = works[(i + d + works.length) % works.length]; if (x && !x.video) { const im = new Image(); im.src = x.src; } });
-    if (praying) restartPrayer();
+    if (vigil) restartVigil();
   }
 
   window.openSanctum = function(slug){
@@ -3850,47 +3940,71 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     if (!works.length) return;
     let start = 0;
     if (slug) { const k = works.findIndex(w => w.slug === slug); if (k >= 0) start = k; }
+    room.classList.remove('entering', 'entered', 'still');
     room.classList.add('open'); room.setAttribute('aria-hidden', 'false');
     document.documentElement.style.overflow = 'hidden';
     frame.innerHTML = '';
-    const rite = $('sc-rite');
-    let first = false;
-    try { first = !sessionStorage.getItem('sanctum-rite'); sessionStorage.setItem('sanctum-rite', '1'); } catch (e) { first = true; }
-    if (first && !slug) {
-      rite.classList.remove('show'); void rite.offsetWidth; rite.classList.add('show');
-      room.classList.add('still');
-      setTimeout(() => { show(start); wake(); }, 2600);
-    } else show(start);
-    wake();
+    startMotes();
+    if (REDUCE || slug) {
+      room.classList.add('entered'); show(start); wake();
+    } else {
+      // walk up to the door; it opens; step through
+      void room.offsetWidth; room.classList.add('entering');
+      setTimeout(() => { show(start); }, 2700);
+      setTimeout(() => { room.classList.add('entered'); wake(); }, 3000);
+    }
   };
   window.closeSanctum = function(){
-    room.classList.remove('open', 'still'); room.setAttribute('aria-hidden', 'true');
+    room.classList.remove('open', 'still', 'entering', 'entered', 'flare'); room.setAttribute('aria-hidden', 'true');
     document.documentElement.style.overflow = '';
-    stopPrayer(); frame.innerHTML = '';
+    stopVigil(); frame.innerHTML = ''; motesOn = false;
     if (location.hash.startsWith('#sanctum')) history.replaceState(null, '', location.pathname + location.search);
   };
-  window.sanctumGo = function(d){ if (busy) return; busy = true; setTimeout(() => busy = false, 450); show(i + d, d); wake(); };
+  window.sanctumGo = function(d){ if (busy || !room.classList.contains('entered')) return; busy = true; setTimeout(() => busy = false, 500); show(i + d); wake(); };
 
-  // contemplate: drift through the works on its own
-  function restartPrayer(){
-    clearTimeout(prayT);
+  // keep vigil: the works pass on their own
+  function restartVigil(){
+    clearTimeout(vigilT);
     const bar = $('sc-progress');
     bar.classList.remove('run'); void bar.offsetWidth;
-    bar.style.animationDuration = PRAY_MS + 'ms'; bar.classList.add('run');
-    prayT = setTimeout(() => show(i + 1, 1), PRAY_MS);
+    bar.style.animationDuration = VIGIL_MS + 'ms'; bar.classList.add('run');
+    vigilT = setTimeout(() => show(i + 1), VIGIL_MS);
   }
-  function stopPrayer(){ praying = false; clearTimeout(prayT); $('sc-progress').classList.remove('run'); $('sc-pray').classList.remove('on'); $('sc-pray').textContent = 'contemplate'; }
-  window.sanctumContemplate = function(){
-    if (praying) { stopPrayer(); return; }
-    praying = true; $('sc-pray').classList.add('on'); $('sc-pray').textContent = 'contemplating…'; restartPrayer();
+  function stopVigil(){ vigil = false; clearTimeout(vigilT); $('sc-progress').classList.remove('run'); $('sc-pray').classList.remove('on'); $('sc-pray').textContent = 'keep vigil'; }
+  window.sanctumVigil = function(){
+    if (vigil) { stopVigil(); return; }
+    vigil = true; $('sc-pray').classList.add('on'); $('sc-pray').textContent = 'keeping vigil…'; restartVigil();
     room.classList.add('still');
   };
+
+  // dust drifting up through the candlelight
+  function startMotes(){
+    const cv = $('sc-motes'), ctx = cv.getContext('2d');
+    if (REDUCE) return;
+    motesOn = true;
+    let W, H, dpr;
+    const size = () => { dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; };
+    size(); addEventListener('resize', size);
+    const P = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: .4 + Math.random() * 1.4, v: .00025 + Math.random() * .0006, s: Math.random() * 6.28, a: .15 + Math.random() * .45 }));
+    (function tick(t){
+      if (!motesOn) { ctx.clearRect(0, 0, cv.width, cv.height); return; }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+      for (const p of P) {
+        p.y -= p.v; if (p.y < -.02) { p.y = 1.02; p.x = Math.random(); }
+        const x = (p.x + Math.sin(t / 3000 + p.s) * .01) * W, y = p.y * H;
+        const tw = .6 + .4 * Math.sin(t / 700 + p.s * 3);
+        ctx.fillStyle = `rgba(255,214,150,${(p.a * tw).toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(x, y, p.r, 0, 7); ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    })(0);
+  }
 
   // the room goes quiet when you do
   function wake(){
     room.classList.remove('still');
     clearTimeout(idleT);
-    idleT = setTimeout(() => room.classList.add('still'), 3200);
+    idleT = setTimeout(() => room.classList.add('still'), 3500);
   }
   room.addEventListener('mousemove', wake);
   room.addEventListener('touchstart', wake, { passive: true });
@@ -3899,7 +4013,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     if (e.key === 'ArrowRight') { sanctumGo(1); e.preventDefault(); }
     else if (e.key === 'ArrowLeft') { sanctumGo(-1); e.preventDefault(); }
     else if (e.key === 'Escape') closeSanctum();
-    else if (e.key === ' ') { sanctumContemplate(); e.preventDefault(); }
+    else if (e.key === ' ') { sanctumVigil(); e.preventDefault(); }
   });
   let sx = null, sy = 0;
   room.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
