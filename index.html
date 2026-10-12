@@ -596,6 +596,56 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   .gp.open{transform:none}
   .gp-strip img{height:120px}
 }
+
+/* ═══ THE SANCTUM ═══ */
+.sanct-entry{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin:1.1rem 0 .4rem}
+.sanct-entry button{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;letter-spacing:.12em;color:var(--ghost);background:transparent;border:1px solid rgba(212,207,200,.18);padding:.6rem 1.4rem;cursor:pointer;transition:border-color .5s,color .5s,box-shadow .5s}
+.sanct-entry button:hover{border-color:rgba(196,135,58,.6);color:#f1e3c9;box-shadow:0 0 30px rgba(196,135,58,.18)}
+.sanct-entry span{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.22em;color:rgba(168,162,155,.6)}
+#sanctum{position:fixed;inset:0;z-index:2000;background:#000;display:none;overflow:hidden;color:#e9e3da;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+#sanctum.open{display:block;animation:scIn 1.6s ease both}
+@keyframes scIn{from{opacity:0}to{opacity:1}}
+.sc-aura{position:absolute;inset:-20%;pointer-events:none}
+.sc-aura img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(90px) saturate(1.5);opacity:0;transform:scale(1.1);transition:opacity 2.4s ease}
+.sc-aura img.on{opacity:.42;animation:scBreathe 9s ease-in-out infinite}
+@keyframes scBreathe{0%,100%{transform:scale(1.05)}50%{transform:scale(1.18)}}
+.sc-rays{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 38% 55% at 50% 44%,rgba(255,240,215,.07),transparent 70%);animation:scHalo 7s ease-in-out infinite}
+@keyframes scHalo{0%,100%{opacity:.6}50%{opacity:1}}
+.sc-vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 30%,rgba(0,0,0,.55) 62%,#000 100%)}
+.sc-grain{position:absolute;inset:-50%;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:scGrain 1.2s steps(6) infinite}
+@keyframes scGrain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-2%)}60%{transform:translate(-2%,-4%)}80%{transform:translate(4%,2%)}100%{transform:translate(0,0)}}
+.sc-rite{position:absolute;left:0;right:0;top:44%;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.6rem,3.4vw,2.6rem);letter-spacing:.3em;color:rgba(233,227,218,.85);margin:0;opacity:0;pointer-events:none}
+.sc-rite.show{animation:scRite 3.2s ease both}
+@keyframes scRite{0%{opacity:0;letter-spacing:.6em;filter:blur(6px)}35%{opacity:1;letter-spacing:.3em;filter:blur(0)}70%{opacity:1}100%{opacity:0;filter:blur(4px)}}
+.sc-stage{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;padding:6vh 12vw 22vh;pointer-events:none}
+.sc-frame{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+.sc-frame img,.sc-frame video{max-width:100%;max-height:100%;object-fit:contain;display:block;box-shadow:0 30px 120px rgba(0,0,0,.9),0 0 80px rgba(255,235,200,.06);opacity:0;transform:translateY(14px) scale(.985);filter:blur(10px) brightness(.7);transition:opacity 1.6s ease,transform 2.2s cubic-bezier(.2,.7,.1,1),filter 1.8s ease}
+.sc-frame .in{opacity:1;transform:none;filter:none}
+.sc-frame .out{opacity:0;transform:translateY(-10px) scale(1.01);filter:blur(12px) brightness(.5);transition:opacity .7s ease,transform .9s ease,filter .7s ease}
+.sc-plaque{position:absolute;left:0;right:0;bottom:4.5vh;text-align:center;padding:0 16px;transition:opacity 1.2s ease}
+.sc-num{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.55em;color:rgba(196,135,58,.85);margin:0 0 .6rem;padding-left:.55em}
+.sc-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(1.7rem,3vw,2.5rem);letter-spacing:.06em;margin:0 0 .4rem;color:#f1ebe2}
+.sc-sub{font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.16em;color:rgba(200,193,184,.6);margin:0 auto .7rem;max-width:44rem;line-height:1.7}
+.sc-link{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.22em;color:rgba(196,135,58,.8);text-decoration:none;border-bottom:1px solid rgba(196,135,58,.25);padding-bottom:2px}
+.sc-link:hover{color:#e8b56f}
+.sc-ui>*{transition:opacity 1.4s ease}
+#sanctum.still .sc-ui>*,#sanctum.still .sc-plaque{opacity:0}
+#sanctum.still{cursor:none}
+.sc-leave,.sc-pray{position:absolute;top:1.4rem;background:none;border:0;font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.3em;color:rgba(212,207,200,.6);cursor:pointer;padding:.5rem}
+.sc-leave{left:1.4rem}.sc-pray{right:1.4rem}
+.sc-leave:hover,.sc-pray:hover,.sc-pray.on{color:#e8b56f}
+.sc-prev,.sc-next{position:absolute;top:0;bottom:0;width:14vw;min-width:56px;background:none;border:0;cursor:pointer;color:rgba(233,227,218,.35);font-family:'Cormorant Garamond',serif;font-size:3.4rem;font-weight:300;transition:color .5s,opacity 1.4s}
+.sc-prev{left:0}.sc-next{right:0}
+.sc-prev:hover,.sc-next:hover{color:rgba(241,227,201,.9)}
+.sc-progress{position:absolute;left:0;bottom:0;height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(196,135,58,.8));opacity:0}
+.sc-progress.run{opacity:1;animation:scProg linear forwards}
+@keyframes scProg{from{width:0}to{width:100%}}
+@media(max-width:700px){
+  .sc-stage{padding:9vh 16px 27vh}
+  .sc-prev,.sc-next{width:22vw;font-size:2.4rem;align-items:flex-end}
+  .sc-sub{font-size:.7rem}
+}
+@media(prefers-reduced-motion:reduce){.sc-aura img.on,.sc-rays,.sc-grain{animation:none}}
 </style>
 </head>
 <body class="gate-open">
@@ -668,6 +718,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     <button class="tgl-btn" data-f="transient">transient</button>
     <button class="tgl-btn" data-f="8nap">8nap</button>
   </div>
+  <div class="sanct-entry reveal d2"><button type="button" onclick="openSanctum()">✦ &nbsp;enter the sanctum&nbsp; ✦</button><span>every work, one at a time, in the dark</span></div>
 
   <div class="wgrid" id="wgrid">
 <div class="wcard" data-s="available" data-p="8nap" style="cursor:pointer" onclick="openStarsGallery()">
@@ -3308,6 +3359,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     if (g && getComputedStyle(g).display !== 'none') return true;
     if (document.getElementById('viewer')?.classList.contains('open')) return true;
     if (document.getElementById('gp')?.classList.contains('open')) return true;
+    if (document.getElementById('sanctum')?.classList.contains('open')) return true;
     return ['cell-gallery','corridor-gallery','stars-gallery','unb-gallery'].some(id => document.getElementById(id)?.style.display === 'block');
   }
 
@@ -3710,6 +3762,165 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
   }, { rootMargin: '200px' }).observe(wrap);
   new ResizeObserver(() => { if (ready) { size(); kick(); } }).observe(wrap);
   document.addEventListener('visibilitychange', kick);
+})();
+</script>
+
+<!-- ══ THE SANCTUM ══ -->
+<div id="sanctum" aria-hidden="true" role="dialog" aria-label="the sanctum">
+  <div class="sc-aura"><img id="sc-aura-a" alt=""><img id="sc-aura-b" alt=""></div>
+  <div class="sc-rays"></div>
+  <div class="sc-vignette"></div>
+  <div class="sc-grain"></div>
+  <p class="sc-rite" id="sc-rite">be still</p>
+  <div class="sc-stage" id="sc-stage">
+    <div class="sc-frame" id="sc-frame"></div>
+  </div>
+  <div class="sc-plaque" id="sc-plaque">
+    <p class="sc-num" id="sc-num"></p>
+    <h2 class="sc-title" id="sc-title"></h2>
+    <p class="sc-sub" id="sc-sub"></p>
+    <a class="sc-link" id="sc-link" target="_blank" rel="noopener">view the work →</a>
+  </div>
+  <div class="sc-ui">
+    <button type="button" class="sc-leave" onclick="closeSanctum()">✕ &nbsp;leave</button>
+    <button type="button" class="sc-pray" id="sc-pray" onclick="sanctumContemplate()">contemplate</button>
+    <button type="button" class="sc-prev" onclick="sanctumGo(-1)" aria-label="previous work"><span>‹</span></button>
+    <button type="button" class="sc-next" onclick="sanctumGo(1)" aria-label="next work"><span>›</span></button>
+    <div class="sc-progress" id="sc-progress"></div>
+  </div>
+</div>
+<script>
+/* ═══ THE SANCTUM: every work, one at a time ═══ */
+(function(){
+  const room = document.getElementById('sanctum');
+  if (!room) return;
+  const frame = document.getElementById('sc-frame');
+  const auraA = document.getElementById('sc-aura-a'), auraB = document.getElementById('sc-aura-b');
+  const $ = id => document.getElementById(id);
+  const ROMAN = n => { const m=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']]; let r=''; for (const [v,k] of m) while (n>=v){r+=k;n-=v;} return r; };
+  let works = [], i = 0, auraFlip = false, idleT = 0, prayT = 0, praying = false, busy = false;
+  const PRAY_MS = 14000;
+
+  function collect(){
+    return [...document.querySelectorAll('#wgrid .wcard')].map(c => {
+      const img = c.querySelector('.wimg img'), vid = c.querySelector('.wimg video');
+      const src = vid ? (vid.dataset.src || vid.currentSrc || vid.src) : (img && (img.currentSrc || img.getAttribute('src')));
+      if (!src) return null;
+      const a = c.querySelector('a[data-url]') || c.querySelector('a[href]:not(.wcollect)') || c.querySelector('a.wcollect');
+      return {
+        title: (c.querySelector('.wtitle')?.textContent || '').trim(),
+        sub: (c.querySelector('.wsub')?.textContent || '').trim(),
+        src, video: !!vid, poster: vid?.getAttribute('poster') || '',
+        href: a ? (a.dataset.url || a.getAttribute('href') || '') : '', slug: c.dataset.slug || '',
+      };
+    }).filter(Boolean);
+  }
+
+  function show(n, dir){
+    if (!works.length) return;
+    i = (n + works.length) % works.length;
+    const w = works[i];
+    const old = frame.firstElementChild;
+    if (old) { old.classList.remove('in'); old.classList.add('out'); setTimeout(() => old.remove(), 900); }
+    const el = document.createElement(w.video ? 'video' : 'img');
+    if (w.video) { el.muted = true; el.loop = true; el.playsInline = true; el.autoplay = true; if (w.poster) el.poster = w.poster; }
+    el.alt = w.title;
+    const reveal = () => setTimeout(() => el.classList.add('in'), old ? 650 : 60);
+    if (w.video) el.addEventListener('loadeddata', reveal, { once: true });
+    else { el.onload = reveal; el.onerror = reveal; }
+    el.src = w.src;
+    frame.appendChild(el);
+    // aura: a huge blurred copy of the work glowing behind it
+    const aura = (auraFlip = !auraFlip) ? auraA : auraB, prev = auraFlip ? auraB : auraA;
+    aura.src = w.video ? (w.poster || '') : w.src;
+    aura.classList.add('on'); prev.classList.remove('on');
+    $('sc-num').textContent = ROMAN(i + 1) + '  ·  ' + ROMAN(works.length);
+    $('sc-title').textContent = w.title;
+    $('sc-sub').textContent = w.sub;
+    const link = $('sc-link');
+    if (w.href) { link.href = w.href; link.style.display = ''; } else link.style.display = 'none';
+    if (w.slug) history.replaceState(null, '', '#sanctum/' + w.slug);
+    // warm the next two
+    [1, 2, -1].forEach(d => { const x = works[(i + d + works.length) % works.length]; if (x && !x.video) { const im = new Image(); im.src = x.src; } });
+    if (praying) restartPrayer();
+  }
+
+  window.openSanctum = function(slug){
+    works = collect();
+    if (!works.length) return;
+    let start = 0;
+    if (slug) { const k = works.findIndex(w => w.slug === slug); if (k >= 0) start = k; }
+    room.classList.add('open'); room.setAttribute('aria-hidden', 'false');
+    document.documentElement.style.overflow = 'hidden';
+    frame.innerHTML = '';
+    const rite = $('sc-rite');
+    let first = false;
+    try { first = !sessionStorage.getItem('sanctum-rite'); sessionStorage.setItem('sanctum-rite', '1'); } catch (e) { first = true; }
+    if (first && !slug) {
+      rite.classList.remove('show'); void rite.offsetWidth; rite.classList.add('show');
+      room.classList.add('still');
+      setTimeout(() => { show(start); wake(); }, 2600);
+    } else show(start);
+    wake();
+  };
+  window.closeSanctum = function(){
+    room.classList.remove('open', 'still'); room.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
+    stopPrayer(); frame.innerHTML = '';
+    if (location.hash.startsWith('#sanctum')) history.replaceState(null, '', location.pathname + location.search);
+  };
+  window.sanctumGo = function(d){ if (busy) return; busy = true; setTimeout(() => busy = false, 450); show(i + d, d); wake(); };
+
+  // contemplate: drift through the works on its own
+  function restartPrayer(){
+    clearTimeout(prayT);
+    const bar = $('sc-progress');
+    bar.classList.remove('run'); void bar.offsetWidth;
+    bar.style.animationDuration = PRAY_MS + 'ms'; bar.classList.add('run');
+    prayT = setTimeout(() => show(i + 1, 1), PRAY_MS);
+  }
+  function stopPrayer(){ praying = false; clearTimeout(prayT); $('sc-progress').classList.remove('run'); $('sc-pray').classList.remove('on'); $('sc-pray').textContent = 'contemplate'; }
+  window.sanctumContemplate = function(){
+    if (praying) { stopPrayer(); return; }
+    praying = true; $('sc-pray').classList.add('on'); $('sc-pray').textContent = 'contemplating…'; restartPrayer();
+    room.classList.add('still');
+  };
+
+  // the room goes quiet when you do
+  function wake(){
+    room.classList.remove('still');
+    clearTimeout(idleT);
+    idleT = setTimeout(() => room.classList.add('still'), 3200);
+  }
+  room.addEventListener('mousemove', wake);
+  room.addEventListener('touchstart', wake, { passive: true });
+  document.addEventListener('keydown', e => {
+    if (!room.classList.contains('open')) return;
+    if (e.key === 'ArrowRight') { sanctumGo(1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { sanctumGo(-1); e.preventDefault(); }
+    else if (e.key === 'Escape') closeSanctum();
+    else if (e.key === ' ') { sanctumContemplate(); e.preventDefault(); }
+  });
+  let sx = null, sy = 0;
+  room.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  room.addEventListener('touchend', e => {
+    if (sx === null) return;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) sanctumGo(dx < 0 ? 1 : -1);
+  });
+
+  // photonisdead.com/#sanctum or #sanctum/<work>
+  function fromHash(){
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (h !== 'sanctum' && !h.startsWith('sanctum/')) return;
+    const gate = document.getElementById('gate'); if (gate) gate.style.display = 'none';
+    document.body.classList.remove('gate-open');
+    const slug = h.split('/')[1] || '';
+    if (!room.classList.contains('open')) openSanctum(slug);
+    else if (slug && works[i]?.slug !== slug) { const k = works.findIndex(w => w.slug === slug); if (k >= 0) show(k); }
+  }
+  if (location.hash.startsWith('#sanctum')) setTimeout(fromHash, 120);
+  window.addEventListener('hashchange', fromHash);
 })();
 </script>
 </body>
