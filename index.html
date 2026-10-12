@@ -601,7 +601,9 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 .sanct-entry{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin:1.1rem 0 .4rem}
 .sanct-entry button{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;letter-spacing:.12em;color:var(--ghost);background:transparent;border:1px solid rgba(212,207,200,.18);padding:.6rem 1.4rem;cursor:pointer;transition:border-color .5s,color .5s,box-shadow .5s}
 .sanct-entry button:hover{border-color:rgba(214,160,80,.65);color:#f1e3c9;box-shadow:0 0 34px rgba(214,140,50,.22)}
-.sanct-entry span{font-family:'Inconsolata',monospace;font-size:.72rem;letter-spacing:.22em;color:rgba(168,162,155,.6)}
+.sanct-entry span{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;letter-spacing:.08em;color:#ffe2b0;text-shadow:0 0 10px rgba(255,190,100,.85),0 0 26px rgba(255,150,50,.5),0 0 50px rgba(255,130,40,.25);animation:sanctGlow 3.4s ease-in-out infinite}
+@keyframes sanctGlow{0%,100%{opacity:1}40%{opacity:.9}70%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.sanct-entry span{animation:none}}
 #sanctum{position:fixed;inset:0;z-index:2000;background:#000;display:none;overflow:hidden;color:#ece4d6;user-select:none;-webkit-user-select:none;touch-action:pan-y}
 #sanctum.open{display:block}
 
