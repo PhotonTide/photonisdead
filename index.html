@@ -1012,7 +1012,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 
 <div class="wcard" data-s="sold">
       <a href="https://manifold.xyz/@photon-tide/id/4081584368" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
-        <img src="https://assets.manifold.xyz/optimized/e1ad61e10d420bcd91369fa7666d6bcae18a45ca381be3b8b546930e455b69f8/w_1000.jpg" alt="Headlocked" loading="lazy">
+        <video data-src="media/headlocked.mp4" poster="media/headlocked.jpg" muted loop playsinline preload="none" aria-label="Headlocked" style="width:100%;height:100%;object-fit:cover;display:block"></video>
         <span class="wpill sold" style="position:absolute;top:.6rem;left:.6rem">collected</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
       </div>
@@ -3091,12 +3091,12 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 /* ═══ THE CELL GALLERY ═══ */
 const cgItems = [
   {name:"The Cell (Original)",img:"media/7da16a04ab.jpg"},
-  {name:"Cell I",img:"https://cdn.prod.website-files.com/63e146856935c1438e69ac9b/65965d690374c741113c4563_IMG_2357.JPG"},
-  {name:"Cell II",img:"https://cdn.prod.website-files.com/63e146856935c1438e69ac9b/65965d6a684de0460d1a920b_IMG_4669.JPG"},
-  {name:"Cell Becomes Man",img:"https://cdn.prod.website-files.com/63e146856935c1438e69ac9b/65965d690374c741113c4563_IMG_2357.JPG",video:"https://art.transientlabs.xyz/PhotonTide/CellMan.mp4"},
-  {name:"Atoms",img:"https://cdn.prod.website-files.com/63e146856935c1438e69ac9b/65965d6ae0015dd05a02817f_Atoms.JPG"},
-  {name:"Symbiotic",img:"https://art.transientlabs.xyz/PhotonTide/VO-symbiotic.gif"},
-  {name:"Cell V",img:"https://art.transientlabs.xyz/PhotonTide/GMP_U2F2ZUdIMDE_1.gif"}
+  {name:"Cell I",img:"media/gallery/cell-1.jpg"},
+  {name:"Cell II",img:"media/gallery/cell-2.jpg"},
+  {name:"Cell Becomes Man",img:"media/gallery/cell-1.jpg",video:"media/gallery/cell-man.mp4"},
+  {name:"Atoms",img:"media/gallery/atoms.jpg"},
+  {name:"Symbiotic",img:"media/gallery/symbiotic.webp"},
+  {name:"Cell V",img:"media/gallery/cell-v.webp"}
 ];
 let cgIdx = 0;
 function openCellGallery(idx){
@@ -3219,7 +3219,7 @@ document.addEventListener('keydown',e=>{
 /* ═══ WHEN ALL I HAD WAS STARS GALLERY (8NAP) ═══ */
 const starsItems = [
   {name:"Event Horizon", img:"media/when-all-i-had-was-stars.jpg", desc:"Event Horizon examines the boundary between presence and disappearance.", editions:"39 / 42 minted · 0.042 Ξ"},
-  {name:"Youniverse", img:"https://8nap.s3.eu-central-1.amazonaws.com/previews/197/large/1", desc:"A place where identity, memory, and perception are pulled inward and distorted.", editions:"10 / 22 minted · 0.042 Ξ"}
+  {name:"Youniverse", img:"media/gallery/youniverse.jpg", desc:"A place where identity, memory, and perception are pulled inward and distorted.", editions:"10 / 22 minted · 0.042 Ξ"}
 ];
 let starsIdx = 0;
 function openStarsGallery(idx){
@@ -3939,8 +3939,27 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     $('sc-spiral-l').setAttribute('d', d); $('sc-spiral-r').setAttribute('d', d);
   })();
 
+  // gallery cards open up into each of their pieces, in gallery order
+  const slugOf = t => t.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/&/g, ' and ').replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  function expand(c){
+    const fn = (c.getAttribute('onclick') || '').match(/^(\w+)\(/)?.[1];
+    const title = (c.querySelector('.wtitle')?.textContent || '').trim();
+    const year = ((c.querySelector('.wsub')?.textContent || '').match(/20\d\d/) || [''])[0];
+    const base = c.dataset.slug || slugOf(title);
+    let items = null;
+    try {
+      if (fn === 'openStarsGallery') items = starsItems.map(it => ({ title: it.name, sub: `${year} · ${title} · 8NAP · ${it.editions || ''}`, src: it.img, href: 'https://8nap.art/editions/when-all-i-had-was-stars' }));
+      else if (fn === 'openCorridorGallery') items = corridorItems.map(it => ({ title: it.name, sub: `${year} · ${title} · w/ DeltaSauce · ${it.editions || ''}`, src: it.img, href: it.url || '' }));
+      else if (fn === 'openCellGallery') items = cgItems.map(it => ({ title: it.name, sub: `${year} · ${title} · Transient Labs`, src: it.video || it.img, video: !!it.video, poster: it.video ? it.img : '', href: '' }));
+      else if (fn === 'openUnbreakable') items = UNB.map(([id, name, price, who, cid]) => ({ title: name, sub: `${year} · ${title} · w/ m0dest · 1/1 · ${price ? 'sold ' + price + ' Ξ · ' : ''}collected by ${who}`, src: unbLarge(id, cid), href: UNB_URL + id }));
+    } catch (e) { items = null; }
+    if (!items || !items.length) return null;
+    return items.map((it, k) => Object.assign({ video: false, poster: '' }, it, { slug: k === 0 ? base : base + '-' + slugOf(it.title) }));
+  }
   function collect(){
-    return [...document.querySelectorAll('#wgrid .wcard')].map(c => {
+    return [...document.querySelectorAll('#wgrid .wcard')].flatMap(c => {
+      const many = expand(c);
+      if (many) return many;
       const img = c.querySelector('.wimg img'), vid = c.querySelector('.wimg video');
       const src = vid ? (vid.dataset.src || vid.currentSrc || vid.src) : (img && (img.dataset.full || img.currentSrc || img.getAttribute('src')));
       if (!src) return null;
