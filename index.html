@@ -3981,6 +3981,9 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
       art.onerror = () => { el.classList.add('missing'); el.innerHTML = '<p class="sc-missing">the image is still on its way…<br>view it on its page below</p>'; once(); };
       // show the work as soon as its size is known, and let it paint in as it arrives
       const poll = setInterval(() => { if (shown || el.classList.contains('out')) return clearInterval(poll); if (art.naturalWidth) { clearInterval(poll); once(); } }, 80);
+      // a stalled download never leaves the room waiting: retry fresh, then give up gracefully
+      setTimeout(() => { if (!shown && !el.classList.contains('out')) art.src = w.src + (w.src.includes('?') ? '&' : '?') + 'r=' + Date.now(); }, 5000);
+      setTimeout(() => { if (!shown && !el.classList.contains('out')) art.onerror(); }, 15000);
     }
     art.src = w.src;
     frame.appendChild(el);
