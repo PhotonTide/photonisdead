@@ -653,7 +653,9 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 @keyframes warm{0%,100%{opacity:.75}30%{opacity:1}55%{opacity:.82}80%{opacity:.95}}
 .sc-motes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
-.sc-altar{--sh:56vh;--sw:84vw;position:absolute;left:0;right:0;top:10vh;bottom:31vh;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.sc-name{position:absolute;top:1.45rem;left:0;right:0;margin:0;text-align:center;pointer-events:none;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:1.15rem;letter-spacing:.34em;padding-left:.34em;color:rgba(236,206,158,.78);text-shadow:0 0 14px rgba(255,170,70,.3);transition:opacity 1.4s ease;z-index:2}
+#sanctum.still .sc-name{opacity:.35}
+.sc-altar{--sh:53vh;--sw:84vw;position:absolute;left:0;right:0;top:14vh;bottom:31vh;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
 .sc-frame{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 /* the antique frame: carved and gilded in SVG, cut to each work's shape */
 .gild{--fb:clamp(28px,5vh,54px);position:absolute;display:inline-flex;padding:var(--fb);box-sizing:border-box;
@@ -666,7 +668,6 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 .sc-missing{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;line-height:1.7;color:rgba(222,200,170,.6);text-align:center;margin:0}
 .gild.in{opacity:1;transform:none;filter:none}
 .gild.out{opacity:0;transform:translateY(-14px) scale(1.02);filter:blur(16px) brightness(.4) sepia(.5);transition:opacity .9s ease,transform 1.1s ease,filter .9s ease}
-.sc-inscr{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(.8rem,1.3vw,1.05rem);letter-spacing:.55em;padding-left:.55em;color:rgba(222,184,120,.6);margin:0;position:absolute;top:calc(1.9rem - 10vh);left:0;right:0;text-align:center;text-shadow:0 0 18px rgba(255,180,80,.25);white-space:nowrap}
 
 /* candles */
 /* the keepers: hooded figures holding the light either side of the work */
@@ -729,15 +730,15 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 .sc-progress.run{opacity:1;animation:scProg linear forwards}
 @keyframes scProg{from{width:0}to{width:100%}}
 @media (min-aspect-ratio:5/4) and (min-width:901px){
-  .sc-altar{--sh:71vh;--sw:min(80vw,calc(100vw - 2 * (14vw + 13vh + 40px)));bottom:19vh}
+  .sc-altar{--sh:66vh;--sw:min(80vw,calc(100vw - 2 * (14vw + 13vh + 40px)));top:15vh;bottom:19vh}
 }
 @media(max-width:1150px) and (min-width:701px){
   .sc-room{--cs:.72;--cgap:20px}
 }
 @media(max-width:700px){
-  .sc-altar{top:12vh;bottom:33vh;--sh:54vh;--sw:80vw}
+  .sc-altar{top:16vh;bottom:33vh;--sh:50vh;--sw:80vw}
   .gild{--fb:22px}
-  .sc-inscr{letter-spacing:.32em;font-size:.68rem;top:calc(4.4rem - 12vh)}
+  .sc-name{top:4.2rem;font-size:.95rem}
   .sc-altar{z-index:1}
   .sc-prev,.sc-next{width:18vw;font-size:2.4rem}
   .sc-sub{font-size:.68rem}
@@ -3892,7 +3893,6 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     <div class="sc-keeper l" style="--d:0s"><img src="media/keeper.webp" alt="" draggable="false"><i class="kglow"></i><i class="kspill"></i></div>
     <div class="sc-keeper r" style="--d:2.3s"><img src="media/keeper.webp" alt="" draggable="false"><i class="kglow"></i><i class="kspill"></i></div>
     <div class="sc-altar">
-      <p class="sc-inscr">QVOD · VIDES · SOMNIVM · EST</p>
       <div class="sc-frame" id="sc-frame"></div>
     </div>
     <div class="sc-floor"></div>
@@ -3902,6 +3902,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
       <p class="sc-sub" id="sc-sub"></p>
       <a class="sc-link" id="sc-link" target="_blank" rel="noopener">view the work →</a>
     </div>
+    <p class="sc-name">photon tide</p>
     <div class="sc-grain"></div>
     <div class="sc-ui">
       <button type="button" class="sc-leave" onclick="closeSanctum()">✕ &nbsp;leave</button>
