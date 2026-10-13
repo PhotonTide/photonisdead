@@ -3966,6 +3966,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     const art = document.createElement(w.video ? 'video' : 'img');
     if (w.video) { art.muted = true; art.loop = true; art.playsInline = true; art.autoplay = true; if (w.poster) art.poster = w.poster; }
     art.alt = w.title;
+    try { art.fetchPriority = 'high'; } catch (e) {}
     const el = document.createElement('div');
     el.className = 'gild';
     el.prepend(art);
@@ -4120,7 +4121,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     let start = 0;
     if (slug) { const k = works.findIndex(w => w.slug === slug); if (k >= 0) start = k; }
     room.classList.remove('entering', 'entered', 'still');
-    [0, 1, -1].forEach(d => { const x = works[(start + d + works.length) % works.length]; if (x && !x.video) { const im = new Image(); im.decoding = 'async'; im.src = x.src; } });
+    [0, 1, -1].forEach(d => { const x = works[(start + d + works.length) % works.length]; if (x && !x.video) { const im = new Image(); try { im.fetchPriority = 'high'; } catch (e) {} im.decoding = 'async'; im.src = x.src; } });
     room.querySelectorAll('.sc-keeper').forEach(k => k.classList.remove('placed'));
     room.classList.add('open'); room.setAttribute('aria-hidden', 'false');
     document.documentElement.style.overflow = 'hidden';
