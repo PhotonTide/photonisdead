@@ -39,6 +39,8 @@ main{position:relative;z-index:1}
 .top-btn:focus-visible{outline:2px solid var(--ghost);outline-offset:3px}
 .top-btn.signed{background:rgba(14,14,20,.85);color:var(--pale);border:1px solid #2a2a33}
 .top-btn.signed:hover{color:var(--ghost)}
+.top-actions{display:flex;gap:.5rem;align-items:center}
+.top-actions [hidden]{display:none}
 @media(max-width:640px){
   .topbar{padding:.8rem 4vw 1.3rem}
   .back{font-size:.72rem;letter-spacing:.12em;white-space:nowrap}
@@ -172,7 +174,7 @@ main{position:relative;z-index:1}
 
 <header class="topbar">
   <a class="back" href="/">← photon tide</a>
-  <button class="top-btn" id="top-btn" type="button">connect wallet</button>
+  <span class="top-actions"><button class="top-btn signed" id="switch-btn" type="button" hidden>switch wallet</button><button class="top-btn" id="top-btn" type="button">connect wallet</button></span>
 </header>
 
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -435,12 +437,16 @@ main{position:relative;z-index:1}
       b.textContent = (matchMedia('(max-width:640px)').matches ? short(s.address) + ' · out' : short(s.address) + ' · disconnect');
       b.classList.add('signed');
       b.setAttribute('aria-label', 'signed in as ' + s.address + ' — disconnect');
+      $('switch-btn').hidden = false;
+      $('switch-btn').textContent = matchMedia('(max-width:640px)').matches ? 'switch' : 'switch wallet';
     } else {
       b.textContent = 'connect wallet';
       b.classList.remove('signed');
       b.removeAttribute('aria-label');
+      $('switch-btn').hidden = true;
     }
   }
+  $('switch-btn').onclick = () => { signOut(); pickAccount = true; connect(); };
   $('top-btn').onclick = () => {
     if (state && state.signedIn) return signOut();
     connect();
@@ -464,6 +470,9 @@ main{position:relative;z-index:1}
       m.append('writing as ' + short(state.address) + ' · press enter or seal when it feels right · ');
       const out = document.createElement('button'); out.className = 'link'; out.type = 'button'; out.textContent = 'disconnect';
       out.onclick = signOut; m.appendChild(out);
+      m.append(' · ');
+      const sw = document.createElement('button'); sw.className = 'link'; sw.type = 'button'; sw.textContent = 'switch wallet';
+      sw.onclick = () => { signOut(); pickAccount = true; connect(); }; m.appendChild(sw);
     }
     const btn = document.createElement('button');
     btn.className = 'seal'; btn.id = 'seal'; btn.type = 'button';
@@ -525,10 +534,16 @@ main{position:relative;z-index:1}
 
   const toHex = s => '0x' + [...new TextEncoder().encode(s)].map(b => b.toString(16).padStart(2, '0')).join('');
 
+  let pickAccount = false;
   async function signIn(provider) {
     connecting = true;
     try {
-      modalStatus('open your wallet to connect…');
+      modalStatus(pickAccount ? 'choose the wallet you want to use…' : 'open your wallet to connect…');
+      if (pickAccount) {
+        // makes MetaMask and most wallets show their account picker instead of reusing the last account
+        try { await provider.request({ method: 'wallet_requestPermissions', params: [{ eth_accounts: {} }] }); }
+        catch (e) { if (e && e.code === 4001) throw e; }
+      }
       const [account] = await provider.request({ method: 'eth_requestAccounts' });
       if (!account) throw new Error('no account selected');
       const address = account.toLowerCase();
@@ -538,6 +553,7 @@ main{position:relative;z-index:1}
       const { token } = await api('verify', { method: 'POST', body: JSON.stringify({ address, signature }) });
       session = { token, address };
       store.set(session);
+      pickAccount = false;
       closeModal();
       await load();
       $('page').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -548,7 +564,7 @@ main{position:relative;z-index:1}
     }
   }
 
-  function signOut() { session = null; store.set(null); load(); }
+  function signOut() { session = null; store.set(null); pickAccount = true; load(); }
   document.querySelectorAll('[data-signout]').forEach(b => b.onclick = signOut);
 
   /* ── sealing a line ── */
