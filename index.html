@@ -744,6 +744,18 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   .door{width:70vw}
 }
 @media(prefers-reduced-motion:reduce){.sc-keeper,.kglow,.kspill,.sc-aura img.on,.sc-rays,.sc-grain,.sc-warm,.cdl-flame,.cdl-glow{animation:none}}
+
+/* ═══ DROP ALERTS ═══ */
+.alerts{margin:2.6rem 0 .5rem;max-width:34rem}
+.alerts-h{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;color:var(--ghost);margin:0 0 .9rem}
+.alerts-row{display:flex;gap:.5rem}
+.alerts-row input[type=email]{flex:1;min-width:0;font-family:'Inconsolata',monospace;font-size:16px;letter-spacing:.06em;color:var(--ghost);background:rgba(255,255,255,.03);border:1px solid var(--dim);padding:.75rem .9rem;outline:none;border-radius:0}
+.alerts-row input[type=email]:focus{border-color:rgba(196,135,58,.6)}
+.alerts-row button{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.2em;color:#000;background:var(--ember);border:0;padding:0 1.2rem;cursor:pointer;white-space:nowrap}
+.alerts-row button:disabled{opacity:.6;cursor:default}
+.alerts-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.alerts-note{font-family:'Inconsolata',monospace;font-size:.7rem;letter-spacing:.16em;color:rgba(168,162,155,.6);margin:.7rem 0 0}
+.alerts-note.ok{color:var(--ember)}.alerts-note.err{color:#d98a6a}
 </style>
 </head>
 <body class="gate-open">
@@ -819,14 +831,14 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   <div class="sanct-entry reveal d2"><button type="button" onclick="openSanctum()">✦ &nbsp;enter the sanctum&nbsp; ✦</button><span>every work, alone, by candlelight</span></div>
 
   <div class="wgrid" id="wgrid">
-<div class="wcard" data-s="available" data-p="transient">
+<div data-ed-card="void" class="wcard" data-s="available" data-p="transient">
       <a href="https://www.transient.xyz/mint/theres-a-void-within-me" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/thumbs/theres-a-void-within-me.jpg" data-full="media/theres-a-void-within-me.jpg" alt="Theres A Void Within Me" loading="lazy">
         <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">minting</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#7e6aa018;border:1px solid #7e6aa040;color:#7e6aa0">Transient Labs</span>
-        <div style="position:absolute;bottom:.6rem;right:.6rem;font-family:'Inconsolata',monospace;font-size:.45rem;letter-spacing:.2em;color:rgba(196,135,58,.8);background:rgba(0,0,0,.6);padding:.2rem .5rem">5 / 10 minted</div>
+        <div style="position:absolute;bottom:.6rem;right:.6rem;font-family:'Inconsolata',monospace;font-size:.45rem;letter-spacing:.2em;color:rgba(196,135,58,.8);background:rgba(0,0,0,.6);padding:.2rem .5rem"><span data-ed="void">5 / 10 minted</span></div>
       </div>
-      <div class="winfo"><p class="wtitle">Theres A Void Within Me</p><p class="wsub">2026 · w/ Rich Caldwell · 5 / 10 minted</p><p class="wprice">Transient Labs</p></div></a>
+      <div class="winfo"><p class="wtitle">Theres A Void Within Me</p><p class="wsub">2026 · w/ Rich Caldwell · <span data-ed="void">5 / 10 minted</span></p><p class="wprice">Transient Labs</p></div></a>
       <a class="wcollect" href="https://www.transient.xyz/mint/theres-a-void-within-me" target="_blank" rel="noopener">collect →</a>
       <a class="wcollect wcollab" href="https://x.com/cafromthesky" target="_blank" rel="noopener">w/ Rich Caldwell on X ↗</a>
     </div>
@@ -932,14 +944,14 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
       </div></a>
     </div>
 
-<div class="wcard" data-s="available">
+<div data-ed-card="shadow" class="wcard" data-s="available">
       <a href="https://manifold.xyz/@photon-tide/id/4057272560" target="_blank" style="text-decoration:none"><div class="wimg" style="position:relative">
         <img src="media/thumbs/me-and-my-shadow.webp" data-full="media/me-and-my-shadow.webp" alt="Me and My Shadow" loading="lazy">
         <span class="wpill available" style="position:absolute;top:.6rem;left:.6rem">minting</span>
         <span class="wplat" style="position:absolute;top:.6rem;right:.6rem;background:#5a8a6a18;border:1px solid #5a8a6a40;color:#5a8a6a">Manifold</span>
-        <div style="position:absolute;bottom:.6rem;right:.6rem;font-family:'Inconsolata',monospace;font-size:.45rem;letter-spacing:.2em;color:rgba(196,135,58,.8);background:rgba(0,0,0,.6);padding:.2rem .5rem">9 / 15 minted</div>
+        <div style="position:absolute;bottom:.6rem;right:.6rem;font-family:'Inconsolata',monospace;font-size:.45rem;letter-spacing:.2em;color:rgba(196,135,58,.8);background:rgba(0,0,0,.6);padding:.2rem .5rem"><span data-ed="shadow">9 / 15 minted</span></div>
       </div>
-      <div class="winfo"><p class="wtitle">Me and My Shadow</p><p class="wsub">2026 · edition of 15 · 9 / 15 minted · 0.069 Ξ · together, forever</p><p class="wprice">Manifold</p></div></a>
+      <div class="winfo"><p class="wtitle">Me and My Shadow</p><p class="wsub">2026 · edition of 15 · <span data-ed="shadow">9 / 15 minted</span> · 0.069 Ξ · together, forever</p><p class="wprice">Manifold</p></div></a>
       <a class="wcollect" href="https://manifold.xyz/@photon-tide/id/4057272560" target="_blank" rel="noopener">collect →</a>
     </div>
 
@@ -2391,6 +2403,15 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
       <a href="https://etherscan.io/address/0xa90dc6d356b622b9783f5020722e6f92b663438f" class="clink" target="_blank"><span class="cln">Wallet</span><span class="cla">photontide.eth →</span></a>
       <a href="https://soundcloud.com/photontide" class="clink" target="_blank"><span class="cln">SoundCloud</span><span class="cla">soundcloud.com/photontide →</span></a>
     </div>
+    <form class="alerts reveal d3" id="alerts-form" novalidate>
+      <p class="alerts-h">be first to know when a new piece drops</p>
+      <div class="alerts-row">
+        <input type="email" id="alerts-email" name="email" autocomplete="email" placeholder="your email" aria-label="your email" required>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="alerts-hp">
+        <button type="submit" id="alerts-btn">notify me</button>
+      </div>
+      <p class="alerts-note" id="alerts-note">only for drop alerts · never shared</p>
+    </form>
   </div>
 </div>
 
@@ -3230,7 +3251,7 @@ document.addEventListener('keydown',e=>{
 
 /* ═══ WHEN ALL I HAD WAS STARS GALLERY (8NAP) ═══ */
 const starsItems = [
-  {name:"Event Horizon", img:"media/when-all-i-had-was-stars.jpg", desc:"Event Horizon examines the boundary between presence and disappearance.", editions:"39 / 42 minted · 0.042 Ξ"},
+  {name:"Event Horizon", img:"media/when-all-i-had-was-stars.jpg", desc:"Event Horizon examines the boundary between presence and disappearance.", editions:"40 / 42 minted · 0.042 Ξ"},
   {name:"Youniverse", img:"media/gallery/youniverse.jpg", desc:"A place where identity, memory, and perception are pulled inward and distorted.", editions:"10 / 22 minted · 0.042 Ξ"}
 ];
 let starsIdx = 0;
@@ -4251,6 +4272,50 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
   }
   if (location.hash.startsWith('#sanctum')) setTimeout(fromHash, 120);
   window.addEventListener('hashchange', fromHash);
+})();
+</script>
+<script>
+/* ═══ LIVE MINT COUNTS: read from the chain, so "x / y minted" stays true by itself ═══ */
+(function(){
+  fetch('/api/editions').then(r => r.ok ? r.json() : {}).then(eds => {
+    const label = e => e.minted >= e.max ? 'sold out · ' + e.max + ' minted' : e.minted + ' / ' + e.max + ' minted';
+    Object.entries(eds).forEach(([key, e]) => {
+      document.querySelectorAll('[data-ed="' + key + '"]').forEach(el => { el.textContent = label(e); });
+      const card = document.querySelector('[data-ed-card="' + key + '"]');
+      if (card && e.minted >= e.max) {
+        card.dataset.s = 'sold';
+        const pill = card.querySelector('.wpill');
+        if (pill) { pill.textContent = 'sold out'; pill.classList.remove('available'); pill.classList.add('sold'); }
+      }
+    });
+    // the two 8NAP pieces live inside the When All I Had Was Stars gallery
+    if (typeof starsItems !== 'undefined') {
+      [['event-horizon', 0], ['youniverse', 1]].forEach(([key, i]) => {
+        const e = eds[key]; if (e && starsItems[i]) starsItems[i].editions = label(e) + (e.minted >= e.max ? '' : ' · 0.042 Ξ');
+      });
+    }
+  }).catch(() => {});
+})();
+
+/* ═══ DROP ALERTS ═══ */
+(function(){
+  const f = document.getElementById('alerts-form'); if (!f) return;
+  const note = document.getElementById('alerts-note'), btn = document.getElementById('alerts-btn'), inp = document.getElementById('alerts-email');
+  const say = (t, cls) => { note.textContent = t; note.className = 'alerts-note' + (cls ? ' ' + cls : ''); };
+  f.addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = inp.value.trim();
+    if (!/^\S+@\S+\.\S+$/.test(email)) return say('that email doesn’t look right', 'err');
+    btn.disabled = true; say('…');
+    try {
+      const r = await fetch('/api/alerts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, website: f.website.value }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'something went wrong — try again');
+      say(d.already ? 'you’re already on the list ✦' : 'you’re on the list — see you at the next drop ✦', 'ok');
+      inp.value = '';
+    } catch (err) { say(err.message, 'err'); }
+    btn.disabled = false;
+  });
 })();
 </script>
 </body>
