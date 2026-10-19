@@ -231,6 +231,7 @@ main{position:relative;z-index:1}
       <button id="export" type="button">download poem + wallets</button>
       <button id="airdrop" type="button">download airdrop list (csv)</button>
       <label class="inc"><input type="checkbox" id="airdrop-me"> include my wallet</label>
+      <button id="alerts-dl" type="button">download drop-alert emails (csv)</button>
       <button id="describe" type="button">description for the 1/1</button>
       <button class="link" type="button" data-signout>disconnect</button>
       <span id="admin-status"></span>
@@ -687,6 +688,15 @@ main{position:relative;z-index:1}
     a.href = URL.createObjectURL(blob); a.download = name; a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
+
+  // people who asked to hear about new drops (from the main site)
+  $('alerts-dl').onclick = async () => {
+    try {
+      const data = await api('admin?action=alerts');
+      saveFile('photon-tide-drop-alerts.csv', 'text/csv', 'email,added\n' + data.people.map(p => p.email + ',' + p.added).join('\n') + '\n');
+      $('admin-status').textContent = data.count + ' people on the drop-alert list';
+    } catch (e) { $('admin-status').textContent = e.message; }
+  };
 
   // Manifold airdrop format: one row per wallet, 1 edition each
   $('airdrop').onclick = async () => {
