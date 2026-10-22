@@ -729,6 +729,19 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
 .sc-progress{position:absolute;left:0;bottom:0;height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(222,176,100,.85));opacity:0}
 .sc-progress.run{opacity:1;animation:scProg linear forwards}
 @keyframes scProg{from{width:0}to{width:100%}}
+.sc-sound{position:absolute;right:1.4rem;bottom:1.4rem;display:flex;align-items:center;gap:.55rem;z-index:2}
+.sc-mute{background:none;border:0;padding:.4rem;cursor:pointer;color:rgba(222,210,190,.6);display:flex}
+.sc-mute:hover{color:#f0c27e}
+.sc-mute svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.sc-mute .off,.sc-sound.muted .on{display:none}.sc-sound.muted .off{display:inline}
+.sc-vol{-webkit-appearance:none;appearance:none;width:84px;height:16px;background:none;cursor:pointer;margin:0}
+.sc-vol::-webkit-slider-runnable-track{height:1px;background:linear-gradient(90deg,rgba(222,176,100,.85) var(--v,70%),rgba(222,210,190,.2) var(--v,70%))}
+.sc-vol::-moz-range-track{height:1px;background:rgba(222,210,190,.2)}
+.sc-vol::-moz-range-progress{height:1px;background:rgba(222,176,100,.85)}
+.sc-vol::-webkit-slider-thumb{-webkit-appearance:none;width:9px;height:9px;margin-top:-4px;border-radius:50%;background:#e8c48a;box-shadow:0 0 8px rgba(255,180,80,.6);border:0}
+.sc-vol::-moz-range-thumb{width:9px;height:9px;border-radius:50%;background:#e8c48a;box-shadow:0 0 8px rgba(255,180,80,.6);border:0}
+.sc-sound.muted .sc-vol{opacity:.4}
+.sc-song{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;letter-spacing:.08em;color:rgba(222,210,190,.5)}
 @media (min-aspect-ratio:5/4) and (min-width:901px){
   .sc-altar{--sh:71vh;--sw:min(80vw,calc(100vw - 2 * (14vw + 13vh + 40px)));bottom:19vh}
 }
@@ -741,6 +754,8 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   .sc-altar{z-index:1}
   .sc-prev,.sc-next{width:18vw;font-size:2.4rem}
   .sc-sub{font-size:.68rem}
+  .sc-sound{bottom:auto;top:3.9rem;right:1.4rem}
+  .sc-song{display:none}
   .door{width:70vw}
 }
 @media(prefers-reduced-motion:reduce){.sc-keeper,.kglow,.kspill,.sc-aura img.on,.sc-rays,.sc-grain,.sc-warm,.cdl-flame,.cdl-glow{animation:none}}
@@ -3942,7 +3957,13 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
       <button type="button" class="sc-prev" onclick="sanctumGo(-1)" aria-label="previous work"><span>‹</span></button>
       <button type="button" class="sc-next" onclick="sanctumGo(1)" aria-label="next work"><span>›</span></button>
       <div class="sc-progress" id="sc-progress"></div>
+      <div class="sc-sound" id="sc-sound">
+        <span class="sc-song">dissociation</span>
+        <input type="range" class="sc-vol" id="sc-vol" min="0" max="100" value="70" aria-label="volume">
+        <button type="button" class="sc-mute" id="sc-mute" aria-label="mute the song" title="mute (m)"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><g class="on"><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></g><g class="off"><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg></button>
+      </div>
     </div>
+    <audio id="sc-audio" src="media/dissociation.m4a" loop preload="none"></audio>
   </div>
   <div class="sc-door" id="sc-door">
     <div class="door">
@@ -4182,6 +4203,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     document.documentElement.style.overflow = 'hidden';
     frame.innerHTML = '';
     startMotes();
+    startSong();
     if (REDUCE || slug) {
       room.classList.add('entered'); show(start); wake();
     } else {
@@ -4192,6 +4214,7 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     }
   };
   window.closeSanctum = function(){
+    stopSong();
     room.classList.remove('open', 'still', 'entering', 'entered', 'flare', 'waiting'); room.setAttribute('aria-hidden', 'true');
     document.documentElement.style.overflow = '';
     stopVigil(); frame.innerHTML = ''; motesOn = false;
@@ -4213,6 +4236,58 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     vigil = true; $('sc-pray').classList.add('on'); $('sc-pray').textContent = 'keeping vigil…'; restartVigil();
     room.classList.add('still');
   };
+
+  // Dissociation plays while you're inside, on a loop. Volume and mute are remembered.
+  const song = $('sc-audio'), volEl = $('sc-vol'), soundEl = $('sc-sound');
+  let actx = null, gain = null, vol = .7, muted = false, songT = 0, rampRaf = 0, songOn = false;
+  try { const s = JSON.parse(localStorage.getItem('sc-sound') || '{}'); if (typeof s.vol === 'number') vol = Math.min(1, Math.max(0, s.vol)); muted = !!s.muted; } catch (e) {}
+  const level = () => muted ? 0 : vol;
+  function soundUI(){
+    volEl.value = Math.round(vol * 100); volEl.style.setProperty('--v', Math.round(vol * 100) + '%');
+    soundEl.classList.toggle('muted', muted || vol === 0);
+    $('sc-mute').setAttribute('aria-label', muted ? 'unmute the song' : 'mute the song');
+    try { localStorage.setItem('sc-sound', JSON.stringify({ vol, muted })); } catch (e) {}
+  }
+  // through Web Audio where we can, so the volume works on iPhones too
+  function ramp(to, secs, done){
+    clearTimeout(songT); cancelAnimationFrame(rampRaf);
+    if (gain) {
+      const t = actx.currentTime, g = gain.gain;
+      g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(to, t + secs);
+    } else {
+      const from = song.volume, t0 = performance.now();
+      (function step(now){ const k = Math.min(1, (now - t0) / (secs * 1000)); song.volume = from + (to - from) * k; if (k < 1) rampRaf = requestAnimationFrame(step); })(t0);
+    }
+    if (done) songT = setTimeout(done, secs * 1000 + 50);
+  }
+  function play(){
+    if (actx && actx.state === 'suspended') actx.resume().catch(() => {});
+    return song.play();
+  }
+  function startSong(){
+    songOn = true;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!actx && AC) {
+      try { actx = new AC(); gain = actx.createGain(); gain.gain.value = 0; actx.createMediaElementSource(song).connect(gain).connect(actx.destination); }
+      catch (e) { actx = gain = null; }
+    }
+    if (!gain) song.volume = 0;
+    play().then(() => ramp(level(), 4)).catch(() => {
+      // arrived by link, nothing clicked yet: begin on the first touch
+      const go = () => { if (songOn) play().then(() => ramp(level(), 3)).catch(() => {}); };
+      room.addEventListener('pointerdown', go, { once: true }); room.addEventListener('keydown', go, { once: true });
+    });
+  }
+  function stopSong(){ songOn = false; ramp(0, 1.2, () => { if (!songOn) song.pause(); }); }
+  volEl.addEventListener('input', () => { vol = volEl.value / 100; if (vol > 0) muted = false; soundUI(); ramp(level(), .08); });
+  window.sanctumMute = function(){ muted = !muted; if (!muted && vol === 0) vol = .5; soundUI(); ramp(level(), .4); };
+  $('sc-mute').addEventListener('click', sanctumMute);
+  // the song rests while the tab is in the background
+  document.addEventListener('visibilitychange', () => {
+    if (!songOn) return;
+    if (document.hidden) song.pause(); else play().catch(() => {});
+  });
+  soundUI();
 
   // dust drifting up through the candlelight
   function startMotes(){
@@ -4251,9 +4326,10 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
     else if (e.key === 'ArrowLeft') { sanctumGo(-1); e.preventDefault(); }
     else if (e.key === 'Escape') closeSanctum();
     else if (e.key === ' ') { sanctumVigil(); e.preventDefault(); }
+    else if (e.key === 'm' || e.key === 'M') sanctumMute();
   });
   let sx = null, sy = 0;
-  room.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  room.addEventListener('touchstart', e => { if (e.target.closest('.sc-sound')) { sx = null; return; } sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
   room.addEventListener('touchend', e => {
     if (sx === null) return;
     const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
