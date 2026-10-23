@@ -3695,12 +3695,9 @@ document.addEventListener('DOMContentLoaded', function(){   // the gallery marku
   ];
   const TAGCLASS = { solo:'k-solo', group:'k-group', auction:'k-auction', residency:'k-res', billboard:'k-res' };
   const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const LIBS = [
-    'https://cdn.jsdelivr.net/npm/d3-array@3.2.4/dist/d3-array.min.js',
-    'https://cdn.jsdelivr.net/npm/d3-geo@3.1.1/dist/d3-geo.min.js',
-    'https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js',
-  ];
-  const LAND = 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json';
+  // our own copies (d3-array 3.2.4, d3-geo 3.1.1, topojson-client 3.1.0, world-atlas 2.0.2), so no outside code runs here
+  const LIBS = ['media/lib/d3-array.min.js', 'media/lib/d3-geo.min.js', 'media/lib/topojson-client.min.js'];
+  const LAND = 'media/lib/land-110m.json';
 
   const wrap = document.getElementById('globe-wrap');
   const cv = document.getElementById('globe');

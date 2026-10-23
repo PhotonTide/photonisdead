@@ -232,6 +232,7 @@ main{position:relative;z-index:1}
       <button id="airdrop" type="button">download airdrop list (csv)</button>
       <label class="inc"><input type="checkbox" id="airdrop-me"> include my wallet</label>
       <button id="alerts-dl" type="button">download drop-alert emails (csv)</button>
+      <button id="backup-dl" type="button">download full backup (json)</button>
       <button id="describe" type="button">description for the 1/1</button>
       <button class="link" type="button" data-signout>disconnect</button>
       <span id="admin-status"></span>
@@ -695,6 +696,15 @@ main{position:relative;z-index:1}
       const data = await api('admin?action=alerts');
       saveFile('photon-tide-drop-alerts.csv', 'text/csv', 'email,added\n' + data.people.map(p => p.email + ',' + p.added).join('\n') + '\n');
       $('admin-status').textContent = data.count + ' people on the drop-alert list';
+    } catch (e) { $('admin-status').textContent = e.message; }
+  };
+
+  // everything the poem keeps, now and in each weekly copy (one every Monday, the last 12 kept)
+  $('backup-dl').onclick = async () => {
+    try {
+      const data = await api('admin?action=backup');
+      saveFile('collective-unconscious-backup-' + data.current.taken.slice(0, 10) + '.json', 'application/json', JSON.stringify(data, null, 2));
+      $('admin-status').textContent = 'backup saved · ' + data.weekly.length + ' weekly cop' + (data.weekly.length === 1 ? 'y' : 'ies') + ' included';
     } catch (e) { $('admin-status').textContent = e.message; }
   };
 
