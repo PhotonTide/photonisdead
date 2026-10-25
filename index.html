@@ -69,6 +69,7 @@ hr.thin{border:none;border-top:1px solid var(--dim)}
 
 /* PAGE TABS */
 .page-tabs{display:flex;background:var(--near);border-bottom:1px solid var(--dim);position:sticky;top:0;z-index:400}
+a.pt-btn{text-decoration:none;display:inline-block}
 .pt-btn{font-family:'Inconsolata',monospace;font-size:.6rem;letter-spacing:.35em;color:var(--pale);background:none;border:none;border-bottom:2px solid transparent;padding:1.1rem 2rem;cursor:none;transition:all .25s;text-transform:lowercase}
 .pt-btn:hover{color:var(--ghost)}
 .pt-btn.active{color:var(--ember);border-bottom-color:var(--ember)}
@@ -793,6 +794,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
     <li><button class="tab-nav-btn" onclick="showPage('sothebys')">sotheby's</button></li>
     <li><button class="tab-nav-btn" onclick="showPage('prints')">prints</button></li>
     <li><button class="tab-nav-btn" onclick="showPage('collector')">collection</button></li>
+    <li><a href="/shop">shop</a></li>
     <li><a href="#contact-section">contact</a></li>
   </ul>
 </nav>
@@ -825,6 +827,7 @@ nav{background:#000;border-bottom:1px solid var(--dim)}
   <button class="pt-btn" onclick="showPage('sothebys')">sotheby's record</button>
   <button class="pt-btn" onclick="showPage('prints')">prints</button>
   <button class="pt-btn" onclick="showPage('collector')">my collection</button>
+  <a class="pt-btn" href="/shop">shop ↗</a>
 </div>
 
 <!-- ══════════════════════════════════
