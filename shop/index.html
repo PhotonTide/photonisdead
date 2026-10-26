@@ -38,7 +38,8 @@ h1{font-weight:300;font-style:italic;font-size:clamp(3rem,8vw,5.6rem);letter-spa
 .lede{font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.24em;color:var(--pale);margin-top:1.4rem}
 .lede.soon{color:var(--ember);margin-top:.7rem}
 
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2rem;padding:0 5vw 5rem;max-width:1560px;margin:0 auto}
+.grid{display:flex;flex-wrap:wrap;justify-content:center;gap:2.4rem 2rem;padding:0 5vw 5rem;max-width:1320px;margin:0 auto}
+.item{width:calc((100% - 4rem) / 3)}
 .item{display:flex;flex-direction:column}
 .photo{position:relative;aspect-ratio:1;background:var(--paper);overflow:hidden}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;transition:opacity .6s ease}
@@ -71,9 +72,10 @@ footer{border-top:1px solid var(--dim);padding:2.4rem 5vw 3rem;text-align:center
 footer a{color:var(--pale);text-decoration:none;border-bottom:1px solid #3a3835}
 footer a:hover{color:var(--ghost)}
 
-@media (max-width:1180px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:980px}}
+@media (max-width:1100px){.grid{max-width:980px}.item{width:calc((100% - 2rem) / 2)}}
 @media (max-width:640px){
-  .grid{grid-template-columns:1fr;gap:3rem;padding:0 16px 4rem}
+  .grid{gap:3rem;padding:0 16px 4rem}
+  .item{width:100%}
   header{padding:7.5rem 16px 2.5rem}
   .topbar{padding:1rem 16px 1.4rem}
   .lede{font-size:.7rem;letter-spacing:.18em}
@@ -113,6 +115,11 @@ const ITEMS = [
     colors: {
       'Black':       { img: ['hoodie-1', 'hoodie-2'], v: [52443222475047, 52443222507815, 52443222540583, 52443222573351, 52443222606119] },
       'Medium Gray': { img: ['hoodie-3', 'hoodie-4'], v: [52443222311207, 52443222343975, 52443222376743, 52443222409511, 52443222442279] },
+    } },
+  { name: 'photonisdead spiral zip up', price: 75,
+    note: 'boxy fleece-lined full zip · spiral on the back · allow up to 3 weeks for delivery',
+    colors: {
+      'Black': { img: ['zip-1', 'zip-2'], v: [52453785076007, 52453785108775, 52453785141543, 52453785174311, 52453785207079] },
     } },
   { name: 'photontide crewneck', price: 50, note: 'heavyweight washed crewneck · raglan sleeves · allow up to 3 weeks for delivery',
     colors: {
