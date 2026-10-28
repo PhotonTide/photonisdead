@@ -72,13 +72,70 @@ footer{border-top:1px solid var(--dim);padding:2.4rem 5vw 3rem;text-align:center
 footer a{color:var(--pale);text-decoration:none;border-bottom:1px solid #3a3835}
 footer a:hover{color:var(--ghost)}
 
+/* notify me */
+.notify{display:flex;gap:.5rem;max-width:30rem;margin:1.6rem auto 0}
+.notify input[type=email]{flex:1;min-width:0;font-family:'Inconsolata',monospace;font-size:16px;letter-spacing:.06em;color:var(--ghost);background:rgba(255,255,255,.03);border:1px solid #3a3835;padding:.75rem .9rem;outline:none;border-radius:0}
+.notify input[type=email]:focus{border-color:rgba(196,135,58,.6)}
+.notify button{font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.2em;color:#000;background:var(--ember);border:0;padding:0 1.2rem;cursor:pointer;white-space:nowrap}
+.notify button:disabled{opacity:.6;cursor:default}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.notify-note{font-family:'Inconsolata',monospace;font-size:.68rem;letter-spacing:.14em;color:var(--pale);margin-top:.7rem;min-height:1em}
+.notify-note.ok{color:var(--ember)}.notify-note.err{color:#d98a6a}
+
+/* the photo opens the full view */
+.photo{cursor:zoom-in}
+.row .lbl{display:flex;justify-content:space-between;align-items:baseline}
+.guide-link{font-family:'Inconsolata',monospace;font-size:.66rem;letter-spacing:.16em;color:var(--pale);background:none;border:0;border-bottom:1px solid #3a3835;cursor:pointer;padding:0}
+.guide-link:hover{color:var(--ghost)}
+
+/* full view */
+dialog.view{margin:auto;width:min(1180px,94vw);max-height:92vh;padding:0;border:1px solid #2a2826;background:#060608;color:var(--ghost);overflow:auto}
+dialog.view::backdrop{background:rgba(0,0,0,.82)}
+.view-in{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:2rem;padding:2rem}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.shot{position:relative;aspect-ratio:1;background:var(--paper);margin:0}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.shot figcaption{position:absolute;left:.7rem;bottom:.55rem;font-family:'Inconsolata',monospace;font-size:.62rem;letter-spacing:.2em;color:#57524c}
+.view-info .name{font-size:2rem}
+.desc{font-size:1.15rem;line-height:1.55;margin-top:1rem;color:#cfc9c1}
+.view-info .note{margin-top:.9rem}
+.view-info .opts{margin-top:1.3rem}
+.view-close{position:sticky;top:0;display:block;margin:0 0 -2.4rem auto;font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.22em;color:var(--pale);background:#060608;border:0;padding:.6rem;cursor:pointer;z-index:2}
+.view-close:hover{color:var(--ghost)}
+.dots{display:none}
+
+/* size guide */
+.guide{margin-top:1.4rem;border-top:1px solid var(--dim);padding-top:1.1rem}
+.guide-head{display:flex;justify-content:space-between;align-items:center}
+.guide h3{font-family:'Inconsolata',monospace;font-weight:400;font-size:.72rem;letter-spacing:.24em;color:var(--pale)}
+.units{display:flex;gap:.3rem}
+.units .chip{padding:.3rem .55rem;min-width:0;font-size:.66rem}
+.guide-wrap{overflow-x:auto;margin-top:.8rem}
+.guide table{border-collapse:collapse;width:100%;font-family:'Inconsolata',monospace;font-size:.74rem;letter-spacing:.06em}
+.guide th,.guide td{padding:.45rem .5rem;text-align:center;border-bottom:1px solid #1c1b19;white-space:nowrap}
+.guide th{color:var(--pale);font-weight:400}
+.guide td:first-child,.guide th:first-child{text-align:left;color:var(--pale)}
+.guide td.sel{color:#fff;background:rgba(196,135,58,.12)}
+.guide-note{font-family:'Inconsolata',monospace;font-size:.64rem;letter-spacing:.12em;color:var(--pale);line-height:1.6;margin-top:.7rem}
+
 @media (max-width:1100px){.grid{max-width:980px}.item{width:calc((100% - 2rem) / 2)}}
+@media (max-width:860px){
+  .view-in{grid-template-columns:1fr;padding:1.2rem}
+  .shots{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.6rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .shots::-webkit-scrollbar{display:none}
+  .shot{flex:0 0 100%;scroll-snap-align:center}
+  .dots{display:flex;justify-content:center;gap:.5rem;margin-top:.6rem}
+  .dots span{width:6px;height:6px;border-radius:50%;background:#3a3835}
+  .dots span.on{background:var(--ember)}
+}
 @media (max-width:640px){
   .grid{gap:3rem;padding:0 16px 4rem}
   .item{width:100%}
   header{padding:7.5rem 16px 2.5rem}
   .topbar{padding:1rem 16px 1.4rem}
   .lede{font-size:.7rem;letter-spacing:.18em}
+  dialog.view{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border:0}
+  .view-info .name{font-size:1.7rem}
 }
 @media (prefers-reduced-motion:reduce){.photo img{transition:none}}
 </style>
@@ -93,9 +150,46 @@ footer a:hover{color:var(--ghost)}
   <h1>wearable works</h1>
   <p class="lede">made to order · shipped worldwide</p>
   <p class="lede soon" id="soon" hidden>opening soon</p>
+  <div id="notify-wrap" hidden>
+    <form class="notify" id="notify" novalidate>
+      <label class="hp" aria-hidden="true">website <input name="website" tabindex="-1" autocomplete="off"></label>
+      <input type="email" name="email" id="notify-email" placeholder="your email" autocomplete="email" aria-label="email address" required>
+      <button type="submit" id="notify-btn">notify me</button>
+    </form>
+    <p class="notify-note" id="notify-note" role="status">one email when the shop opens and when new pieces drop · nothing else</p>
+  </div>
 </header>
 
 <main class="grid" id="grid"></main>
+
+<dialog class="view" id="view" aria-labelledby="view-name">
+  <button type="button" class="view-close" id="view-close">close ✕</button>
+  <div class="view-in">
+    <div>
+      <div class="shots" id="shots">
+        <figure class="shot"><img id="shot-front" alt=""><figcaption>front</figcaption></figure>
+        <figure class="shot"><img id="shot-back" alt=""><figcaption>back</figcaption></figure>
+      </div>
+      <div class="dots" aria-hidden="true"><span class="on"></span><span></span></div>
+    </div>
+    <div class="view-info">
+      <h2 class="name" id="view-name"></h2>
+      <p class="price" id="view-price"></p>
+      <p class="desc" id="view-desc"></p>
+      <p class="note" id="view-note"></p>
+      <div class="opts" id="view-opts"></div>
+      <a class="buy" id="view-buy" aria-disabled="true"></a>
+      <section class="guide" id="guide" aria-labelledby="guide-title">
+        <div class="guide-head">
+          <h3 id="guide-title">size guide</h3>
+          <div class="units" role="group" aria-label="units"><button type="button" class="chip" data-u="in" aria-pressed="true">in</button><button type="button" class="chip" data-u="cm" aria-pressed="false">cm</button></div>
+        </div>
+        <div class="guide-wrap"><table id="guide-table"></table></div>
+        <p class="guide-note">measured flat · chest is armpit to armpit · compare with a piece you already own</p>
+      </section>
+    </div>
+  </div>
+</dialog>
 
 <footer>
   <p>each piece is printed with my label when you order it · US orders arrive in about 2–3 weeks · international orders, allow up to 4 weeks</p>
@@ -111,26 +205,39 @@ const STORE = 'https://photontide.myshopify.com';
 const OPEN = false;
 const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
 const ITEMS = [
-  { name: 'photontide hoodie', price: 75, note: '360 gsm washed fleece · loose fit · printed front, back and sleeves · allow up to 3 weeks for delivery',
+  { name: 'photontide hoodie', price: 75,
+    desc: 'A heavyweight hoodie carrying the PHOTON TIDE mark, washed and frayed so it feels like it was found rather than made. Printed on the front, the back and both sleeves, cut loose and thick enough for cold nights spent looking into the unknown.',
+    fit: { 'length': [70, 72, 74, 76, 78], 'chest': [66, 68, 70, 72, 74], 'shoulder': [63, 65, 67, 69, 71], 'sleeve': [53.5, 54.5, 55.5, 56.5, 57.5] },
+    note: '360 gsm washed fleece · loose fit · printed front, back and sleeves · allow up to 3 weeks for delivery',
     colors: {
       'Black':       { img: ['hoodie-1', 'hoodie-2'], v: [52443222475047, 52443222507815, 52443222540583, 52443222573351, 52443222606119] },
       'Medium Gray': { img: ['hoodie-3', 'hoodie-4'], v: [52443222311207, 52443222343975, 52443222376743, 52443222409511, 52443222442279] },
     } },
   { name: 'photonisdead spiral zip up', price: 75,
+    desc: 'A boxy fleece-lined zip up with PHOTONISDEAD across the chest, split by a full-length zipper that runs from hem to hood. On the back, a figure walks into the spiral. Cropped, oversized and warm, made for nights spent somewhere between here and the unknown.',
+    fit: { 'length': [61, 63, 65, 66.5, 68], 'chest': [71, 73.5, 76, 78.5, 81], 'shoulder': [69.5, 72, 74.5, 77, 79.5], 'sleeve': [53, 55, 56, 58, 59] },
     note: 'boxy fleece-lined full zip · spiral on the back · allow up to 3 weeks for delivery',
     colors: {
       'Black': { img: ['zip-1', 'zip-2'], v: [52453785076007, 52453785108775, 52453785141543, 52453785174311, 52453785207079] },
     } },
-  { name: 'photontide crewneck', price: 50, note: 'heavyweight washed crewneck · raglan sleeves · allow up to 3 weeks for delivery',
+  { name: 'photontide crewneck', price: 50,
+    desc: 'A washed crewneck with the lone figure standing at the center of a spiral of light. Heavyweight knit cotton with a worn-in vintage wash, cut boxy and loose with raglan sleeves and ribbed collar and cuffs.',
+    fit: { 'length': [62, 64, 66, 68, 70], 'chest': [56, 58, 60, 62, 64], 'sleeve': [74, 76, 78, 80, 82] },
+    note: 'heavyweight washed crewneck · raglan sleeves · allow up to 3 weeks for delivery',
     colors: {
       'Black': { img: ['crewneck-1', 'crewneck-2'], v: [52443223228711, 52443223261479, 52443223294247, 52443223327015, 52443223359783] },
       'Gray':  { img: ['crewneck-3', 'crewneck-4'], v: [52443223064871, 52443223097639, 52443223130407, 52443223163175, 52443223195943] },
     } },
-  { name: 'photontide shirt', price: 38, note: 'snow-washed raw-hem cotton tee · loose fit · printed front · allow up to 3 weeks for delivery',
+  { name: 'photontide shirt', price: 38,
+    desc: 'A snow-washed tee with raw, torn hems and the lone figure standing at the center of a spiral of light. Soft 270 gsm cotton with a faded wash and a loose, drop-shoulder fit, made to look like it has already lived a life.',
+    fit: { 'length': [68, 70, 72, 74, 76], 'chest': [57.5, 58, 62, 64, 66], 'shoulder': [56, 57, 59, 60, 62], 'sleeve': [21, 21.5, 22, 22.5, 23] },
+    note: 'snow-washed raw-hem cotton tee · loose fit · printed front · allow up to 3 weeks for delivery',
     colors: {
       'Black': { img: ['shirt-1', 'shirt-2'], v: [52443223589159, 52443223621927, 52443223654695, 52443223687463, 52443223720231] },
     } },
   { name: 'photontide spiral tee', price: 38, sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
+    desc: 'An oversized snow-washed tee with photontide across the chest above the lone figure in a spiral of light. On the back, a figure walks into the vortex. Heavy 250 gsm cotton with a faded vintage wash, cut wide with dropped shoulders.',
+    fit: { 'length': [70, 72, 74, 76, 78, 79], 'chest': [56, 58, 60, 62, 64, 67], 'shoulder': [53, 55, 57, 59, 61, 63], 'sleeve': [20.8, 21.5, 22.2, 22.9, 23.6, 23.6] },
     note: 'oversized snow-washed 250 gsm cotton · spiral on the back · allow up to 3 weeks for delivery',
     colors: {
       'Black': { img: ['tee-1', 'tee-2'], v: [52443348664615, 52443348697383, 52443348730151, 52443348762919, 52443348795687, 52443348828455] },
@@ -138,17 +245,32 @@ const ITEMS = [
 ];
 
 const src = n => '/media/shop/' + n + '.jpg';
-if (!OPEN) document.getElementById('soon').hidden = false;
-const grid = document.getElementById('grid');
+const $ = id => document.getElementById(id);
+if (!OPEN) { $('soon').hidden = false; $('notify-wrap').hidden = false; }
+const grid = $('grid');
 
-ITEMS.forEach(item => {
+// colour and size buttons, used on the card and in the full view
+function optsHTML(item, sizes, guide){
   const names = Object.keys(item.colors);
+  return (names.length > 1 ? `<div class="row" role="group" aria-label="colour"><span class="lbl">colour</span>${names.map(c => `<button type="button" class="chip" data-c="${c}">${c.toLowerCase()}</button>`).join('')}</div>` : '')
+    + `<div class="row" role="group" aria-label="size"><span class="lbl">size${guide ? '<button type="button" class="guide-link" data-guide>size guide</button>' : ''}</span>${sizes.map(s => `<button type="button" class="chip" data-s="${s}">${s}</button>`).join('')}</div>`;
+}
+function paint(scope, item, sizes, state, buy){
+  const c = item.colors[state.color];
+  scope.querySelectorAll('[data-c]').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === state.color));
+  scope.querySelectorAll('[data-s]').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === state.size));
+  if (!OPEN) { buy.removeAttribute('href'); buy.setAttribute('aria-disabled', 'true'); buy.textContent = 'opening soon'; }
+  else if (state.size) { buy.href = `${STORE}/cart/${c.v[sizes.indexOf(state.size)]}:1`; buy.removeAttribute('aria-disabled'); buy.textContent = `buy · ${state.size} →`; }
+  else { buy.removeAttribute('href'); buy.setAttribute('aria-disabled', 'true'); buy.textContent = 'choose a size'; }
+}
+
+const cards = ITEMS.map((item, idx) => {
   const sizes = item.sizes || SIZES;
-  const state = { color: names[0], size: null };
+  const state = { color: Object.keys(item.colors)[0], size: null };
   const el = document.createElement('article');
   el.className = 'item';
   el.innerHTML = `
-    <div class="photo">
+    <div class="photo" role="button" tabindex="0" aria-label="view ${item.name} up close">
       <img class="front" alt="" loading="lazy" decoding="async">
       <img class="back" alt="" loading="lazy" decoding="async">
       <button type="button" class="turn">turn ↻</button>
@@ -157,47 +279,104 @@ ITEMS.forEach(item => {
       <h2 class="name"></h2>
       <p class="price">$${item.price}</p>
       <p class="note"></p>
-      <div class="opts">
-        ${names.length > 1 ? `<div class="row" role="group" aria-label="colour"><span class="lbl">colour</span>${names.map(c => `<button type="button" class="chip" data-c="${c}">${c.toLowerCase()}</button>`).join('')}</div>` : ''}
-        <div class="row" role="group" aria-label="size"><span class="lbl">size</span>${sizes.map(s => `<button type="button" class="chip" data-s="${s}">${s}</button>`).join('')}</div>
-      </div>
+      <div class="opts">${optsHTML(item, sizes, true)}</div>
       <a class="buy" aria-disabled="true">choose a size</a>
     </div>`;
   el.querySelector('.name').textContent = item.name;
   el.querySelector('.note').textContent = item.note;
   const photo = el.querySelector('.photo'), front = el.querySelector('img.front'), back = el.querySelector('img.back'), buy = el.querySelector('.buy');
-
   function render(){
     const c = item.colors[state.color];
     front.src = src(c.img[0]); back.src = src(c.img[1]);
     front.alt = `${item.name} in ${state.color.toLowerCase()}, front`;
     back.alt = `${item.name} in ${state.color.toLowerCase()}, back`;
-    el.querySelectorAll('[data-c]').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === state.color));
-    el.querySelectorAll('[data-s]').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === state.size));
-    if (!OPEN) {
-      buy.removeAttribute('href');
-      buy.setAttribute('aria-disabled', 'true');
-      buy.textContent = 'opening soon';
-    } else if (state.size) {
-      buy.href = `${STORE}/cart/${c.v[sizes.indexOf(state.size)]}:1`;
-      buy.removeAttribute('aria-disabled');
-      buy.textContent = `buy · ${state.size} →`;
-    } else {
-      buy.removeAttribute('href');
-      buy.setAttribute('aria-disabled', 'true');
-      buy.textContent = 'choose a size';
-    }
+    paint(el, item, sizes, state, buy);
   }
   el.addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    if (b.dataset.c) { state.color = b.dataset.c; photo.classList.remove('flip'); }
-    else if (b.dataset.s) state.size = b.dataset.s;
-    else if (b.classList.contains('turn')) photo.classList.toggle('flip');
+    const b = e.target.closest('button');
+    if (b && b.dataset.c) { state.color = b.dataset.c; photo.classList.remove('flip'); }
+    else if (b && b.dataset.s) state.size = b.dataset.s;
+    else if (b && b.classList.contains('turn')) { photo.classList.toggle('flip'); render(); return; }
+    else if (b && 'guide' in b.dataset) { openView(idx, true); return; }
+    else if (e.target.closest('.photo')) { openView(idx); return; }
+    else return;
     render();
   });
+  photo.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openView(idx); } });
   render();
   grid.appendChild(el);
+  return { item, sizes, state, render };
 });
+
+// ── the full view: front and back, the whole description, sizes and the size guide
+const view = $('view'), shots = $('shots');
+let current = null, unit = 'in';
+function openView(idx, toGuide){
+  current = cards[idx];
+  const { item, sizes } = current;
+  $('view-name').textContent = item.name;
+  $('view-price').textContent = '$' + item.price;
+  $('view-desc').textContent = item.desc;
+  $('view-note').textContent = item.note;
+  $('view-opts').innerHTML = optsHTML(item, sizes, false);
+  renderView();
+  shots.scrollLeft = 0;
+  view.showModal();
+  view.scrollTop = 0;
+  if (toGuide) requestAnimationFrame(() => $('guide').scrollIntoView({ block: 'start' }));
+}
+function renderView(){
+  const { item, sizes, state } = current, c = item.colors[state.color];
+  $('shot-front').src = src(c.img[0]); $('shot-back').src = src(c.img[1]);
+  $('shot-front').alt = `${item.name} in ${state.color.toLowerCase()}, front`;
+  $('shot-back').alt = `${item.name} in ${state.color.toLowerCase()}, back`;
+  paint(view, item, sizes, state, $('view-buy'));
+  renderGuide();
+}
+function renderGuide(){
+  const { item, sizes, state } = current;
+  const fmt = cm => unit === 'cm' ? String(cm) : (cm / 2.54).toFixed(1);
+  $('guide-table').innerHTML = `<thead><tr><th>${unit}</th>${sizes.map(s => `<th>${s}</th>`).join('')}</tr></thead><tbody>`
+    + Object.entries(item.fit).map(([k, vals]) => `<tr><td>${k}</td>${vals.map((v, i) => `<td${sizes[i] === state.size ? ' class="sel"' : ''}>${fmt(v)}</td>`).join('')}</tr>`).join('')
+    + '</tbody>';
+  view.querySelectorAll('[data-u]').forEach(b => b.setAttribute('aria-pressed', b.dataset.u === unit));
+}
+view.addEventListener('click', e => {
+  if (e.target === view) { view.close(); return; }   // the dark backdrop
+  const b = e.target.closest('button'); if (!b || !current) return;
+  if (b.dataset.c) current.state.color = b.dataset.c;
+  else if (b.dataset.s) current.state.size = b.dataset.s;
+  else if (b.dataset.u) unit = b.dataset.u;
+  else return;
+  renderView();
+});
+$('view-close').addEventListener('click', () => view.close());
+view.addEventListener('close', () => { if (current) current.render(); });
+// swipe between front and back on phones
+shots.addEventListener('scroll', () => {
+  const i = Math.round(shots.scrollLeft / Math.max(1, shots.clientWidth));
+  view.querySelectorAll('.dots span').forEach((d, k) => d.classList.toggle('on', k === i));
+}, { passive: true });
+
+// ── "notify me": the same drop-alert list as the main site
+(function(){
+  const f = $('notify'), note = $('notify-note'), btn = $('notify-btn'), inp = $('notify-email');
+  const say = (t, cls) => { note.textContent = t; note.className = 'notify-note' + (cls ? ' ' + cls : ''); };
+  f.addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = inp.value.trim();
+    if (!/^\S+@\S+\.\S+$/.test(email)) return say('that email doesn’t look right', 'err');
+    btn.disabled = true; say('…');
+    try {
+      const r = await fetch('/api/alerts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, website: f.website.value }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'something went wrong — try again');
+      say(d.already ? 'you’re already on the list ✦' : 'you’re on the list — you’ll hear when it opens ✦', 'ok');
+      inp.value = '';
+    } catch (err) { say(err.message, 'err'); }
+    btn.disabled = false;
+  });
+})();
 </script>
 </body>
 </html>
