@@ -64,9 +64,45 @@ h1{font-weight:300;font-style:italic;font-size:clamp(3rem,8vw,5.6rem);letter-spa
 .chip[aria-pressed="true"]{border-color:var(--ember);color:#fff;background:rgba(196,135,58,.12)}
 .chip:focus-visible,.buy:focus-visible,.turn:focus-visible{outline:1px solid var(--ember);outline-offset:2px}
 
-.buy{display:block;margin-top:1.2rem;text-align:center;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.3em;padding:.95rem 1rem;text-decoration:none;color:#000;background:var(--ember);transition:background .3s,opacity .3s}
+.buy{display:block;width:100%;margin-top:1.2rem;text-align:center;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.3em;padding:.95rem 1rem;text-decoration:none;color:#000;background:var(--ember);border:1px solid var(--ember);cursor:pointer;transition:background .3s,opacity .3s}
 .buy:hover{background:#d89a4c}
-.buy[aria-disabled="true"]{background:none;color:var(--pale);border:1px solid #3a3835;pointer-events:none}
+.buy:disabled,.buy[aria-disabled="true"]{background:none;color:var(--pale);border:1px solid #3a3835;pointer-events:none}
+
+/* the bag */
+.top-r{display:flex;align-items:center;gap:1.4rem}
+.bag-btn{font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.2em;color:var(--pale);background:none;border:1px solid #3a3835;padding:.45rem .8rem;cursor:pointer;transition:border-color .3s,color .3s}
+.bag-btn:hover,.bag-btn.full{color:var(--ghost)}
+.bag-btn.full{border-color:var(--ember)}
+.bag-btn.bump{color:#fff;background:rgba(196,135,58,.18)}
+.bag-btn:focus-visible{outline:1px solid var(--ember);outline-offset:2px}
+dialog.bag{margin:0 0 0 auto;width:min(440px,100vw);height:100dvh;max-height:100dvh;max-width:100vw;padding:0;border:0;border-left:1px solid #2a2826;background:#060608;color:var(--ghost)}
+dialog.bag::backdrop{background:rgba(0,0,0,.7)}
+.bag-in{display:flex;flex-direction:column;height:100%;padding:1.4rem 1.6rem}
+.bag-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--dim);padding-bottom:1rem}
+.bag-head h2{font-weight:300;font-style:italic;font-size:1.8rem}
+.bag-close{font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.22em;color:var(--pale);background:none;border:0;padding:.4rem;cursor:pointer}
+.bag-close:hover{color:var(--ghost)}
+.bag-list{list-style:none;flex:1;overflow-y:auto;padding:.4rem 0}
+.line{display:grid;grid-template-columns:72px 1fr auto;gap:.9rem;align-items:start;padding:1rem 0;border-bottom:1px solid #151513}
+.line .thumb{position:relative;width:72px;aspect-ratio:1;background:var(--paper)}
+.line .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.line-name{font-size:1.15rem;font-style:italic}
+.line-opt{font-family:'Inconsolata',monospace;font-size:.68rem;letter-spacing:.16em;color:var(--pale);margin-top:.2rem}
+.qty{display:flex;align-items:center;gap:.2rem;margin-top:.6rem}
+.qty button{font-family:'Inconsolata',monospace;font-size:.8rem;color:var(--ghost);background:none;border:1px solid #3a3835;width:1.9rem;height:1.9rem;cursor:pointer}
+.qty button:hover{border-color:#6d6964}
+.qty button:disabled{opacity:.35;cursor:default}
+.qty span{font-family:'Inconsolata',monospace;font-size:.8rem;min-width:1.8rem;text-align:center}
+.line-r{text-align:right;font-family:'Inconsolata',monospace;font-size:.8rem;letter-spacing:.1em;color:var(--ember)}
+.remove{display:block;margin:.7rem 0 0 auto;font-family:'Inconsolata',monospace;font-size:.64rem;letter-spacing:.16em;color:var(--pale);background:none;border:0;border-bottom:1px solid #3a3835;padding:0;cursor:pointer}
+.remove:hover{color:var(--ghost)}
+.bag-empty{font-family:'Inconsolata',monospace;font-size:.75rem;letter-spacing:.18em;color:var(--pale);padding:2.4rem 0;text-align:center}
+.bag-foot{border-top:1px solid var(--dim);padding-top:1.1rem}
+.bag-sub{display:flex;justify-content:space-between;font-family:'Inconsolata',monospace;font-size:.85rem;letter-spacing:.18em}
+.bag-sub span:last-child{color:var(--ember)}
+.bag-foot .note{margin-top:.5rem}
+.bag-foot .buy{margin-top:1rem}
+.bag-in :focus-visible{outline:1px solid var(--ember);outline-offset:2px}
 
 footer{border-top:1px solid var(--dim);padding:2.4rem 5vw 3rem;text-align:center;font-family:'Inconsolata',monospace;font-size:.7rem;letter-spacing:.16em;color:var(--pale);line-height:2.1}
 footer a{color:var(--pale);text-decoration:none;border-bottom:1px solid #3a3835}
@@ -143,7 +179,10 @@ dialog.view::backdrop{background:rgba(0,0,0,.82)}
 <body>
 <div class="topbar">
   <a class="back" href="/">← photon tide</a>
-  <span class="mark">shop</span>
+  <div class="top-r">
+    <span class="mark">shop</span>
+    <button type="button" class="bag-btn" id="bag-btn" aria-haspopup="dialog" hidden>bag · <span id="bag-count">0</span></button>
+  </div>
 </div>
 
 <header>
@@ -178,7 +217,7 @@ dialog.view::backdrop{background:rgba(0,0,0,.82)}
       <p class="desc" id="view-desc"></p>
       <p class="note" id="view-note"></p>
       <div class="opts" id="view-opts"></div>
-      <a class="buy" id="view-buy" aria-disabled="true"></a>
+      <button type="button" class="buy" id="view-buy" disabled></button>
       <section class="guide" id="guide" aria-labelledby="guide-title">
         <div class="guide-head">
           <h3 id="guide-title">size guide</h3>
@@ -191,6 +230,19 @@ dialog.view::backdrop{background:rgba(0,0,0,.82)}
   </div>
 </dialog>
 
+<dialog class="bag" id="bag" aria-labelledby="bag-title">
+  <div class="bag-in">
+    <div class="bag-head"><h2 id="bag-title">your bag</h2><button type="button" class="bag-close" id="bag-close">close ✕</button></div>
+    <ul class="bag-list" id="bag-list"></ul>
+    <p class="bag-empty" id="bag-empty">your bag is empty</p>
+    <div class="bag-foot" id="bag-foot">
+      <div class="bag-sub"><span>subtotal</span><span id="bag-sub"></span></div>
+      <p class="note">shipping and tax are added at checkout</p>
+      <a class="buy" id="bag-checkout">checkout →</a>
+    </div>
+  </div>
+</dialog>
+
 <footer>
   <p>each piece is printed with my label when you order it · US orders arrive in about 2–3 weeks · international orders, allow up to 4 weeks</p>
   <p>no returns or exchanges, except misprints or damage · <a href="https://photontide.myshopify.com/policies/refund-policy" target="_blank" rel="noopener">refund policy</a> · <a href="https://photontide.myshopify.com/policies/shipping-policy" target="_blank" rel="noopener">shipping policy</a></p>
@@ -199,9 +251,9 @@ dialog.view::backdrop{background:rgba(0,0,0,.82)}
 
 <script>
 // Each colour has its own front/back photos and its own Shopify variant per size.
-// "buy" sends the chosen variant straight to Shopify checkout (cart permalink).
+// "add to bag" collects variants here; checkout sends the whole bag to Shopify (cart permalink).
 const STORE = 'https://photontide.myshopify.com';
-// false while the Shopify store is still password-locked: buttons read "opening soon"
+// false while the Shopify store is still password-locked: buttons read "opening soon", no bag
 const OPEN = false;
 const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
 const ITEMS = [
@@ -256,12 +308,19 @@ function optsHTML(item, sizes, guide){
     + `<div class="row" role="group" aria-label="size"><span class="lbl">size${guide ? '<button type="button" class="guide-link" data-guide>size guide</button>' : ''}</span>${sizes.map(s => `<button type="button" class="chip" data-s="${s}">${s}</button>`).join('')}</div>`;
 }
 function paint(scope, item, sizes, state, buy){
-  const c = item.colors[state.color];
   scope.querySelectorAll('[data-c]').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === state.color));
   scope.querySelectorAll('[data-s]').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === state.size));
-  if (!OPEN) { buy.removeAttribute('href'); buy.setAttribute('aria-disabled', 'true'); buy.textContent = 'opening soon'; }
-  else if (state.size) { buy.href = `${STORE}/cart/${c.v[sizes.indexOf(state.size)]}:1`; buy.removeAttribute('aria-disabled'); buy.textContent = `buy · ${state.size} →`; }
-  else { buy.removeAttribute('href'); buy.setAttribute('aria-disabled', 'true'); buy.textContent = 'choose a size'; }
+  clearTimeout(buy._t);
+  buy.disabled = !(OPEN && state.size);
+  buy.textContent = !OPEN ? 'opening soon' : state.size ? `add to bag · ${state.size}` : 'choose a size';
+}
+// add the chosen colour and size, then say so on the button for a moment
+function addFrom(item, sizes, state, buy){
+  if (!OPEN || !state.size) return;
+  bagAdd(item.colors[state.color].v[sizes.indexOf(state.size)]);
+  buy.textContent = 'added to bag ✓';
+  clearTimeout(buy._t);
+  buy._t = setTimeout(() => { buy.textContent = `add to bag · ${state.size}`; }, 1600);
 }
 
 const cards = ITEMS.map((item, idx) => {
@@ -280,7 +339,7 @@ const cards = ITEMS.map((item, idx) => {
       <p class="price">$${item.price}</p>
       <p class="note"></p>
       <div class="opts">${optsHTML(item, sizes, true)}</div>
-      <a class="buy" aria-disabled="true">choose a size</a>
+      <button type="button" class="buy" disabled>choose a size</button>
     </div>`;
   el.querySelector('.name').textContent = item.name;
   el.querySelector('.note').textContent = item.note;
@@ -297,6 +356,7 @@ const cards = ITEMS.map((item, idx) => {
     if (b && b.dataset.c) { state.color = b.dataset.c; photo.classList.remove('flip'); }
     else if (b && b.dataset.s) state.size = b.dataset.s;
     else if (b && b.classList.contains('turn')) { photo.classList.toggle('flip'); render(); return; }
+    else if (b === buy) { addFrom(item, sizes, state, buy); return; }
     else if (b && 'guide' in b.dataset) { openView(idx, true); return; }
     else if (e.target.closest('.photo')) { openView(idx); return; }
     else return;
@@ -344,6 +404,7 @@ function renderGuide(){
 view.addEventListener('click', e => {
   if (e.target === view) { view.close(); return; }   // the dark backdrop
   const b = e.target.closest('button'); if (!b || !current) return;
+  if (b.id === 'view-buy') { addFrom(current.item, current.sizes, current.state, b); return; }
   if (b.dataset.c) current.state.color = b.dataset.c;
   else if (b.dataset.s) current.state.size = b.dataset.s;
   else if (b.dataset.u) unit = b.dataset.u;
@@ -357,6 +418,66 @@ shots.addEventListener('scroll', () => {
   const i = Math.round(shots.scrollLeft / Math.max(1, shots.clientWidth));
   view.querySelectorAll('.dots span').forEach((d, k) => d.classList.toggle('on', k === i));
 }, { passive: true });
+
+// ── the bag: kept in this browser only; checkout hands every line to Shopify in one go
+var bag;   // [{ v: variant id, q: quantity }] (var so the cards above can add before this runs)
+function bagAdd(v){
+  const line = bag.find(l => l.v === v);
+  if (line) line.q = Math.min(MAX_Q, line.q + 1); else bag.push({ v, q: 1 });
+  bagSave(); bagPaint();
+  const btn = $('bag-btn'); btn.classList.add('bump'); setTimeout(() => btn.classList.remove('bump'), 700);
+}
+const MAX_Q = 10, BAG_KEY = 'pt-bag', OUT_KEY = 'pt-bag-out';
+const VARIANTS = new Map();   // variant id -> what it is, for the bag lines
+ITEMS.forEach(item => {
+  const sizes = item.sizes || SIZES;
+  Object.entries(item.colors).forEach(([color, c]) => c.v.forEach((v, i) =>
+    VARIANTS.set(v, { name: item.name, color, size: sizes[i], price: item.price, img: c.img[0] })));
+});
+const bagEl = $('bag'), bagList = $('bag-list');
+function bagSave(){ try { localStorage.setItem(BAG_KEY, JSON.stringify(bag)); } catch (e) {} }
+function bagLoad(){
+  try {
+    // someone who went to checkout more than a day ago has most likely paid: start them fresh
+    const out = +localStorage.getItem(OUT_KEY);
+    if (out && Date.now() - out > 864e5) { localStorage.removeItem(BAG_KEY); localStorage.removeItem(OUT_KEY); }
+    const saved = JSON.parse(localStorage.getItem(BAG_KEY) || '[]');
+    return Array.isArray(saved) ? saved.filter(l => VARIANTS.has(l.v) && l.q > 0).map(l => ({ v: l.v, q: Math.min(MAX_Q, Math.floor(l.q)) })) : [];
+  } catch (e) { return []; }
+}
+function bagPaint(){
+  const count = bag.reduce((n, l) => n + l.q, 0);
+  $('bag-count').textContent = count;
+  $('bag-btn').classList.toggle('full', count > 0);
+  $('bag-btn').setAttribute('aria-label', `bag, ${count} item${count === 1 ? '' : 's'}`);
+  $('bag-empty').hidden = count > 0;
+  $('bag-foot').hidden = count === 0;
+  bagList.innerHTML = bag.map((l, i) => {
+    const p = VARIANTS.get(l.v);
+    return `<li class="line" data-i="${i}">
+      <div class="thumb"><img src="${src(p.img)}" alt=""></div>
+      <div><p class="line-name">${p.name}</p><p class="line-opt">${p.color.toLowerCase()} · ${p.size}</p>
+        <div class="qty"><button type="button" data-q="-1" aria-label="one fewer"${l.q <= 1 ? ' disabled' : ''}>−</button><span aria-label="quantity">${l.q}</span><button type="button" data-q="1" aria-label="one more"${l.q >= MAX_Q ? ' disabled' : ''}>+</button></div></div>
+      <div class="line-r">$${p.price * l.q}<button type="button" class="remove" data-rm>remove</button></div>
+    </li>`;
+  }).join('');
+  $('bag-sub').textContent = '$' + bag.reduce((n, l) => n + VARIANTS.get(l.v).price * l.q, 0);
+  $('bag-checkout').href = `${STORE}/cart/${bag.map(l => `${l.v}:${l.q}`).join(',')}`;
+}
+bagList.addEventListener('click', e => {
+  const b = e.target.closest('button'), li = e.target.closest('.line'); if (!b || !li) return;
+  const line = bag[+li.dataset.i];
+  if ('rm' in b.dataset) bag.splice(+li.dataset.i, 1);
+  else if (b.dataset.q) line.q = Math.max(1, Math.min(MAX_Q, line.q + +b.dataset.q));
+  bagSave(); bagPaint();
+  if (!bag.length) $('bag-close').focus();
+});
+$('bag-btn').addEventListener('click', () => bagEl.showModal());
+$('bag-close').addEventListener('click', () => bagEl.close());
+bagEl.addEventListener('click', e => { if (e.target === bagEl) bagEl.close(); });
+$('bag-checkout').addEventListener('click', () => { try { localStorage.setItem(OUT_KEY, Date.now()); } catch (e) {} });
+bag = bagLoad();
+if (OPEN) { $('bag-btn').hidden = false; bagPaint(); }
 
 // ── "notify me": the same drop-alert list as the main site
 (function(){
