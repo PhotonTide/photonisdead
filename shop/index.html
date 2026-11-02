@@ -237,7 +237,7 @@ dialog.view::backdrop{background:rgba(0,0,0,.82)}
     <p class="bag-empty" id="bag-empty">your bag is empty</p>
     <div class="bag-foot" id="bag-foot">
       <div class="bag-sub"><span>subtotal</span><span id="bag-sub"></span></div>
-      <p class="note">shipping and tax are added at checkout</p>
+      <p class="note">shipping and tax are added at checkout · to change anything, do it here before you check out</p>
       <a class="buy" id="bag-checkout">checkout →</a>
     </div>
   </div>
@@ -254,7 +254,7 @@ dialog.view::backdrop{background:rgba(0,0,0,.82)}
 // "add to bag" collects variants here; checkout sends the whole bag to Shopify (cart permalink).
 const STORE = 'https://photontide.myshopify.com';
 // false while the Shopify store is still password-locked: buttons read "opening soon", no bag
-const OPEN = true;
+const OPEN = false;
 const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
 const ITEMS = [
   { name: 'photontide hoodie', price: 75,
@@ -438,9 +438,9 @@ const bagEl = $('bag'), bagList = $('bag-list');
 function bagSave(){ try { localStorage.setItem(BAG_KEY, JSON.stringify(bag)); } catch (e) {} }
 function bagLoad(){
   try {
-    // someone who went to checkout more than a day ago has most likely paid: start them fresh
+    // someone who went to checkout more than an hour ago has most likely paid: start them fresh
     const out = +localStorage.getItem(OUT_KEY);
-    if (out && Date.now() - out > 864e5) { localStorage.removeItem(BAG_KEY); localStorage.removeItem(OUT_KEY); }
+    if (out && Date.now() - out > 36e5) { localStorage.removeItem(BAG_KEY); localStorage.removeItem(OUT_KEY); }
     const saved = JSON.parse(localStorage.getItem(BAG_KEY) || '[]');
     return Array.isArray(saved) ? saved.filter(l => VARIANTS.has(l.v) && l.q > 0).map(l => ({ v: l.v, q: Math.min(MAX_Q, Math.floor(l.q)) })) : [];
   } catch (e) { return []; }
