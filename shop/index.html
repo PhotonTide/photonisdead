@@ -495,7 +495,7 @@ $('bag-checkout').addEventListener('click', () => { try { localStorage.setItem(O
 bag = bagLoad();
 if (OPEN) { $('bag-btn').hidden = false; bagPaint(); }
 
-// ── "notify me": the same drop-alert list as the main site
+// ── "notify me": the shop's own sign-up list, kept apart from the art drop alerts
 (function(){
   const f = $('notify'), note = $('notify-note'), btn = $('notify-btn'), inp = $('notify-email');
   const say = (t, cls) => { note.textContent = t; note.className = 'notify-note' + (cls ? ' ' + cls : ''); };
@@ -505,7 +505,7 @@ if (OPEN) { $('bag-btn').hidden = false; bagPaint(); }
     if (!/^\S+@\S+\.\S+$/.test(email)) return say('that email doesn’t look right', 'err');
     btn.disabled = true; say('…');
     try {
-      const r = await fetch('/api/alerts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, website: f.website.value }) });
+      const r = await fetch('/api/alerts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, website: f.website.value, list: 'shop' }) });
       const d = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(d.error || 'something went wrong — try again');
       say(d.already ? 'you’re already on the list ✦' : 'you’re on the list — you’ll hear when it opens ✦', 'ok');
