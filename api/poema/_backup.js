@@ -1,19 +1,19 @@
-// Weekly copies of everything the poem keeps (and the drop-alert list), stored beside it in the database.
+// Weekly copies of everything the poem keeps (and both sign-up lists), stored beside it in the database.
 //   snapshot()       — the whole state, exactly as stored
 //   saveWeekly()     — keep a dated copy (at most one every 6 days, the newest 12 kept: about three months)
 //   GET /api/poema/admin?action=backup   (photontide.eth only) — download today's state plus every weekly copy
 import { redis, K, ADMIN, readToken, send, onlyMethod, hashObject } from './_lib.js';
-import { ALERTS_KEY } from '../alerts.js';
+import { ALERTS_KEY, SHOP_ALERTS_KEY } from '../alerts.js';
 
 const ENV = process.env.VERCEL_ENV === 'production' ? 'prod' : 'preview';
 const B = `poema:${ENV}:backup:`;
 const KEEP = 12;
 
 export async function snapshot() {
-  const [lines, addrs, idx, banned, title, proposals, shortlist, voteStart, votes, alerts] = await Promise.all([
+  const [lines, addrs, idx, banned, title, proposals, shortlist, voteStart, votes, alerts, shopAlerts] = await Promise.all([
     redis.lrange(K.lines, 0, -1), redis.lrange(K.addrs, 0, -1), redis.hgetall(K.idx), redis.smembers(K.banned),
     redis.get(K.title), redis.hgetall(K.proposals), redis.get(K.shortlist), redis.get(K.voteStart), redis.hgetall(K.votes),
-    redis.hgetall(ALERTS_KEY),
+    redis.hgetall(ALERTS_KEY), redis.hgetall(SHOP_ALERTS_KEY),
   ]);
   return {
     taken: new Date().toISOString(),
@@ -23,6 +23,7 @@ export async function snapshot() {
       shortlist: shortlist == null ? null : String(shortlist), voteStart: voteStart == null ? null : String(voteStart), votes: hashObject(votes),
     },
     alerts: hashObject(alerts),
+    shopAlerts: hashObject(shopAlerts),
   };
 }
 
