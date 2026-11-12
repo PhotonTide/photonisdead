@@ -315,7 +315,7 @@ const ITEMS = [
 ];
 
 const src = n => '/media/shop/' + n + '.jpg';
-const leftText = item => item.left > 0 ? `edition of ${item.edition} · ${item.left} left` : `edition of ${item.edition} · sold out`;
+const leftText = item => item.left > 0 ? `${item.left} left` : 'sold out';
 const $ = id => document.getElementById(id);
 if (!OPEN) { $('soon').hidden = false; $('notify-wrap').hidden = false; }
 const grid = $('grid');
