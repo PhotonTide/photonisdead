@@ -55,6 +55,8 @@ h1{font-weight:300;font-style:italic;font-size:clamp(3rem,8vw,5.6rem);letter-spa
 .name{font-size:1.6rem;font-weight:400;font-style:italic;letter-spacing:.02em}
 .price{font-family:'Inconsolata',monospace;font-size:.85rem;letter-spacing:.18em;color:var(--ember);margin-top:.35rem}
 .note{font-family:'Inconsolata',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--pale);line-height:1.6;margin-top:.6rem}
+.left{font-family:'Inconsolata',monospace;font-size:.7rem;letter-spacing:.18em;color:var(--ghost);margin-top:.35rem}
+.left.out{color:var(--pale)}
 
 .opts{margin-top:1rem;display:flex;flex-direction:column;gap:.7rem}
 .row{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center}
@@ -222,6 +224,7 @@ dialog.view::backdrop{background:rgba(0,0,0,.82)}
     <div class="view-info">
       <h2 class="name" id="view-name"></h2>
       <p class="price" id="view-price"></p>
+      <p class="left" id="view-left"></p>
       <p class="desc" id="view-desc"></p>
       <p class="note" id="view-note"></p>
       <div class="opts" id="view-opts"></div>
@@ -265,11 +268,13 @@ dialog.view::backdrop{background:rgba(0,0,0,.82)}
 // Each colour has its own front/back photos and its own Shopify variant per size.
 // "add to bag" collects variants here; checkout sends the whole bag to Shopify (cart permalink).
 const STORE = 'https://photontide.myshopify.com';
+// Limited editions: `edition` is how many will ever be made; `left` is what's still available.
+// Lower `left` as orders come in; at 0 the piece shows "sold out" and can't be added to the bag.
 // false while the Shopify store is still password-locked: buttons read "opening soon", no bag
 const OPEN = true;
 const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
 const ITEMS = [
-  { name: 'photontide hoodie', price: 75,
+  { name: 'photontide hoodie', price: 75, edition: 15, left: 13,
     desc: 'A heavyweight hoodie carrying the PHOTON TIDE mark, washed and frayed so it feels like it was found rather than made. Printed on the front and the back, cut loose and thick enough for cold nights spent looking into the unknown.',
     fit: { 'length': [70, 72, 74, 76, 78], 'chest': [66, 68, 70, 72, 74], 'shoulder': [63, 65, 67, 69, 71], 'sleeve': [53.5, 54.5, 55.5, 56.5, 57.5] },
     note: '360 gsm washed fleece · loose fit · printed front and back · allow 3–4 weeks for delivery',
@@ -278,14 +283,14 @@ const ITEMS = [
       'Black':       { img: ['hoodie-1', 'hoodie-2'], v: [52443222475047, 52443222507815, 52443222540583, 52443222573351, 52443222606119] },
       'Medium Gray': { img: ['hoodie-3', 'hoodie-4'], v: [52443222311207, 52443222343975, 52443222376743, 52443222409511, 52443222442279] },
     } },
-  { name: 'photonisdead spiral zip up', price: 75,
+  { name: 'photonisdead spiral zip up', price: 75, edition: 15, left: 13,
     desc: 'A boxy fleece-lined zip up with PHOTONISDEAD across the chest, split by a full-length zipper that runs from hem to hood. On the back, a figure walks into the spiral. Cropped, oversized and warm, made for nights spent somewhere between here and the unknown.',
     fit: { 'length': [61, 63, 65, 66.5, 68], 'chest': [71, 73.5, 76, 78.5, 81], 'shoulder': [69.5, 72, 74.5, 77, 79.5], 'sleeve': [53, 55, 56, 58, 59] },
     note: 'boxy fleece-lined full zip · spiral on the back · allow 3–4 weeks for delivery',
     colors: {
       'Black': { img: ['zip-1', 'zip-2'], v: [52453785076007, 52453785108775, 52453785141543, 52453785174311, 52453785207079] },
     } },
-  { name: 'photontide crewneck', price: 50,
+  { name: 'photontide crewneck', price: 50, edition: 15, left: 15,
     desc: 'A washed crewneck with the lone figure standing at the center of a spiral of light. Heavyweight knit cotton with a worn-in vintage wash, cut boxy and loose with raglan sleeves and ribbed collar and cuffs.',
     fit: { 'length': [62, 64, 66, 68, 70], 'chest': [56, 58, 60, 62, 64], 'sleeve': [74, 76, 78, 80, 82] },
     note: 'heavyweight washed crewneck · raglan sleeves · allow 3–4 weeks for delivery',
@@ -293,14 +298,14 @@ const ITEMS = [
       'Black': { img: ['crewneck-1', 'crewneck-2'], v: [52443223228711, 52443223261479, 52443223294247, 52443223327015, 52443223359783] },
       'Gray':  { img: ['crewneck-3', 'crewneck-4'], v: [52443223064871, 52443223097639, 52443223130407, 52443223163175, 52443223195943] },
     } },
-  { name: 'photontide shirt', price: 38,
+  { name: 'photontide shirt', price: 38, edition: 12, left: 10,
     desc: 'A snow-washed tee with raw, torn hems and the lone figure standing at the center of a spiral of light. Soft 270 gsm cotton with a faded wash and a loose, drop-shoulder fit, made to look like it has already lived a life.',
     fit: { 'length': [68, 70, 72, 74, 76], 'chest': [57.5, 58, 62, 64, 66], 'shoulder': [56, 57, 59, 60, 62], 'sleeve': [21, 21.5, 22, 22.5, 23] },
     note: 'snow-washed raw-hem cotton tee · loose fit · printed front · allow 3–4 weeks for delivery',
     colors: {
       'Black': { img: ['shirt-1', 'shirt-2'], v: [52443223589159, 52443223621927, 52443223654695, 52443223687463, 52443223720231] },
     } },
-  { name: 'photontide spiral tee', price: 38, sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
+  { name: 'photontide spiral tee', price: 38, edition: 15, left: 14, sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
     desc: 'An oversized snow-washed tee with photontide across the chest above the lone figure in a spiral of light. On the back, a figure walks into the vortex. Heavy 250 gsm cotton with a faded vintage wash, cut wide with dropped shoulders.',
     fit: { 'length': [70, 72, 74, 76, 78, 79], 'chest': [56, 58, 60, 62, 64, 67], 'shoulder': [53, 55, 57, 59, 61, 63], 'sleeve': [20.8, 21.5, 22.2, 22.9, 23.6, 23.6] },
     note: 'oversized snow-washed 250 gsm cotton · spiral on the back · allow 3–4 weeks for delivery',
@@ -310,6 +315,7 @@ const ITEMS = [
 ];
 
 const src = n => '/media/shop/' + n + '.jpg';
+const leftText = item => item.left > 0 ? `edition of ${item.edition} · ${item.left} left` : `edition of ${item.edition} · sold out`;
 const $ = id => document.getElementById(id);
 if (!OPEN) { $('soon').hidden = false; $('notify-wrap').hidden = false; }
 const grid = $('grid');
@@ -324,14 +330,15 @@ function paint(scope, item, sizes, state, buy){
   scope.querySelectorAll('[data-c]').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === state.color));
   scope.querySelectorAll('[data-s]').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === state.size));
   clearTimeout(buy._t);
-  buy.disabled = !(OPEN && state.size);
-  buy.textContent = !OPEN ? 'opening soon' : state.size ? `add to bag · ${state.size}` : 'choose a size';
+  const out = item.left <= 0;
+  buy.disabled = !(OPEN && state.size && !out);
+  buy.textContent = !OPEN ? 'opening soon' : out ? 'sold out' : state.size ? `add to bag · ${state.size}` : 'choose a size';
 }
 // add the chosen colour and size, then say so on the button for a moment
 function addFrom(item, sizes, state, buy){
-  if (!OPEN || !state.size) return;
-  bagAdd(item.colors[state.color].v[sizes.indexOf(state.size)]);
-  buy.textContent = 'added to bag ✓';
+  if (!OPEN || !state.size || item.left <= 0) return;
+  const added = bagAdd(item.colors[state.color].v[sizes.indexOf(state.size)]);
+  buy.textContent = added ? 'added to bag ✓' : `only ${item.left} left · all in your bag`;
   clearTimeout(buy._t);
   buy._t = setTimeout(() => { buy.textContent = `add to bag · ${state.size}`; }, 1600);
 }
@@ -350,12 +357,15 @@ const cards = ITEMS.map((item, idx) => {
     <div class="info">
       <h2 class="name"></h2>
       <p class="price">$${item.price}</p>
+      <p class="left"></p>
       <p class="note"></p>
       <div class="opts">${optsHTML(item, sizes, true)}</div>
       <button type="button" class="buy" disabled>choose a size</button>
     </div>`;
   el.querySelector('.name').textContent = item.name;
   el.querySelector('.note').textContent = item.note;
+  el.querySelector('.left').textContent = leftText(item);
+  el.querySelector('.left').classList.toggle('out', item.left <= 0);
   const photo = el.querySelector('.photo'), front = el.querySelector('img.front'), back = el.querySelector('img.back'), buy = el.querySelector('.buy');
   function render(){
     const c = item.colors[state.color];
@@ -389,6 +399,8 @@ function openView(idx, toGuide){
   const { item, sizes } = current;
   $('view-name').textContent = item.name;
   $('view-price').textContent = '$' + item.price;
+  $('view-left').textContent = leftText(item);
+  $('view-left').classList.toggle('out', item.left <= 0);
   $('view-desc').textContent = item.desc;
   $('view-note').textContent = item.note;
   $('view-opts').innerHTML = optsHTML(item, sizes, false);
@@ -437,18 +449,23 @@ shots.addEventListener('scroll', () => {
 
 // ── the bag: kept in this browser only; checkout hands every line to Shopify in one go
 var bag;   // [{ v: variant id, q: quantity }] (var so the cards above can add before this runs)
+// how many of a piece (all colours and sizes together) are already in the bag
+function inBag(item){ return bag.reduce((n, l) => n + (VARIANTS.get(l.v).item === item ? l.q : 0), 0); }
 function bagAdd(v){
+  const item = VARIANTS.get(v).item;
+  if (inBag(item) >= item.left) return false;   // no more than are left
   const line = bag.find(l => l.v === v);
-  if (line) line.q = Math.min(MAX_Q, line.q + 1); else bag.push({ v, q: 1 });
+  if (line) { if (line.q >= MAX_Q) return false; line.q++; } else bag.push({ v, q: 1 });
   bagSave(); bagPaint();
   const btn = $('bag-btn'); btn.classList.add('bump'); setTimeout(() => btn.classList.remove('bump'), 700);
+  return true;
 }
 const MAX_Q = 10, BAG_KEY = 'pt-bag', OUT_KEY = 'pt-bag-out';
 const VARIANTS = new Map();   // variant id -> what it is, for the bag lines
 ITEMS.forEach(item => {
   const sizes = item.sizes || SIZES;
   Object.entries(item.colors).forEach(([color, c]) => c.v.forEach((v, i) =>
-    VARIANTS.set(v, { name: item.name, color, size: sizes[i], price: item.price, img: c.img[0] })));
+    VARIANTS.set(v, { item, name: item.name, color, size: sizes[i], price: item.price, img: c.img[0] })));
 });
 const bagEl = $('bag'), bagList = $('bag-list');
 function bagSave(){ try { localStorage.setItem(BAG_KEY, JSON.stringify(bag)); } catch (e) {} }
@@ -458,7 +475,14 @@ function bagLoad(){
     const out = +localStorage.getItem(OUT_KEY);
     if (out && Date.now() - out > 36e5) { localStorage.removeItem(BAG_KEY); localStorage.removeItem(OUT_KEY); }
     const saved = JSON.parse(localStorage.getItem(BAG_KEY) || '[]');
-    return Array.isArray(saved) ? saved.filter(l => VARIANTS.has(l.v) && l.q > 0).map(l => ({ v: l.v, q: Math.min(MAX_Q, Math.floor(l.q)) })) : [];
+    if (!Array.isArray(saved)) return [];
+    // keep only what's still available: drop sold-out pieces and trim to what's left
+    const room = new Map(ITEMS.map(it => [it, Math.max(0, it.left)]));
+    return saved.filter(l => VARIANTS.has(l.v) && l.q > 0).map(l => {
+      const it = VARIANTS.get(l.v).item, q = Math.min(MAX_Q, Math.floor(l.q), room.get(it));
+      room.set(it, room.get(it) - q);
+      return { v: l.v, q };
+    }).filter(l => l.q > 0);
   } catch (e) { return []; }
 }
 function bagPaint(){
@@ -473,7 +497,7 @@ function bagPaint(){
     return `<li class="line" data-i="${i}">
       <div class="thumb"><img src="${src(p.img)}" alt=""></div>
       <div><p class="line-name">${p.name}</p><p class="line-opt">${p.color.toLowerCase()} · ${p.size}</p>
-        <div class="qty"><button type="button" data-q="-1" aria-label="one fewer"${l.q <= 1 ? ' disabled' : ''}>−</button><span aria-label="quantity">${l.q}</span><button type="button" data-q="1" aria-label="one more"${l.q >= MAX_Q ? ' disabled' : ''}>+</button></div></div>
+        <div class="qty"><button type="button" data-q="-1" aria-label="one fewer"${l.q <= 1 ? ' disabled' : ''}>−</button><span aria-label="quantity">${l.q}</span><button type="button" data-q="1" aria-label="one more"${l.q >= MAX_Q || inBag(p.item) >= p.item.left ? ' disabled' : ''}>+</button></div></div>
       <div class="line-r">$${p.price * l.q}<button type="button" class="remove" data-rm>remove</button></div>
     </li>`;
   }).join('');
@@ -484,7 +508,11 @@ bagList.addEventListener('click', e => {
   const b = e.target.closest('button'), li = e.target.closest('.line'); if (!b || !li) return;
   const line = bag[+li.dataset.i];
   if ('rm' in b.dataset) bag.splice(+li.dataset.i, 1);
-  else if (b.dataset.q) line.q = Math.max(1, Math.min(MAX_Q, line.q + +b.dataset.q));
+  else if (b.dataset.q) {
+    const it = VARIANTS.get(line.v).item;
+    if (+b.dataset.q < 0) line.q = Math.max(1, line.q - 1);
+    else if (line.q < MAX_Q && inBag(it) < it.left) line.q++;
+  }
   bagSave(); bagPaint();
   if (!bag.length) $('bag-close').focus();
 });
